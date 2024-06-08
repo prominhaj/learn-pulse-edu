@@ -3,6 +3,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import ThemeProvider from '@/Providers/ThemeProvider';
+import { dbConnect } from '@/service/mongo';
 
 // Font Family
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -18,7 +19,10 @@ export const metadata = {
     description: 'Explore || Learn || Build || Share'
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+    // Connect to MongoDB
+    const conn = await dbConnect();
+
     return (
         <html lang='en'>
             <body className={cn(inter.variable, poppins.variable)}>
