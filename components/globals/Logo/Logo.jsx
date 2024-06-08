@@ -5,8 +5,8 @@ import logo from "@/assets/brind-logo.png";
 const Logo = () => {
     return (
         <>
-            <Link className="block max-w-14 max-h-[3.2rem]" href="/">
-                <Image className="w-full h-full" width={70} height={60} src={logo} priority alt="Logo" />
+            <Link className="block max-w-12 max-h-[2.9rem]" href="/">
+                <Image className="w-full h-full" width={50} height={50} src={logo} priority alt="Logo" />
             </Link>
         </>
     );
