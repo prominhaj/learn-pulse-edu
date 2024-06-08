@@ -2,9 +2,9 @@ import Link from "next/link";
 import Logo from "../Logo/Logo";
 import { Facebook, Github, Instagram, Linkedin } from "lucide-react";
 // Payment methods Image
-import stripeIcon from "@/assets/Footer/Payment-Card-Photos/stripe-icon.png";
-import masterIcon from "@/assets/Footer/Payment-Card-Photos/master-card-icon.png";
-import visaIcon from "@/assets/Footer/Payment-Card-Photos/visa-icon.png";
+import stripeIcon from "@/assets/Footer/Payment-Card-Photos/stripe.png";
+import masterIcon from "@/assets/Footer/Payment-Card-Photos/master.png";
+import visaIcon from "@/assets/Footer/Payment-Card-Photos/visa.png";
 import Image from "next/image";
 
 // Footer Nav Items
@@ -79,12 +79,14 @@ const Footer = () => {
             </div>
             {/* Payment system */}
             <div className="py-3 border-t">
-                <h2 className="text-center md:text-start">Pay With</h2>
+                <h2 className="mb-2 text-center md:text-start">Pay With</h2>
                 <div className="flex items-center justify-center gap-2 md:justify-start">
                     {
                         [stripeIcon, masterIcon, visaIcon].map((item, index) => {
                             return (
-                                <Image className="w-12 h-12" width={50} height={50} src={item} key={index} alt={`payment image ${index + 1}`} />
+                                <div className="w-10 h-10 px-1.5 py-1 border-2 rounded" key={index}>
+                                    <Image className="w-full h-full" width={50} height={50} src={item} alt={`payment image ${index + 1}`} />
+                                </div>
                             )
                         })
                     }
