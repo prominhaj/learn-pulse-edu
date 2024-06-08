@@ -13,7 +13,7 @@ const CategorySection = async () => {
                     <SectionTitle>Categories</SectionTitle>
 
                     <Link
-                        href={''}
+                        href={'/courses'}
                         className='flex items-center gap-1 text-sm font-medium hover:opacity-80'
                     >
                         Browse All <ArrowRightIcon className='w-4 h-4' />

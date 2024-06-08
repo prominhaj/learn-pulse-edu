@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 // Profile Photo Schema
 const profilePictureSchema = {
@@ -54,4 +54,6 @@ const userSchema = new Schema(
     { timestamps: true }
 );
 
-export const User = mongoose.models.User ?? mongoose.model('User', userSchema);
+const User = mongoose.models.User ?? mongoose.model('User', userSchema);
+
+export default User;
