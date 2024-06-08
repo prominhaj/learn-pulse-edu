@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { MobileNav } from "./MobileNav/MobileNav";
+import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
 
 // Nav Items
 const navLinks = [
@@ -54,6 +55,7 @@ const Navbar = ({ children }) => {
                 )}
             </div>
             <nav className="flex items-center gap-3">
+                <ThemeSwitch />
                 <div className="items-center hidden gap-3 lg:flex">
                     <Link
                         href="/login"

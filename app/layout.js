@@ -2,6 +2,7 @@ import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
+import ThemeProvider from '@/Providers/ThemeProvider';
 
 // Font Family
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -21,7 +22,16 @@ export default function RootLayout({ children }) {
     return (
         <html lang='en'>
             <body className={cn(inter.variable, poppins.variable)}>
-                <>{children}</>
+                <>
+                    <ThemeProvider
+                        attribute='class'
+                        defaultTheme='system'
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                    </ThemeProvider>
+                </>
                 <Toaster richColors position='top-center' />
             </body>
         </html>
