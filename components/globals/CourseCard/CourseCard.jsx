@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const CourseCard = ({ course }) => {
-    console.log(course);
     const { id, title, thumbnail: { url }, price, category, modules } = course;
+
     return (
-        <Link href={`/courses/${course.id}`}>
+        <Link href={`/courses/${id}`}>
             <div className='h-full p-3 overflow-hidden transition border rounded-lg group hover:shadow-sm'>
                 <div className='relative w-full overflow-hidden rounded-md aspect-video'>
                     <Image

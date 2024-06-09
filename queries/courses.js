@@ -1,6 +1,6 @@
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import Category from '@/modals/categories-modal';
-import Course from '@/modals/couses-modal';
+import Course from '@/modals/courses-modal';
 import Module from '@/modals/modules-modal';
 
 export const getCourses = async () => {
