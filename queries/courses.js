@@ -1,6 +1,7 @@
 import { replaceMongoIdInArray, replaceMongoIdInObject } from '@/lib/convertData';
 import Category from '@/modals/categories-modal';
 import Course from '@/modals/courses-modal';
+import { Lesson } from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import Testimonial from '@/modals/testimonials-modal';
 import User from '@/modals/users-modal';
@@ -40,7 +41,11 @@ export const getCourseDetails = async (id) => {
         })
         .populate({
             path: 'modules',
-            model: Module
+            model: Module,
+            populate: {
+                path: 'lessonIds',
+                model: Lesson
+            }
         })
         .lean();
 
