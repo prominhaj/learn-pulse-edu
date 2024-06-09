@@ -33,8 +33,8 @@ export const getCourseDetails = async (id) => {
         .populate({
             path: 'testimonials',
             model: Testimonial,
-            strictPopulate: {
-                path: 'user',
+            populate: {
+                path: 'userId',
                 model: User
             }
         })
