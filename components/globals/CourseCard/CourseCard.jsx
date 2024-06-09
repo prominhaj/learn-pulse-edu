@@ -8,8 +8,8 @@ const CourseCard = ({ course }) => {
     const { id, title, thumbnail: { url }, price, category, modules } = course;
 
     return (
-        <Link href={`/courses/${id}`}>
-            <div className='h-full p-3 overflow-hidden transition border rounded-lg group hover:shadow-sm'>
+        <Link className="block" href={`/courses/${id}`}>
+            <div className='relative h-full p-3 overflow-hidden transition-all duration-500 ease-in-out border rounded-lg group hover:shadow-sm bg-background hover:scale-105'>
                 <div className='relative w-full overflow-hidden rounded-md aspect-video'>
                     <Image
                         src={url}

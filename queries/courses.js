@@ -51,7 +51,12 @@ export const getCourseDetails = async (id) => {
         })
         .lean();
 
-    return replaceMongoIdInObject(course);
+    const relatedCourse = await Course.find({ category: course.category._id }).lean();
+
+    return {
+        course: replaceMongoIdInObject(course),
+        relatedCourses: replaceMongoIdInArray(relatedCourse)
+    };
 };
 
 export const getCourseDetailsByInstructor = async (instructorId) => {

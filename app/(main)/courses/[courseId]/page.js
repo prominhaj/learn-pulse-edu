@@ -7,7 +7,7 @@ import RelatedCourse from './_components/RelatedCourse/RelatedCourse';
 
 // Generate MetaData
 export const generateMetadata = async ({ params: { courseId } }) => {
-    const course = await getCourseDetails(courseId);
+    const { course } = await getCourseDetails(courseId);
 
     return {
         title: `${course?.title} - Learn Pulse Edu`,
@@ -19,7 +19,8 @@ export const generateMetadata = async ({ params: { courseId } }) => {
 };
 
 const SingleCoursePage = async ({ params: { courseId } }) => {
-    const course = await getCourseDetails(courseId);
+    const { course, relatedCourses } = await getCourseDetails(courseId);
+
     return (
         <>
             <CourseInfo course={course} />
@@ -33,7 +34,7 @@ const SingleCoursePage = async ({ params: { courseId } }) => {
             )}
 
             {/* Related Course */}
-            <RelatedCourse />
+            <RelatedCourse relatedCourses={relatedCourses} />
         </>
     );
 };
