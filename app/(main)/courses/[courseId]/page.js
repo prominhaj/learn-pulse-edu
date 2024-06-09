@@ -33,6 +33,7 @@ import { BookOpen } from 'lucide-react';
 import { ArrowRight } from 'lucide-react';
 import { formatPrice } from '@/lib/formatPrice';
 import { SectionTitle } from '@/components/globals/SectionTitle/SectionTitle';
+import { getCourseDetails } from '@/queries/courses';
 
 const courses = [
     {
@@ -78,25 +79,57 @@ const courses = [
     }
 ];
 
-const SingleCoursePage = () => {
+const SingleCoursePage = async ({ params: { courseId } }) => {
+    const course = await getCourseDetails(courseId);
+    const {
+        id,
+        title,
+        sub_title,
+        description,
+        thumbnail: { url },
+        modules,
+        price,
+        active,
+        category,
+        instructor,
+        testimonials,
+        quizSet
+    } = course || {};
+
     return (
         <>
             <div className='overflow-x-hidden'>
-                <section className='pt-12 sm:pt-16'>
+                <section className='py-12 sm:py-16'>
                     <div className='container'>
                         <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
                             <div className='max-w-2xl mx-auto text-center'>
                                 <h1 className='px-6 text-lg text-gray-600 dark:text-gray-400 font-inter'>
-                                    Master React JS & Next JS
+                                    {sub_title}
                                 </h1>
                                 <p className='mt-5 text-4xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:leading-tight sm:text-5xl lg:text-6xl lg:leading-tight font-poppins'>
                                     <span className='relative inline-flex sm:inline'>
-                                        <span className='bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0'></span>
-                                        <span className='relative'>Reactive Accelerator </span>
+                                        {/* <span className='bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0'></span> */}
+                                        <span className='relative'>{title}</span>
                                     </span>
                                 </p>
                             </div>
                         </div>
+
+                        {/* Back Ground Gray din */}
+                        <>
+                            <div
+                                aria-hidden='true'
+                                className='absolute inset-x-0 overflow-hidden pointer-events-none -top-16 -z-10 transform-gpu blur-3xl sm:-top-40'
+                            >
+                                <div
+                                    style={{
+                                        clipPath:
+                                            'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)'
+                                    }}
+                                    className='relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] dark:bg-gray-800'
+                                />
+                            </div>
+                        </>
 
                         <div className='mt-6'>
                             <div className='relative'>
@@ -104,11 +137,13 @@ const SingleCoursePage = () => {
                                 <div className='relative mx-auto'>
                                     <div className='lg:max-w-3xl lg:mx-auto'>
                                         <Image
-                                            className='w-full rounded-lg'
-                                            width={768}
-                                            height={463}
-                                            src='/assets/images/courses/course_1.png'
-                                            alt=''
+                                            className='w-full h-full rounded-lg'
+                                            width={800}
+                                            height={500}
+                                            src={url}
+                                            alt={title}
+                                            quality={100}
+                                            priority
                                         />
                                     </div>
                                 </div>
@@ -227,7 +262,7 @@ const SingleCoursePage = () => {
                             </TabsContent>
                             <TabsContent value='curriculum'>
                                 {/* each tab content can be independent component */}
-                                <div class='flex gap-x-5 items-center justify-center flex-wrap mt-4 mb-6 text-gray-600 text-sm'>
+                                <div className='flex flex-wrap items-center justify-center mt-4 mb-6 text-sm text-gray-600 gap-x-5'>
                                     <span className='flex items-center gap-1.5'>
                                         <BookCheck className='w-4 h-4' />
                                         12 Chapters
@@ -252,7 +287,7 @@ const SingleCoursePage = () => {
                                         <AccordionTrigger>Introduction</AccordionTrigger>
                                         <AccordionContent>
                                             {/* header */}
-                                            <div class='flex gap-x-5 items-center flex-wrap mt-4 mb-6 text-gray-600 text-sm'>
+                                            <div className='flex flex-wrap items-center mt-4 mb-6 text-sm text-gray-600 gap-x-5'>
                                                 <span className='flex items-center gap-1.5'>
                                                     <Video className='w-4 h-4' />
                                                     12 Lessons
@@ -359,7 +394,7 @@ const SingleCoursePage = () => {
                                         <AccordionTrigger>Master Next JS</AccordionTrigger>
                                         <AccordionContent>
                                             {/* header */}
-                                            <div class='flex gap-x-5 items-center flex-wrap mt-4 mb-6 text-gray-600 text-sm'>
+                                            <div className='flex flex-wrap items-center mt-4 mb-6 text-sm text-gray-600 gap-x-5'>
                                                 <span className='flex items-center gap-1.5'>
                                                     <Video className='w-4 h-4' />
                                                     12 Lessons
@@ -468,7 +503,7 @@ const SingleCoursePage = () => {
                                         </AccordionTrigger>
                                         <AccordionContent>
                                             {/* header */}
-                                            <div class='flex gap-x-5 items-center flex-wrap mt-4 mb-6 text-gray-600 text-sm'>
+                                            <div className='flex flex-wrap items-center mt-4 mb-6 text-sm text-gray-600 gap-x-5'>
                                                 <span className='flex items-center gap-1.5'>
                                                     <Video className='w-4 h-4' />
                                                     12 Lessons
