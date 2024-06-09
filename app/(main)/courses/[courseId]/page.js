@@ -93,8 +93,12 @@ const SingleCoursePage = async ({ params: { courseId } }) => {
         category,
         instructor,
         testimonials,
-        quizSet
+        quizSet,
+        createdAt,
+        updatedAt
     } = course || {};
+
+    console.log(course);
 
     return (
         <>
@@ -143,6 +147,8 @@ const SingleCoursePage = async ({ params: { courseId } }) => {
                                             src={url}
                                             alt={title}
                                             quality={100}
+                                            placeholder='blur'
+                                            blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvXd1PQAGwgKUFYvW8AAAAABJRU5ErkJggg=='
                                             priority
                                         />
                                     </div>
