@@ -49,7 +49,11 @@ const userSchema = new Schema(
             type: Object,
             required: false
         },
-        profilePicture: profilePictureSchema
+        profilePicture: profilePictureSchema,
+        designation: {
+            required: false,
+            type: String
+        }
     },
     { timestamps: true }
 );

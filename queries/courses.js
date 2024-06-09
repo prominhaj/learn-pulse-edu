@@ -5,6 +5,8 @@ import { Lesson } from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import Testimonial from '@/modals/testimonials-modal';
 import User from '@/modals/users-modal';
+import { getTestimonialsForCourse } from './testimonials';
+import { getEnrollmentsForCourse } from './enrollments';
 
 export const getCourses = async () => {
     const courses = await Course.find({})
@@ -53,38 +55,39 @@ export const getCourseDetails = async (id) => {
 };
 
 export const getCourseDetailsByInstructor = async (instructorId) => {
+    // Fetch all courses by instructor in one query
     const courses = await Course.find({ instructor: instructorId }).lean();
 
-    const enrollments = await Promise.all(
-        courses.map(async (course) => {
-            const enrollment = await getEnrollmentsForCourse(course._id.toString());
-            return enrollment;
-        })
-    );
+    if (courses.length === 0) {
+        return {
+            courses: 0,
+            enrollments: 0,
+            reviews: 0,
+            ratings: 0
+        };
+    }
 
-    const totalEnrollments = enrollments.reduce((item, currentValue) => {
-        return item.length + currentValue.length;
-    });
+    // Extract course IDs for batch processing
+    const courseIds = courses.map((course) => course._id.toString());
 
-    const testimonials = await Promise.all(
-        courses.map(async (course) => {
-            const testimonial = await getTestimonialsForCourse(course._id.toString());
-            return testimonial;
-        })
-    );
+    // Fetch all enrollments and testimonials in parallel
+    const [enrollments, testimonials] = await Promise.all([
+        Promise.all(courseIds.map((courseId) => getEnrollmentsForCourse(courseId))),
+        Promise.all(courseIds.map((courseId) => getTestimonialsForCourse(courseId)))
+    ]);
 
+    // Flatten the enrollments and testimonials arrays
+    const totalEnrollments = enrollments.flat().length;
     const totalTestimonials = testimonials.flat();
-    const avgRating =
-        totalTestimonials.reduce(function (acc, obj) {
-            return acc + obj.rating;
-        }, 0) / totalTestimonials.length;
 
-    //console.log("testimonials", totalTestimonials, avgRating);
+    // Calculate average rating
+    const avgRating =
+        totalTestimonials.reduce((acc, { rating }) => acc + rating, 0) / totalTestimonials.length;
 
     return {
         courses: courses.length,
         enrollments: totalEnrollments,
         reviews: totalTestimonials.length,
-        ratings: avgRating.toPrecision(2)
+        ratings: totalTestimonials.length > 0 ? avgRating.toPrecision(2) : 0
     };
 };
