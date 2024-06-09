@@ -3,8 +3,9 @@ import TestimonialCard from "@/components/globals/TestimonialCard/TestimonialCar
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const Testimonials = ({ testimonials }) => {
-    const { } = testimonials;
-    console.log(testimonials);
+    if (!testimonials || testimonials.length === 0) {
+        return null;
+    }
 
     return (
         <section className='pb-8 md:pb-12 lg:pb-24'>
