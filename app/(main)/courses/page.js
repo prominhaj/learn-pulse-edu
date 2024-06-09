@@ -6,6 +6,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CourseFilterSection from './_components/CourseFilterSecton/CourseFilterSection';
 
+// Metadata
+export const metadata = {
+    title: 'Courses - Learn Pulse Edu',
+    description: 'Explore || Learn || Build || Share || Courses'
+};
+
 const courses = [
     {
         id: 1,
