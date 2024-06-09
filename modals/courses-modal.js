@@ -55,6 +55,10 @@ const courseSchema = new Schema(
                 ref: 'Testimonial'
             }
         ],
+        learning: {
+            required: true,
+            type: [String]
+        },
         quizSet: {
             type: Schema.Types.ObjectId,
             ref: 'QuizSet'

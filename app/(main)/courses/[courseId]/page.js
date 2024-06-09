@@ -20,8 +20,6 @@ export const generateMetadata = async ({ params: { courseId } }) => {
 
 const SingleCoursePage = async ({ params: { courseId } }) => {
     const course = await getCourseDetails(courseId);
-    const isTestimonial = course.testimonials ? true : false;
-
     return (
         <>
             <CourseInfo course={course} />
@@ -30,7 +28,7 @@ const SingleCoursePage = async ({ params: { courseId } }) => {
             <CourseDetails course={course} />
 
             {/* Testimonials */}
-            {isTestimonial && (
+            {course?.testimonials && (
                 <Testimonials testimonials={replaceMongoIdInArray(course?.testimonials)} />
             )}
 
