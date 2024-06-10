@@ -9,7 +9,7 @@ const CourseCard = ({ course }) => {
 
     return (
         <Link className="block" href={`/courses/${id}`}>
-            <div className='relative h-full p-3 overflow-hidden transition-all duration-500 ease-in-out border rounded-lg group hover:shadow-sm bg-background hover:scale-105'>
+            <div className='h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
                 <div className='relative w-full overflow-hidden rounded-md aspect-video'>
                     <Image
                         src={url}

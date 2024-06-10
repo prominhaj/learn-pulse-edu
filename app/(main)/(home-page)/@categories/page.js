@@ -19,6 +19,7 @@ const CategorySection = async () => {
                         Browse All <ArrowRightIcon className='w-4 h-4' />
                     </Link>
                 </div>
+
                 <div className='grid justify-center grid-cols-2 gap-4 mx-auto md:grid-cols-3 2xl:grid-cols-4'>
                     {categories.map((category) => (
                         <CategoryCard key={category.id} category={category} />
