@@ -1,6 +1,4 @@
-import LoginForm from './_components/login-form';
-
-const LoginPage = () => {
+const AuthLayout = ({ children }) => {
     return (
         <div className='flex flex-col items-center justify-center w-full h-screen'>
             <div className='container'>
@@ -17,9 +15,10 @@ const LoginPage = () => {
                     />
                 </div>
 
-                <LoginForm />
+                {children}
             </div>
         </div>
     );
 };
-export default LoginPage;
+
+export default AuthLayout;
