@@ -70,7 +70,6 @@ const SignUpForm = ({ role }) => {
     }
   }
 
-  console.log(userData);
   return (
     <Card className="relative max-w-sm mx-auto dark:shadow-gray-800">
       <CardHeader>
@@ -80,7 +79,7 @@ const SignUpForm = ({ role }) => {
       <CardContent>
 
         {/* Multi Step Authentication */}
-        {step === 1 && <Step1 formAction={formActionStep1} state={error} />}
+        {step === 1 && <Step1 role={role} formAction={formActionStep1} state={error} />}
         {step === 2 && <Step2 formAction={formActionStep2} state={error} />}
 
 
