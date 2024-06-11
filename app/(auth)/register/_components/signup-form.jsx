@@ -11,10 +11,10 @@ import { useState } from 'react';
 import { userValidation, userValidationStep2, userValidationStep3 } from '@/lib/FormValidation/users/userValidation';
 import Step1 from './StepForm/Step1';
 import Step2 from './StepForm/Step2';
+import Step3 from './StepForm/Step3';
 import { createAccount } from '@/app/actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import Step3 from './StepForm/Step3';
 
 const SignUpForm = ({ role }) => {
   const [step, setStep] = useState(1);
@@ -22,82 +22,67 @@ const SignUpForm = ({ role }) => {
   const [userData, setUserData] = useState(null);
   const router = useRouter();
 
-  const formActionStep1 = async (formData) => {
-    setError(null)
+  const handleFormAction = async (formData, validationFn, nextStepFn) => {
+    setError(null);
     try {
-      const singUp = await userValidation(formData);
-      if (singUp.errors) {
-        setError(singUp.errors);
+      const validationResult = await validationFn(formData);
+      if (validationResult.errors) {
+        setError(validationResult.errors);
         return;
       }
-      else if (singUp.success) {
-        const { firstName, lastName, email, password } = singUp.data;
-        const user = {
-          firstName, lastName, email, password
-        }
-        if (role === "student") {
-          const createUser = await createAccount(user);
-          if (!createUser.success) {
-            toast.error(createUser.message)
-            return;
+      if (validationResult.success) {
+        if (nextStepFn) {
+          const updatedUserData = await nextStepFn(validationResult.data);
+          setUserData((prevUserData) => ({ ...prevUserData, ...updatedUserData }));
+        } else {
+          const user = validationResult.data;
+          if (role === "student") {
+            const createUser = await createAccount(user);
+            if (createUser.success) {
+              toast.success(createUser.message);
+              router.push('/login');
+            } else {
+              toast.error(createUser.message);
+            }
           }
-          else if (createUser.success) {
-            toast.success(createUser.message)
-            router.push('/login')
-          }
+          setUserData(user);
         }
-        setUserData(user);
-        setStep(step + 1);
+        setStep((prevStep) => prevStep + 1);
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
+
+  const formActionStep1 = async (formData) => {
+    return handleFormAction(formData, userValidation, async (data) => {
+      const { firstName, lastName, email, password } = data;
+      const user = { firstName, lastName, email, password };
+      return user;
+    });
+  };
 
   const formActionStep2 = async (formData) => {
-    setError(null)
-    try {
-      const userStep2 = await userValidationStep2(formData);
-      if (userStep2.errors) {
-        setError(userStep2.errors);
-        return;
-      }
-      else if (userStep2.success) {
-        setUserData({ ...userData, ...userStep2.data });
-        setStep(step + 1);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
+    return handleFormAction(formData, userValidationStep2, async (data) => {
+      return data;
+    });
+  };
 
   const formActionStep3 = async (formData) => {
-    setError(null)
-    try {
-      const userStep3 = await userValidationStep3(formData);
-      if (userStep3.errors) {
-        setError(userStep3.errors);
-        return;
+    return handleFormAction(formData, userValidationStep3, async (data) => {
+      const fullUserData = { ...userData, socialMedia: { ...data } };
+      const photoData = new FormData();
+      photoData.append("profilePicture", fullUserData.profilePicture);
+      const newUserCreate = await createAccount({ ...fullUserData, profilePicture: null }, photoData);
+      if (newUserCreate.success) {
+        toast.success(newUserCreate.message);
+        router.push('/login');
+      } else {
+        toast.error(newUserCreate.message);
       }
-      else if (userStep3.success) {
-        const fullUserData = { ...userData, socialMedia: { ...userStep3.data } };
-        const photoData = new FormData();
-        photoData.append("profilePicture", fullUserData.profilePicture);
-        const newUserCreate = await createAccount({ ...fullUserData, profilePicture: null }, photoData);
-        if (!newUserCreate.success) {
-          toast.error(newUserCreate.message)
-          return;
-        }
-        else if (newUserCreate.success) {
-          toast.success(newUserCreate.message)
-          router.push('/login')
-        }
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
+      return {};
+    });
+  };
 
 
   return (
