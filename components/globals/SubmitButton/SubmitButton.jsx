@@ -8,9 +8,11 @@ const SubmitButton = ({ className, children }) => {
     const { pending } = useFormStatus();
 
     return (
-        <Button disabled={pending} type="submit" className={cn(`${className} disabled:opacity-50 disabled:cursor-not-allowed`)}>
-            {children}
-        </Button>
+        <>
+            <Button disabled={pending} type="submit" className={cn(`${className} disabled:opacity-50 disabled:cursor-not-allowed`)}>
+                {children}
+            </Button>
+        </>
     );
 };
 

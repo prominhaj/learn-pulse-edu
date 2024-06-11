@@ -70,10 +70,10 @@ const Navbar = ({ children }) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-56 mt-4">
                             <DropdownMenuItem className="cursor-pointer">
-                                <Link href="">Student</Link>
+                                <Link className="block w-full" href="/register/student">Student</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer">
-                                <Link href="">Instructor</Link>
+                                <Link className="block w-full" href="/register/instructor">Instructor</Link>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

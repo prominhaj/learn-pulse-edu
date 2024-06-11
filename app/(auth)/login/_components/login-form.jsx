@@ -50,7 +50,7 @@ const LoginForm = () => {
 
           <div className="mt-4 text-sm text-center">
             Don&apos;t have an account?{" "}
-            <Link href="register" className="underline">
+            <Link href="/register/student" className="underline">
               Register
             </Link>
           </div>
