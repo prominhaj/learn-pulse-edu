@@ -12,6 +12,7 @@ import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
 import useAuth from "@/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
 import Spinner from "../Spinner/Spinner";
+import { signOut } from "next-auth/react";
 
 // Nav Items
 const navLinks = [
@@ -90,7 +91,7 @@ const Navbar = ({ children }) => {
                                     <Link href="">Testimonials & Certificates</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="cursor-pointer" asChild>
-                                    <Link href="">Logout</Link>
+                                    <button onClick={() => signOut()} className="w-full">Logout</button>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

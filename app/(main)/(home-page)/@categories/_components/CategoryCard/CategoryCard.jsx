@@ -16,6 +16,7 @@ const CategoryCard = ({ category }) => {
                         alt={title}
                         width={100}
                         height={100}
+                        priority
                     />
                     <h3 className='font-bold'>{title}</h3>
                 </div>
