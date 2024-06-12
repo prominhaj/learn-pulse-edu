@@ -9,6 +9,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { MobileNav } from "./MobileNav/MobileNav";
 import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
+import { useSession } from "next-auth/react";
 
 // Nav Items
 const navLinks = [
@@ -32,6 +33,9 @@ const navLinks = [
 
 const Navbar = ({ children }) => {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+    const session = useSession();
+    console.log(session);
     return (
         <>
             <div className="flex gap-6 lg:gap-10">

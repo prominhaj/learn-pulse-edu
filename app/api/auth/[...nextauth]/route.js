@@ -31,32 +31,22 @@ const options = NextAuth({
             }
         })
     ],
-    // callbacks: {
-    //     async signIn({ account, profile }) {
-    //         if (account.provider === 'google' || account.provider === 'facebook') {
-    //             await connectDB();
-    //             try {
-    //                 const user = await User.findOne({ email: profile.email });
+    callbacks: {
+        async signIn({ account, profile }) {
+            return true;
+        },
+        async session({ session }) {
+            const userData = await User.findOne({ email: session?.user?.email })
+                .select(['_id', 'firstName', 'lastName', 'email', 'profilePicture', 'role'])
+                .lean();
+            const { _id, ...updatedObj } = { ...userData, id: userData._id.toString() };
 
-    //                 if (!user) {
-    //                     const newUser = {
-    //                         name: profile.name,
-    //                         email: profile.email
-    //                     };
-
-    //                     await User.create(newUser);
-    //                 }
-    //             } catch (error) {
-    //                 return false;
-    //             }
-    //             return true;
-    //         }
-    //         return true;
-    //     },
-    //     async session({ session }) {
-    //         return session;
-    //     }
-    // },
+            session.user = {
+                ...updatedObj
+            };
+            return session;
+        }
+    },
 
     secret: process.env.NEXTAUTH_SECRET,
     pages: {

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import ThemeProvider from '@/Providers/ThemeProvider';
 import { dbConnect } from '@/service/mongo';
+import SessionProvider from '@/Providers/SessionProvider';
 
 // Font Family
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -33,7 +34,7 @@ export default async function RootLayout({ children }) {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
+                        <SessionProvider>{children}</SessionProvider>
                     </ThemeProvider>
                 </>
                 <Toaster richColors position='top-center' />
