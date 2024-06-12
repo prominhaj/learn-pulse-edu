@@ -7,7 +7,7 @@ import CategoryCard from './_components/CategoryCard/CategoryCard';
 const CategorySection = async () => {
     const categories = await getCategories();
     return (
-        <div>
+        <>
             <section id='categories' className='container py-8 space-y-6 md:py-12 lg:py-24'>
                 <div className='flex items-center justify-between'>
                     <SectionTitle>Categories</SectionTitle>
@@ -26,7 +26,7 @@ const CategorySection = async () => {
                     ))}
                 </div>
             </section>
-        </div>
+        </>
     );
 };
 
