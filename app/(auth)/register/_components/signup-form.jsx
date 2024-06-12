@@ -22,68 +22,81 @@ const SignUpForm = ({ role }) => {
   const [userData, setUserData] = useState(null);
   const router = useRouter();
 
-  const handleFormAction = async (formData, validationFn, nextStepFn) => {
-    setError(null);
+  const formActionStep1 = async (formData) => {
+    setError(null)
     try {
-      const validationResult = await validationFn(formData);
-      if (validationResult.errors) {
-        setError(validationResult.errors);
+      const singUp = await userValidation(formData);
+      if (singUp.errors) {
+        setError(singUp.errors);
         return;
       }
-      if (validationResult.success) {
-        if (nextStepFn) {
-          const updatedUserData = await nextStepFn(validationResult.data);
-          setUserData((prevUserData) => ({ ...prevUserData, ...updatedUserData }));
-        } else {
-          const user = validationResult.data;
-          if (role === "student") {
-            const createUser = await createAccount(user);
-            if (createUser.success) {
-              toast.success(createUser.message);
-              router.push('/login');
-            } else {
-              toast.error(createUser.message);
-            }
-          }
-          setUserData(user);
+      else if (singUp.success) {
+        const { firstName, lastName, email, password } = singUp.data;
+        const user = {
+          firstName, lastName, email, password
         }
-        setStep((prevStep) => prevStep + 1);
+        if (role === "student") {
+          const createUser = await createAccount(user);
+          if (!createUser.success) {
+            toast.error(createUser.message)
+            return;
+          }
+          else if (createUser.success) {
+            toast.success(createUser.message)
+            router.push('/login')
+          }
+        }
+        setUserData(user);
+        setStep(step + 1);
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+  const formActionStep2 = async (formData) => {
+    setError(null)
+    try {
+      const userStep2 = await userValidationStep2(formData);
+      if (userStep2.errors) {
+        setError(userStep2.errors);
+        return;
+      }
+      else if (userStep2.success) {
+        setUserData({ ...userData, ...userStep2.data });
+        setStep(step + 1);
       }
     } catch (error) {
       toast.error(error.message);
     }
-  };
-
-  const formActionStep1 = async (formData) => {
-    return handleFormAction(formData, userValidation, async (data) => {
-      const { firstName, lastName, email, password } = data;
-      const user = { firstName, lastName, email, password };
-      return user;
-    });
-  };
-
-  const formActionStep2 = async (formData) => {
-    return handleFormAction(formData, userValidationStep2, async (data) => {
-      return data;
-    });
-  };
+  }
 
   const formActionStep3 = async (formData) => {
-    return handleFormAction(formData, userValidationStep3, async (data) => {
-      const fullUserData = { ...userData, socialMedia: { ...data } };
-      const photoData = new FormData();
-      photoData.append("profilePicture", fullUserData.profilePicture);
-      const newUserCreate = await createAccount({ ...fullUserData, profilePicture: null }, photoData);
-      if (newUserCreate.success) {
-        toast.success(newUserCreate.message);
-        router.push('/login');
-      } else {
-        toast.error(newUserCreate.message);
+    setError(null)
+    try {
+      const userStep3 = await userValidationStep3(formData);
+      if (userStep3.errors) {
+        setError(userStep3.errors);
+        return;
       }
-      return {};
-    });
-  };
-
+      else if (userStep3.success) {
+        const fullUserData = { ...userData, socialMedia: { ...userStep3.data } };
+        const photoData = new FormData();
+        photoData.append("profilePicture", fullUserData.profilePicture);
+        const newUserCreate = await createAccount({ ...fullUserData, profilePicture: null }, photoData);
+        if (!newUserCreate.success) {
+          toast.error(newUserCreate.message)
+          return;
+        }
+        else if (newUserCreate.success) {
+          toast.success(newUserCreate.message)
+          router.push('/login')
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   return (
     <Card className="relative max-w-sm mx-auto dark:shadow-gray-800">
