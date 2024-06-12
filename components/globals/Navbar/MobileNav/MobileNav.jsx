@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 import { useLockBody } from "@/hooks/use-lock-body";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button, buttonVariants } from "@/components/ui/button";
+import useAuth from "@/hooks/useAuth";
 
 export function MobileNav({ items, children }) {
+    const { user, status } = useAuth();
     useLockBody();
 
     return (
@@ -29,29 +31,31 @@ export function MobileNav({ items, children }) {
                         </Link>
                     ))}
                 </nav>
-                <div className="flex items-center gap-3 lg:hidden">
-                    <Link
-                        href="/login"
-                        className={cn(buttonVariants({ size: "sm" }), "px-4")}
-                    >
-                        Login
-                    </Link>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm">
-                                Register
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="center" className="w-56 mt-4">
-                            <DropdownMenuItem className="cursor-pointer">
-                                <Link className="block w-full" href="/register/student">Student</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
-                                <Link className="block w-full" href="/register/instructor">Instructor</Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                {
+                    status === "loading" ? "Loading..." : !user && <div className="flex items-center gap-3 lg:hidden">
+                        <Link
+                            href="/login"
+                            className={cn(buttonVariants({ size: "sm" }), "px-4")}
+                        >
+                            Login
+                        </Link>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm">
+                                    Register
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="center" className="w-56 mt-4">
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link className="block w-full" href="/register/student">Student</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link className="block w-full" href="/register/instructor">Instructor</Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                }
                 {children}
             </div>
         </div>
