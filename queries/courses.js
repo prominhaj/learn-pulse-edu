@@ -51,7 +51,10 @@ export const getCourseDetails = async (id) => {
         })
         .lean();
 
-    const relatedCourse = await Course.find({ category: course.category._id }).lean();
+    const relatedCourse = await Course.find({
+        category: course.category._id,
+        _id: { $ne: id }
+    }).lean();
 
     return {
         course: replaceMongoIdInObject(course),
