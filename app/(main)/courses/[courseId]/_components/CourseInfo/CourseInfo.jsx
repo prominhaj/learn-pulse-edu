@@ -1,3 +1,4 @@
+import EnrollButton from "@/components/globals/EnrollButton/EnrollButton";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -66,9 +67,7 @@ const CourseInfo = ({ course }) => {
                         </div>
                     </div>
                     <div className='flex flex-wrap items-center justify-center gap-3 mt-6'>
-                        <Link href='' className={cn(buttonVariants({ size: 'lg' }))}>
-                            Enroll Now
-                        </Link>
+                        <EnrollButton courseId={id} />
                         <Link
                             href=''
                             className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
