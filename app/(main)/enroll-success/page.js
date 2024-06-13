@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { sendEmails } from '@/lib/emails';
 import { stripe } from '@/lib/stripe';
 import { getCourseDetails } from '@/queries/courses';
+import { enrollForCourse } from '@/queries/enrollments';
 import { getUserByEmail } from '@/queries/users';
 import { CircleCheck } from 'lucide-react';
 import { getServerSession } from 'next-auth';
@@ -30,6 +32,42 @@ const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) =>
 
     const paymentStatus = checkoutSession?.payment_intent?.status;
     if (paymentStatus === 'succeeded') {
+        // Enroll for the course
+        try {
+            const enrollData = {
+                user_id: course?.id,
+                course_id: logInUser?.id,
+                status: 'complete',
+                method: 'stripe'
+            };
+            const enrolled = await enrollForCourse(enrollData);
+
+            // Send Emails to the instructor, student,and the person
+            if (enrolled?.success) {
+                const instructorName = `${course?.instructor?.firstName} ${course?.instructor?.lastName}`;
+                const instructorEmail = course?.instructor?.email;
+
+                const emailsToSend = [
+                    {
+                        to: instructorEmail,
+                        subject: `New Enrollment for ${productName}.`,
+                        message: `Congratulations, ${instructorName}.
+    A new student, ${customerName} has enrolled in your course ${productName} just now.
+    Please check the instructor dashboard and give a high-five to your new student.`
+                    },
+                    {
+                        to: customerEmail,
+                        subject: `Enrollment Success for ${productName}`,
+                        message: `Hey ${customerName} You have successfully enrolled for the course ${productName}`
+                    }
+                ];
+
+                const emailSentResponse = await sendEmails(emailsToSend);
+                console.log(emailSentResponse);
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
     return (

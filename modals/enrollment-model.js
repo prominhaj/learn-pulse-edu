@@ -3,6 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 const enrollmentSchema = new Schema({
     enrollment_date: {
         required: true,
+        default: Date.now(),
         type: Date
     },
     status: {
@@ -11,7 +12,7 @@ const enrollmentSchema = new Schema({
     },
 
     completion_date: {
-        required: true,
+        required: false,
         type: Date
     },
 
