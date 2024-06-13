@@ -22,7 +22,6 @@ const Curriculum = ({ modules }) => {
             <Accordion
                 defaultValue={['item-1', 'item-2', 'item-3']}
                 type='multiple'
-                collapsible
                 className='w-full'
             >
                 {

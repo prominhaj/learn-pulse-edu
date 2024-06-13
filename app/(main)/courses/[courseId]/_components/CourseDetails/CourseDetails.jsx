@@ -31,8 +31,8 @@ const CourseDetails = ({ course }) => {
                             width={50}
                             height={50}
                             className='w-[40px] h-[40px] rounded-full'
-                            src={instructor?.profile_picture?.url}
-                            alt='sumit saha'
+                            src={instructor?.profilePicture?.url}
+                            alt={`${instructor?.firstName} ${instructor?.lastName}`}
                         />
                         <p className='font-bold'>
                             {instructor?.firstName} {''} {instructor?.lastName}

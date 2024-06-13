@@ -14,7 +14,7 @@ const InstructorDetails = async ({ instructor }) => {
                     <Image
                         width={300}
                         height={350}
-                        src={instructor?.profile_picture?.url}
+                        src={instructor?.profilePicture?.url}
                         alt=''
                         className='object-cover w-full h-full rounded'
                     />

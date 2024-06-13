@@ -8,7 +8,7 @@ const TestimonialCard = ({ testimonial }) => {
             <blockquote className='p-6 border rounded-lg shadow-sm bg-background dark:shadow-gray-800 sm:p-8'>
                 <div className='flex items-center gap-4'>
                     <Image
-                        src={testimonial?.userId?.profile_picture?.url}
+                        src={testimonial?.userId?.profilePicture?.url}
                         width={56}
                         height={56}
                         className='object-cover rounded-full size-14'
