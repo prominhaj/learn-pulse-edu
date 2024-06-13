@@ -3,12 +3,17 @@ import { createCheckoutSession } from "@/app/actions/stripe";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 const EnrollButton = ({ asLink, courseId }) => {
     // Enroll button Action
     const formAction = async () => {
-        const { url } = await createCheckoutSession(courseId);
-        window.location.assign(url)
+        try {
+            const { url } = await createCheckoutSession(courseId);
+            window.location.assign(url)
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
     return (

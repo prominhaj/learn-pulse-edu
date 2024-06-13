@@ -11,46 +11,47 @@ export const createCheckoutSession = async (courseId) => {
     const origin = headers().get('origin');
     const { course } = await getCourseDetails(courseId);
 
-    if (!course) return new Error(`Course not found`);
+    try {
+        if (!course) return new Error(`Course not found`);
 
-    const courseName = course?.title;
-    const coursePrice = course?.price;
+        const courseName = course?.title;
+        const coursePrice = course?.price;
 
-    const checkoutSession = await stripe.checkout.sessions.create({
-        mode: 'payment',
-        submit_type: 'auto',
-        line_items: [
-            {
-                quantity: 1,
-                price_data: {
-                    currency: CURRENCY,
+        const checkoutSession = await stripe.checkout.sessions.create({
+            mode: 'payment',
+            submit_type: 'auto',
+            line_items: [
+                {
+                    quantity: 1,
+                    price_data: {
+                        currency: CURRENCY,
 
-                    product_data: {
-                        name: courseName
-                    },
+                        product_data: {
+                            name: courseName
+                        },
 
-                    unit_amount: formatAmountForStripe(coursePrice, CURRENCY)
+                        unit_amount: formatAmountForStripe(coursePrice, CURRENCY)
+                    }
                 }
-            }
-        ],
+            ],
+            ...(ui_mode === 'hosted' && {
+                success_url: `${origin}/enroll-success?session_id={CHECKOUT_SESSION_ID}&courseId=${courseId}`,
+                cancel_url: `${origin}/courses`
+            }),
+            ui_mode
+        });
 
-        ...(ui_mode === 'hosted' && {
-            success_url: `${origin}/enroll-success?session_id={CHECKOUT_SESSION_ID}&courseId=${courseId}`,
-
-            cancel_url: `${origin}/courses`
-        }),
-
-        ui_mode
-    });
-
-    return {
-        client_secret: checkoutSession.client_secret,
-        url: checkoutSession.url
-    };
+        // Return the checkout session
+        return {
+            client_secret: checkoutSession.client_secret,
+            url: checkoutSession.url
+        };
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
-export const createPaymentIntent = async (data) => {
-    console.log(data);
+export const createPaymentIntent = async (_data) => {
     const paymentIntent = await stripe.paymentIntents.create({
         amount: formatAmountForStripe(coursePrice, CURRENCY),
         automatic_payment_methods: { enabled: true },
