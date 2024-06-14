@@ -12,9 +12,9 @@ import { userValidation, userValidationStep2, userValidationStep3 } from '@/lib/
 import Step1 from './StepForm/Step1';
 import Step2 from './StepForm/Step2';
 import Step3 from './StepForm/Step3';
-import { createAccount } from '@/app/actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { createAccount } from '@/app/actions/user';
 
 const SignUpForm = ({ role }) => {
   const [step, setStep] = useState(1);
