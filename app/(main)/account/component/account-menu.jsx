@@ -1,4 +1,5 @@
 "use client";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,24 +10,25 @@ const menu = [
 
 function Menu() {
 	const pathname = usePathname();
+
 	return (
 		<ul className="mt-3 mb-0 list-none sidebar-nav" id="navmenu-nav">
 			{menu.map((item, i) => (
 				<li className="navbar-item account-menu" key={i}>
 					<Link
 						href={item.href}
-						className={`navbar-link flex items-center py-2 rounded ${pathname === item.href ? "text-primary" : "text-slate-400"
+						className={`navbar-link font-medium font-inter flex items-center py-1 rounded ${pathname === item.href ? "text-primary" : "text-muted-foreground"
 							}`}>
-						<h6 className="mb-0 font-semibold">{item?.label}</h6>
+						{item?.label}
 					</Link>
 				</li>
 			))}
 			<li className="navbar-item account-menu">
-				<Link
-					href="#"
-					className="flex items-center py-2 rounded navbar-link text-slate-400">
-					<h6 className="mb-0 font-semibold">Sign Out</h6>
-				</Link>
+				<button
+					onClick={() => signOut()}
+					className="flex items-start w-full py-1 font-medium transition-colors rounded hover:text-primary font-inter navbar-link text-muted-foreground">
+					Sign Out
+				</button>
 			</li>
 		</ul>
 	);

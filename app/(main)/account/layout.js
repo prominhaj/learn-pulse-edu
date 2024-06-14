@@ -9,7 +9,7 @@ const AccountLayout = ({ tabs }) => {
                 <div className='lg:flex'>
                     <div className='lg:w-1/4 md:px-3'>
                         <div className='relative'>
-                            <div className='p-6 bg-white rounded-md shadow dark:shadow-gray-800 dark:bg-slate-900'>
+                            <div className='p-6 transition-all duration-500 ease-in-out border rounded-md bg-background'>
                                 <div className='mb-5 text-center profile-pic'>
                                     <input
                                         id='pro-img'
@@ -35,7 +35,9 @@ const AccountLayout = ({ tabs }) => {
                                         </div>
                                         <div className='mt-4'>
                                             <h5 className='text-lg font-semibold'>Jenny Jimenez</h5>
-                                            <p className='text-slate-400'>jennyhot@hotmail.com</p>
+                                            <p className='text-sm text-muted-foreground'>
+                                                jennyhot@hotmail.com
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
