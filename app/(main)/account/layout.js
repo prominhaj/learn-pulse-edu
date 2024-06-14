@@ -21,7 +21,7 @@ const AccountLayout = async ({ tabs }) => {
                                     <ChangeProfilePhoto />
                                     <div>
                                         <div className='relative mx-auto size-28'>
-                                            <Avatar className='shadow size-28 dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800'>
+                                            <Avatar className='w-full h-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800'>
                                                 <AvatarImage
                                                     src={loginUser?.profilePicture?.url}
                                                     alt='profile-image'
