@@ -11,7 +11,11 @@ const SubmitButton = ({ className, children }) => {
     return (
         <>
             <Button disabled={pending} type="submit" className={cn(`${className} disabled:opacity-50 disabled:cursor-not-allowed`)}>
-                {pending && <Spinner />}  {children}
+                {pending ? (
+                    <>
+                        <Spinner /> Loading...
+                    </>
+                ) : children}
             </Button>
         </>
     );

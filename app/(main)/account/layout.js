@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { getUserByEmail } from '@/queries/users';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ChangeProfilePhoto from './component/ChangeProfilePhoto';
+import { Camera } from 'lucide-react';
 
 const AccountLayout = async ({ tabs }) => {
     const { user } = await getServerSession();
@@ -20,7 +21,12 @@ const AccountLayout = async ({ tabs }) => {
                                 <div className='mb-5 text-center profile-pic'>
                                     <ChangeProfilePhoto user={loginUser} />
                                     <div>
-                                        <div className='relative mx-auto size-28'>
+                                        <div className='relative mx-auto cursor-pointer group size-28'>
+                                            <div className='absolute top-0 bottom-0 left-0 right-0 hidden transition-all duration-500 ease-in-out bg-gray-300 bg-opacity-50 rounded-full dark:bg-opacity-50 dark:bg-gray-500 group-hover:block group-hover:z-10'>
+                                                <div className='flex items-center justify-center w-full h-full'>
+                                                    <Camera className='w-6 h-6' />
+                                                </div>
+                                            </div>
                                             <Avatar className='w-full h-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800'>
                                                 <AvatarImage
                                                     src={loginUser?.profilePicture?.url}
@@ -31,7 +37,7 @@ const AccountLayout = async ({ tabs }) => {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <label
-                                                className='absolute inset-0 cursor-pointer'
+                                                className='absolute inset-0 z-30 cursor-pointer'
                                                 htmlFor='pro-img'
                                             />
                                         </div>
