@@ -1,18 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
+        domains: ['res.cloudinary.com'],
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'res.cloudinary.com'
+                hostname: '**'
             },
             {
                 protocol: 'https',
-                hostname: 'avatars.githubusercontent.com'
-            },
-            {
-                protocol: 'https',
-                hostname: 'i.pravatar.cc'
+                hostname: 'res.cloudinary.com',
+                port: '',
+                pathname: '/account/**'
             }
         ]
     }

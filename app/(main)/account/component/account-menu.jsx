@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,12 +24,14 @@ function Menu() {
 					</Link>
 				</li>
 			))}
-			<li className="navbar-item account-menu">
-				<button
+			<li className="mt-2 navbar-item account-menu">
+				<Button
 					onClick={() => signOut()}
-					className="flex items-start w-full py-1 font-medium transition-colors rounded hover:text-primary font-inter navbar-link text-muted-foreground">
-					Sign Out
-				</button>
+					variant="outline"
+					className="flex items-center w-full"
+				>
+					Logout
+				</Button>
 			</li>
 		</ul>
 	);

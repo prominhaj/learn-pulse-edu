@@ -1,7 +1,14 @@
-import Image from 'next/image';
 import Menu from './component/account-menu';
+import { getServerSession } from 'next-auth';
+import { getUserByEmail } from '@/queries/users';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import ChangeProfilePhoto from './component/ChangeProfilePhoto';
 
-const AccountLayout = ({ tabs }) => {
+const AccountLayout = async ({ tabs }) => {
+    const { user } = await getServerSession();
+    // Get Current User
+    const loginUser = await getUserByEmail(user?.email);
+
     return (
         <section className='relative pb-16'>
             {/*end container*/}
@@ -9,34 +16,29 @@ const AccountLayout = ({ tabs }) => {
                 <div className='lg:flex'>
                     <div className='lg:w-1/4 md:px-3'>
                         <div className='relative'>
-                            <div className='p-6 transition-all duration-500 ease-in-out border rounded-md bg-background'>
+                            <div className='p-5 transition-all duration-500 ease-in-out border rounded-md bg-background'>
                                 <div className='mb-5 text-center profile-pic'>
-                                    <input
-                                        id='pro-img'
-                                        name='profile-image'
-                                        type='file'
-                                        className='hidden'
-                                        onchange='loadFile(event)'
-                                    />
+                                    <ChangeProfilePhoto />
                                     <div>
                                         <div className='relative mx-auto size-28'>
-                                            <Image
-                                                src='/assets/images/profile.jpg'
-                                                className='rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800'
-                                                id='profile-banner'
-                                                alt='profile-image'
-                                                width={112}
-                                                height={112}
-                                            />
+                                            <Avatar className='shadow size-28 dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800'>
+                                                <AvatarImage
+                                                    src={loginUser?.profilePicture?.url}
+                                                    alt='profile-image'
+                                                />
+                                                <AvatarFallback>
+                                                    {loginUser?.firstName.slice(0, 2)}
+                                                </AvatarFallback>
+                                            </Avatar>
                                             <label
                                                 className='absolute inset-0 cursor-pointer'
                                                 htmlFor='pro-img'
                                             />
                                         </div>
                                         <div className='mt-4'>
-                                            <h5 className='text-lg font-semibold'>Jenny Jimenez</h5>
+                                            <h5 className='text-lg font-semibold'>{`${loginUser?.firstName} ${loginUser?.lastName}`}</h5>
                                             <p className='text-sm text-muted-foreground'>
-                                                jennyhot@hotmail.com
+                                                {loginUser?.email}
                                             </p>
                                         </div>
                                     </div>
