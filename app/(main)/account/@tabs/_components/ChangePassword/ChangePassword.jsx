@@ -1,34 +1,72 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+"use client";
+import { changeUserPassword } from "@/app/actions/user";
+import FormControl from "../FormControl/FormControl";
+import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
+import { toast } from "sonner";
+import { useState } from "react";
 
-const ChangePassword = () => {
+const ChangePassword = ({ userId }) => {
+    const [error, setError] = useState(null);
+
+    const handleChangePassword = async (formData) => {
+        setError(null);
+        try {
+            const result = await changeUserPassword(formData, userId);
+            if (result?.error) {
+                toast.error(result.message);
+            }
+            else if (result.errors) {
+                setError(result.errors)
+            }
+            else if (result.success) {
+                toast.success(result.message);
+            }
+        } catch (error) {
+            toast.error(error)
+        }
+    }
+
     return (
         <div>
-            <h5 className='mb-4 text-lg font-semibold'>Change password</h5>
-            <form>
+            <h5 className='mb-4 text-lg font-semibold'>Change Password</h5>
+            <form action={handleChangePassword}>
                 <div className='grid grid-cols-1 gap-5'>
+                    <FormControl label="Old password" type="password" required={true} placeholder="Old password" name="oldPassword" />
                     <div>
-                        <Label className='block mb-2'>Old password :</Label>
-                        <Input type='password' placeholder='Old password' required='' />
+                        <FormControl label="New password" type="password" required={true} placeholder="New password" name="newPassword" />
+                        {/* Password Error */}
+                        {
+                            error?.password && (
+                                error?.password?.map((e, i) => (
+                                    <p key={i} className="text-red-500">
+                                        <small>
+                                            {e}
+                                        </small>
+                                    </p>
+                                ))
+                            )
+                        }
                     </div>
                     <div>
-                        <Label className='block mb-2'>New password :</Label>
-                        <Input type='password' placeholder='New password' required='' />
-                    </div>
-                    <div>
-                        <Label className='block mb-2'>Re-type New password :</Label>
-                        <Input
-                            type='password'
-                            placeholder='Re-type New password'
-                            required=''
-                        />
+                        <FormControl label="Re-type New password" type="password" required={true} placeholder="Re-type New password" name="confirmPassword" />
+                        {/* Password Error */}
+                        {
+                            error?.confirmPassword && (
+                                error?.confirmPassword?.map((e, i) => (
+                                    <p key={i} className="text-red-500">
+                                        <small>
+                                            {e}
+                                        </small>
+                                    </p>
+                                ))
+                            )
+                        }
                     </div>
                 </div>
                 {/*end grid*/}
-                <Button className='mt-5' type='submit'>
+                <SubmitButton className='mt-5' type='submit'>
                     Save password
-                </Button>
+                </SubmitButton>
             </form>
         </div>
     );

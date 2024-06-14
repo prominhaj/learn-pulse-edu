@@ -2,7 +2,7 @@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import FormControl from "../FormControl/FormControl";
-import { uploadUserPersonalDetails } from "@/app/actions/user";
+import { updateUserPersonalDetails } from "@/app/actions/user";
 import { toast } from "sonner";
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 
@@ -18,7 +18,7 @@ const PersonalDetails = ({ user }) => {
         }
 
         try {
-            const updatedUser = await uploadUserPersonalDetails(updateUserInfo, user?.id);
+            const updatedUser = await updateUserPersonalDetails(updateUserInfo, user?.id);
             if (updatedUser.success) {
                 toast.success(updatedUser.message)
             }

@@ -15,7 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
-import { uploadUserPersonalDetails } from "@/app/actions/user";
+import { updateUserPersonalDetails } from "@/app/actions/user";
 import { toast } from "sonner";
 
 const socialMediaPatterns = {
@@ -104,7 +104,7 @@ const Contact = ({ socialMediaData, phone, userId }) => {
                 socialMedia: { ...socialMedia }
             };
             try {
-                const result = await uploadUserPersonalDetails(updateContactInfo, userId);
+                const result = await updateUserPersonalDetails(updateContactInfo, userId);
                 if (result.success) {
                     toast.success(result.message);
                 }

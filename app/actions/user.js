@@ -3,6 +3,7 @@ import User from '@/modals/users-modal';
 import bcrypt from 'bcryptjs';
 import { fileUploader } from './fileUploader';
 import { revalidatePath } from 'next/cache';
+import { passwordValidations } from '@/lib/FormValidation/users/userSchema';
 
 export const createAccount = async (userData, formData) => {
     try {
@@ -36,7 +37,7 @@ export const createAccount = async (userData, formData) => {
     }
 };
 
-export const uploadUserPersonalDetails = async (userInfo, userId) => {
+export const updateUserPersonalDetails = async (userInfo, userId) => {
     try {
         const user = await User.findById(userId);
         if (!user) {
@@ -49,5 +50,61 @@ export const uploadUserPersonalDetails = async (userInfo, userId) => {
         return { success: true, message: 'User updated successfully' };
     } catch (error) {
         throw new Error(error);
+    }
+};
+
+export const changeUserPassword = async (formData, userId) => {
+    // Form Data
+    const oldPassword = formData.get('oldPassword');
+    const newPassword = formData.get('newPassword');
+    const retypePassword = formData.get('confirmPassword');
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Check Old Password
+        const isPasswordMatched = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordMatched) {
+            return {
+                error: true,
+                message: 'Old Password does not match'
+            };
+        }
+
+        // Password Validation
+        const validatedFields = passwordValidations.safeParse({
+            password: newPassword,
+            confirmPassword: retypePassword
+        });
+        if (!validatedFields.success) {
+            return {
+                errors: validatedFields.error.flatten().fieldErrors
+            };
+        }
+
+        // Check Old Password And New Password
+        if (oldPassword === newPassword) {
+            return {
+                error: true,
+                message: 'Old Password and New Password cannot be same'
+            };
+        }
+
+        // Hash New Password
+        const password = await bcrypt.hash(newPassword, 10);
+        await User.findByIdAndUpdate(userId, { password });
+
+        // Revalidate Old Password
+        revalidatePath('/account');
+
+        return {
+            success: true,
+            message: 'Password updated successfully'
+        };
+    } catch (error) {
+        throw new Error(error.message);
     }
 };
