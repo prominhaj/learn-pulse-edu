@@ -1,12 +1,15 @@
 "use client";
 
+import { updateUserImage } from "@/app/actions/updateFileUploader";
+import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogOverlay, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ImageDown, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "sonner";
 
-const ChangeProfilePhoto = () => {
+const ChangeProfilePhoto = ({ user }) => {
     const [image, setImage] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -16,14 +19,19 @@ const ChangeProfilePhoto = () => {
         setIsOpen(true);
     };
 
-    const onClose = () => {
-        setIsOpen(false);
-    }
-
     const handleSubmit = async () => {
-        // const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-        // onSubmit(croppedImage);
-        // onClose();
+        const formData = new FormData();
+        formData.append('file', image);
+
+        try {
+            const uploadResult = await updateUserImage(formData, "file", "Images/users", user?.profilePicture?.public_id, user?.id)
+            if (uploadResult.success) {
+                toast.success("Profile photo updated successfully")
+                setIsOpen(false)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
     };
 
     return (
@@ -38,14 +46,14 @@ const ChangeProfilePhoto = () => {
             />
             <Dialog className="bg-background" open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger />
-                <DialogContent>
+                <DialogContent className="bg-background">
                     <DialogHeader>
                         <DialogTitle>Edit Profile Photo</DialogTitle>
                     </DialogHeader>
                     <div className="pt-3">
                         {
                             image ? (
-                                <div>
+                                <form action={handleSubmit}>
                                     <div className="flex items-center justify-end">
                                         <button onClick={() => setImage(null)}>
                                             <Trash2 className="w-5 h-5" />
@@ -60,11 +68,11 @@ const ChangeProfilePhoto = () => {
                                                 Close
                                             </Button>
                                         </DialogClose>
-                                        <Button type="submit">
+                                        <SubmitButton type="submit">
                                             Submit
-                                        </Button>
+                                        </SubmitButton>
                                     </div>
-                                </div>
+                                </form>
                             ) : <>
                                 <input
                                     id='edit-profile-photo'

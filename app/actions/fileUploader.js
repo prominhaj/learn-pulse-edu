@@ -28,7 +28,7 @@ const streamUpload = (fileStream, folder) => {
     });
 };
 
-export const fileUploader = async (formData, fileName, folder) => {
+export const fileUploader = async (formData, fileName, folder, oldPublicId = null) => {
     try {
         const file = formData.get(fileName);
 
@@ -40,8 +40,14 @@ export const fileUploader = async (formData, fileName, folder) => {
         fileStream.push(buffer);
         fileStream.push(null);
 
-        const result = await streamUpload(fileStream, folder);
-        return result;
+        const uploadResult = await streamUpload(fileStream, folder);
+
+        // Optionally delete the old file
+        if (oldPublicId) {
+            await cloudinary.uploader.destroy(oldPublicId, { resource_type: 'image' });
+        }
+
+        return uploadResult;
     } catch (error) {
         throw new Error(`File upload failed: ${error.message}`);
     }

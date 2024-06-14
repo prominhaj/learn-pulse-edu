@@ -18,7 +18,7 @@ const AccountLayout = async ({ tabs }) => {
                         <div className='relative'>
                             <div className='p-5 transition-all duration-500 ease-in-out border rounded-md bg-background'>
                                 <div className='mb-5 text-center profile-pic'>
-                                    <ChangeProfilePhoto />
+                                    <ChangeProfilePhoto user={loginUser} />
                                     <div>
                                         <div className='relative mx-auto size-28'>
                                             <Avatar className='w-full h-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800'>
