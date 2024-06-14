@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FormControl from "../FormControl/FormControl";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Trash2 } from "lucide-react";
 import {
     Select,
@@ -15,6 +15,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
+import { uploadUserPersonalDetails } from "@/app/actions/user";
+import { toast } from "sonner";
 
 const socialMediaPatterns = {
     facebook: /^https:\/\/www\.facebook\.com\/.+$/,
@@ -28,55 +30,57 @@ const socialMediaPatterns = {
 
 const socialMediaPlatforms = Object.keys(socialMediaPatterns);
 
-const Contact = ({ socialMediaData, phone }) => {
+const Contact = ({ socialMediaData, phone, userId }) => {
     const [fields, setFields] = useState([]);
     const [errors, setErrors] = useState({});
     const [selectingPlatform, setSelectingPlatform] = useState(false);
 
     useEffect(() => {
-        const initialFields = Object.keys(socialMediaData || {}).map((key, index) => ({
-            id: index + 1,
-            platform: key,
-            value: socialMediaData[key],
-        }));
-        setFields(initialFields);
+        if (socialMediaData) {
+            const initialFields = Object.entries(socialMediaData).map(([platform, value], index) => ({
+                id: index + 1,
+                platform,
+                value,
+            }));
+            setFields(initialFields);
+        }
     }, [socialMediaData]);
 
-    const addField = (platform) => {
-        setErrors((errors) => ({ ...errors, platform: null }));
-        if (fields.some(field => field.platform === platform)) {
+    const addField = useCallback((platform) => {
+        setErrors((prev) => ({ ...prev, platform: null }));
+        if (fields.some((field) => field.platform === platform)) {
             setErrors({ platform: `The ${platform} platform already exists.` });
             return;
         }
-        setFields([...fields, { id: fields.length + 1, platform, value: "" }]);
+        setFields((prev) => [...prev, { id: prev.length + 1, platform, value: "" }]);
         setSelectingPlatform(false);
-    };
+    }, [fields]);
 
-    const removeField = (id) => {
-        setFields(fields.filter((field) => field.id !== id));
-        setErrors((errors) => {
-            const newErrors = { ...errors };
+    const removeField = useCallback((id) => {
+        setFields((prev) => prev.filter((field) => field.id !== id));
+        setErrors((prev) => {
+            const newErrors = { ...prev };
             delete newErrors[id];
             return newErrors;
         });
-    };
+    }, []);
 
-    const handleChange = (id, key, value) => {
-        setFields((fields) =>
-            fields.map((field) => (field.id === id ? { ...field, [key]: value } : field))
+    const handleChange = useCallback((id, key, value) => {
+        setFields((prev) =>
+            prev.map((field) => (field.id === id ? { ...field, [key]: value } : field))
         );
-        setErrors((errors) => ({ ...errors, [id]: null }));
-    };
+        setErrors((prev) => ({ ...prev, [id]: null }));
+    }, []);
 
-    const validateField = (field) => {
+    const validateField = useCallback((field) => {
         const pattern = socialMediaPatterns[field.platform];
         if (pattern && !pattern.test(field.value)) {
             return `Invalid ${field.platform} URL`;
         }
         return null;
-    };
+    }, []);
 
-    const handleSubmit = (formData) => {
+    const handleSubmit = async (formData) => {
         const validationErrors = {};
         fields.forEach((field) => {
             const error = validateField(field);
@@ -94,11 +98,19 @@ const Contact = ({ socialMediaData, phone }) => {
                 }
                 return acc;
             }, {});
+
             const updateContactInfo = {
                 phone: formData.get("phone"),
-                socialMedia: { ...socialMediaData, ...socialMedia }
+                socialMedia: { ...socialMedia }
             };
-            console.log(updateContactInfo);
+            try {
+                const result = await uploadUserPersonalDetails(updateContactInfo, userId);
+                if (result.success) {
+                    toast.success(result.message);
+                }
+            } catch (error) {
+                toast.error(error.message);
+            }
         }
     };
 
@@ -109,7 +121,7 @@ const Contact = ({ socialMediaData, phone }) => {
                 <div className="grid grid-cols-1 gap-5">
                     <FormControl label="Phone No" name="phone" type="number" placeholder="+881*******" defaultValue={phone} />
 
-                    {fields.map((field, index) => (
+                    {fields.map((field) => (
                         <div key={field.id}>
                             <Label htmlFor={field.value} className="block mb-2 capitalize">
                                 {field.platform}
@@ -166,7 +178,6 @@ const Contact = ({ socialMediaData, phone }) => {
                         Add Social Media
                     </Button>
                 </div>
-                {/*end grid*/}
                 <SubmitButton className="w-full mt-5" type="submit">
                     Save
                 </SubmitButton>
