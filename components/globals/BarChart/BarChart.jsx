@@ -79,7 +79,11 @@ const BarChart = () => {
                     fontSize={14}
                     tickFormatter={(value) => `$${value}`}
                 />
-                <Bar fill={theme === "system" ? "#64748b" : theme === "dark" ? "#cbd5e1" : "#1e293b"} dataKey={"total"} radius={[4, 4, 0, 0, 0, 4]} />
+                <Bar
+                    fill={theme === "system" ? "#64748b" : theme === "dark" ? "#cbd5e1" : "#1e293b"}
+                    dataKey={"total"}
+                    radius={[4, 4, 0, 0, 0, 4]}
+                />
             </BarGraph>
         </ResponsiveContainer>
     );
