@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import Spinner from "@/components/globals/Spinner/Spinner";
 import { cn } from "@/lib/utils";
 
-const LoginForm = () => {
+const LoginForm = ({ redirectUrl }) => {
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -52,7 +52,7 @@ const LoginForm = () => {
 
       if (result.ok) {
         toast.success("Your account has been Login successful");
-        router.push("/");
+        router.push(redirectUrl ? redirectUrl : "/");
       }
     } catch (error) {
       toast.error(error.message);

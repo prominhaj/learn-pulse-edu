@@ -1,13 +1,22 @@
 "use client";
 import { createCheckoutSession } from "@/app/actions/stripe";
 import { Button, buttonVariants } from "@/components/ui/button";
+import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const EnrollButton = ({ asLink, courseId }) => {
+    const { user } = useAuth();
+    const router = useRouter();
+
     // Enroll button Action
     const formAction = async () => {
+        if (!user) {
+            router.push("/login")
+            return
+        }
         try {
             const { url } = await createCheckoutSession(courseId);
             window.location.assign(url)

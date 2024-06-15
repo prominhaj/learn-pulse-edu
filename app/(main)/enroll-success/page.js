@@ -35,8 +35,8 @@ const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) =>
         // Enroll for the course
         try {
             const enrollData = {
-                user_id: course?.id,
-                course_id: logInUser?.id,
+                user_id: logInUser?.id,
+                course_id: course?.id,
                 status: 'complete',
                 method: 'stripe'
             };

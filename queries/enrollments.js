@@ -1,9 +1,25 @@
 import { replaceMongoIdInArray } from '@/lib/convertData';
+import Category from '@/modals/categories-modal';
+import Course from '@/modals/courses-modal';
 import { Enrollment } from '@/modals/enrollment-model';
 
 export const getEnrollmentsForCourse = async (courseId) => {
     const enrollments = await Enrollment.find({ course_id: courseId }).lean();
     return replaceMongoIdInArray(enrollments);
+};
+
+export const getEnrollmentsForUser = async (userId) => {
+    try {
+        const enrollments = await Enrollment.find({ user_id: userId })
+            .populate({
+                path: 'course_id',
+                model: Course
+            })
+            .lean();
+        return replaceMongoIdInArray(enrollments);
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 export const enrollForCourse = async (enrollData) => {

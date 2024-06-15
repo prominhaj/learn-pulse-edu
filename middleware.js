@@ -11,7 +11,7 @@ export default async function middleware(req) {
     const isPublicRoute = publicRoutes.includes(path);
 
     if (isProtectedRoute && !token) {
-        return NextResponse.redirect(new URL('/login', req.nextUrl));
+        return NextResponse.redirect(new URL(`/login?redirectUrl=${path}`, req.nextUrl));
     }
 
     if (isPublicRoute && token) {
