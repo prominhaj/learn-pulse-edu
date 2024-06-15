@@ -10,7 +10,7 @@ const DashboardPage = async () => {
                 {/* total courses */}
                 <Card>
                     <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                        <CardTitle className='text-sm font-medium'>Total Courses</CardTitle>
+                        <CardTitle className='text-lg font-medium'>Total Courses</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className='text-2xl font-bold'>15</div>
@@ -19,7 +19,7 @@ const DashboardPage = async () => {
                 {/* total enrollments */}
                 <Card>
                     <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                        <CardTitle className='text-sm font-medium'>Total Enrollments</CardTitle>
+                        <CardTitle className='text-lg font-medium'>Total Enrollments</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className='text-2xl font-bold'>1000</div>
@@ -28,7 +28,7 @@ const DashboardPage = async () => {
                 {/* total Revinue */}
                 <Card>
                     <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                        <CardTitle className='text-sm font-medium'>Total Revenue</CardTitle>
+                        <CardTitle className='text-lg font-medium'>Total Revenue</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className='text-2xl font-bold'>{formatPrice(12000)}</div>
