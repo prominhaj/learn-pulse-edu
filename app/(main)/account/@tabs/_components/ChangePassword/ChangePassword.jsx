@@ -33,7 +33,7 @@ const ChangePassword = ({ userId }) => {
                 <div className='grid grid-cols-1 gap-5'>
                     <FormControl label="Old password" type="password" required={true} placeholder="Old password" name="oldPassword" />
                     <div>
-                        <FormControl label="New password" type="password" required={true} placeholder="New password" name="newPassword" />
+                        <FormControl label="New password" type="password" required={true} placeholder="New password" name="newPassword" error={error?.password} />
                         {/* Password Error */}
                         {
                             error?.password && (
@@ -48,7 +48,7 @@ const ChangePassword = ({ userId }) => {
                         }
                     </div>
                     <div>
-                        <FormControl label="Re-type New password" type="password" required={true} placeholder="Re-type New password" name="confirmPassword" />
+                        <FormControl label="Re-type New password" type="password" required={true} placeholder="Re-type New password" name="confirmPassword" error={error?.confirmPassword} />
                         {/* Password Error */}
                         {
                             error?.confirmPassword && (

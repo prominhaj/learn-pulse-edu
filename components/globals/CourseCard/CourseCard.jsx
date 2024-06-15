@@ -12,7 +12,7 @@ const CourseCard = ({ course }) => {
 
             <div className='h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
                 <Link className="block" href={`/courses/${id}`}>
-                    <div >
+                    <div>
                         <div className='relative w-full overflow-hidden rounded-md aspect-video'>
                             <Image
                                 src={url}
@@ -29,7 +29,7 @@ const CourseCard = ({ course }) => {
                             </div>
                             <p className='text-xs text-muted-foreground'>{category?.title}</p>
                             <div className='flex items-center my-3 text-sm gap-x-2 md:text-xs'>
-                                <div className='flex items-center gap-x-1 text-slate-500'>
+                                <div className='flex items-center gap-x-1 text-muted-foreground'>
                                     <div>
                                         <BookOpen className='w-4' />
                                     </div>
