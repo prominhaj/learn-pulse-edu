@@ -35,8 +35,8 @@ const DashboardPage = async () => {
                     </CardContent>
                 </Card>
             </div>
-            <div className='grid grid-cols-3 gap-5 pt-5'>
-                <Card className='col-span-2 p-3'>
+            <div className='grid grid-cols-1 gap-5 pt-3 md:pt-5 xl:grid-cols-3'>
+                <Card className='py-3 xl:col-span-2'>
                     <BarChart />
                 </Card>
                 <Card className='p-3'>Recent Sale</Card>

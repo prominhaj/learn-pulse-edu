@@ -84,15 +84,19 @@ const Navbar = ({ children }) => {
                                 <DropdownMenuItem className="cursor-pointer" asChild>
                                     <Link href="/account">Profile</Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    className="cursor-pointer"
-                                    asChild
-                                >
-                                    <Link href="/dashboard">Dashboard</Link>
-                                </DropdownMenuItem>
                                 <DropdownMenuItem className="cursor-pointer" asChild>
                                     <Link href="/account/enrolled-courses">My Courses</Link>
                                 </DropdownMenuItem>
+                                {
+                                    user?.role === "Teacher" && (
+                                        <DropdownMenuItem
+                                            className="cursor-pointer"
+                                            asChild
+                                        >
+                                            <Link href="/dashboard">Dashboard</Link>
+                                        </DropdownMenuItem>
+                                    )
+                                }
                                 <DropdownMenuItem className="cursor-pointer" asChild>
                                     <Link href="/account/enrolled-courses">Testimonials & Certificates</Link>
                                 </DropdownMenuItem>

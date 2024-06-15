@@ -60,7 +60,7 @@ const data = [
 
 const BarChart = () => {
     return (
-        <ResponsiveContainer width={"100%"} height={500}>
+        <ResponsiveContainer className="!h-[350px] sm:!h-[400px] md:!h-[500px]" width={"100%"}>
             <BarGraph data={data}>
                 <XAxis
                     dataKey={"name"}

@@ -8,22 +8,33 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import useAuth from "@/hooks/useAuth";
+import Spinner from "@/components/globals/Spinner/Spinner";
+import { signOut } from "next-auth/react";
+import ThemeSwitch from "@/components/globals/ThemeSwitch/ThemeSwitch";
 
 export const Navbar = () => {
+  const { user, status } = useAuth();
+
   return (
-    <div className="flex items-center h-full p-4 bg-white border-b shadow-sm">
+    <div className="flex items-center h-full p-4 border-b shadow-sm bg-background">
       <MobileSidebar />
-      <div className="flex items-center justify-end w-full">
+      <div className="flex items-center justify-end w-full gap-5">
+        <ThemeSwitch />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="cursor-pointer">
-              <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              {
+                status === "loading" ? <Spinner className="!w-6 !h-6" /> : (
+                  <Avatar>
+                    <AvatarImage
+                      src={user?.profilePicture?.url}
+                      alt={user?.firstName}
+                    />
+                    <AvatarFallback>{user?.firstName.slice(0, 2)}</AvatarFallback>
+                  </Avatar>
+                )
+              }
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 mt-4">
@@ -34,7 +45,7 @@ export const Navbar = () => {
               <Link href="">Item Two</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="">Logout</Link>
+              <button onClick={() => signOut()} className="flex items-start justify-start w-full">Logout</button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

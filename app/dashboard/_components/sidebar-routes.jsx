@@ -1,7 +1,6 @@
 "use client";
 
 import { BarChart } from "lucide-react";
-
 import { BookOpen } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { BookA } from "lucide-react";
@@ -36,11 +35,6 @@ const routes = [
 ];
 
 export const SidebarRoutes = () => {
-  // const pathname = usePathname();
-
-  // const isTeacherPage = pathname?.includes("/teacher");
-
-  // const routes = isTeacherPage ? teacherRoutes : guestRoutes;
 
   return (
     <div className="flex flex-col w-full">
