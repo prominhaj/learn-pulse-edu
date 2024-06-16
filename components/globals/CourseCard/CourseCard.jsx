@@ -3,14 +3,14 @@ import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EnrollButton from "../EnrollButton/EnrollButton";
+import { Card } from "@/components/ui/card";
 
 const CourseCard = ({ course }) => {
     const { id, title, thumbnail: { url }, price, category, modules } = course;
 
     return (
         <>
-
-            <div className='h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
+            <Card className='h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
                 <Link className="block" href={`/courses/${id}`}>
                     <div>
                         <div className='relative w-full overflow-hidden rounded-md aspect-video'>
@@ -46,13 +46,13 @@ const CourseCard = ({ course }) => {
                     </div>
                 </Link>
                 <div className='flex items-center justify-between'>
-                    <p className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
+                    <h4 className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
                         {formatPrice(price)}
-                    </p>
+                    </h4>
 
                     <EnrollButton asLink={true} courseId={id} />
                 </div>
-            </div>
+            </Card>
         </>
     );
 };

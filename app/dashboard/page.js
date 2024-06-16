@@ -47,10 +47,10 @@ const DashboardPage = async () => {
 
             {/* Recent EnrollCard */}
             <div className='grid grid-cols-1 gap-5 pt-3 md:pt-5 xl:grid-cols-3'>
-                <Card className='py-3 xl:col-span-2'>
+                <Card className='py-3 xl:col-span-2 bg-background/50'>
                     <BarChart data={enrollByInstructorReports} />
                 </Card>
-                <Card className='p-5'>
+                <Card className='p-5 bg-background/50'>
                     <CardTitle className='text-xl font-medium tracking-wide'>
                         Recent Enrollments
                     </CardTitle>

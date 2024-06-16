@@ -8,10 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatMyDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { GraduationCap } from "lucide-react";
 import { Star } from "lucide-react";
 import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
+import moment from "moment";
 import Link from "next/link";
 
 export const columns = [
@@ -23,7 +25,7 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title <ArrowUpDown className="ml-2 h-4 w-4" />
+          Title <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
@@ -36,7 +38,7 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price <ArrowUpDown className="ml-2 h-4 w-4" />
+          Price <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
@@ -46,28 +48,67 @@ export const columns = [
         style: "currency",
         currency: "USD",
       }).format(price);
-      return <div>{formatted}</div>;
+      return <div className="ml-3">{formatted}</div>;
     },
   },
   {
-    accessorKey: "isPublished",
+    accessorKey: "modules",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Published <ArrowUpDown className="ml-2 h-4 w-4" />
+          Module <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const isPublished = row.getValue("isPublished") || false;
+      const modules = row.getValue("modules") || false;
+      return <div className="ml-3">{modules?.length}</div>;
+    },
+  },
+  {
+    accessorKey: "active",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Published <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const isPublished = row.getValue("active") || false;
 
       return (
-        <Badge className={cn("bg-gray-500", isPublished && "bg-success")}>
+        <Badge className={cn("bg-gray-500 ml-4", isPublished && "bg-success")}>
           {isPublished ? "Published" : "Unpublished"}
         </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Update <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const lastUpdate = row.getValue("updatedAt") || false;
+
+      return (
+        <>
+          <div className="ml-3">{moment(lastUpdate).calendar()}</div>
+        </>
       );
     },
   },
@@ -78,27 +119,27 @@ export const columns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-4 w-8 p-0">
+            <Button variant="ghost" className="w-8 h-4 p-0">
               <span className="sr-only">Open Menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/dashboard/courses/${id}`}>
               <DropdownMenuItem className="cursor-pointer">
-                <Pencil className="h-4 w-4 mr-2" />
+                <Pencil className="w-4 h-4 mr-2" />
                 Edit
               </DropdownMenuItem>
             </Link>
             <Link href={`/dashboard/courses/${id}/enrollments`}>
               <DropdownMenuItem className="cursor-pointer">
-                <GraduationCap className="h-4 w-4 mr-2" />
+                <GraduationCap className="w-4 h-4 mr-2" />
                 View Enrollments
               </DropdownMenuItem>
             </Link>
             <Link href={`/dashboard/courses/${id}/reviews`}>
               <DropdownMenuItem className="cursor-pointer">
-                <Star className="h-4 w-4 mr-2 fill-primary" />
+                <Star className="w-4 h-4 mr-2 fill-primary" />
                 View Reviews
               </DropdownMenuItem>
             </Link>

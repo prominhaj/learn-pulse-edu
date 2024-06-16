@@ -5,7 +5,7 @@ const RecentEnrollCard = ({ enroll }) => {
     const { user_id, course_id } = enroll;
 
     return (
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 ">
             <div className="flex items-center justify-between gap-3">
                 <Avatar>
                     <AvatarImage src={user_id?.profilePicture.url} alt={user_id?.firstName + user_id?.lastName} />
