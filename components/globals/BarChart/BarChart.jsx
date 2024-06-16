@@ -5,16 +5,22 @@ import {
     ResponsiveContainer,
     XAxis,
     YAxis,
-    Bar
+    Bar,
 } from "recharts";
-
 
 const BarChart = ({ data }) => {
     const { theme } = useTheme();
 
     return (
         <ResponsiveContainer className="!h-[350px] sm:!h-[400px] md:!h-[500px]" width={"100%"}>
-            <BarGraph data={data}>
+            <BarGraph
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 20,
+                    bottom: 5,
+                }}
+            >
                 <XAxis
                     dataKey={"name"}
                     tickLine={false}

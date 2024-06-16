@@ -48,18 +48,22 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
         // Convert instructorId to ObjectId
         const instructorObjectId = new mongoose.Types.ObjectId(instructorId);
 
-        // Get the current year
-        const currentYear = new Date().getFullYear();
-        const startOfYear = new Date(currentYear, 0, 1);
-        const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59, 999);
+        // Get the current date
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+
+        // Calculate the date range for the past 12 months
+        const startDate = new Date(currentYear, currentMonth - 11, 1);
+        const endDate = new Date(currentYear, currentMonth + 1, 0, 23, 59, 59, 999);
 
         const aggregationResult = await Enrollment.aggregate([
             {
                 $match: {
                     status: 'complete',
                     enrollment_date: {
-                        $gte: startOfYear,
-                        $lte: endOfYear
+                        $gte: startDate,
+                        $lte: endDate
                     }
                 }
             },
@@ -81,13 +85,16 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
             },
             {
                 $group: {
-                    _id: { month: { $month: '$enrollment_date' } },
+                    _id: {
+                        month: { $month: '$enrollment_date' },
+                        year: { $year: '$enrollment_date' }
+                    },
                     totalEnrollments: { $sum: 1 },
                     totalSales: { $sum: '$course.price' }
                 }
             },
             {
-                $sort: { '_id.month': 1 }
+                $sort: { '_id.year': 1, '_id.month': 1 }
             }
         ]);
 
@@ -107,15 +114,21 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
             'Dec'
         ];
 
-        // Initialize an array with all months and zero totals
-        const reportData = monthNames.map((month) => ({
-            name: month,
-            total: 0
-        }));
+        // Initialize report data with past 12 months
+        const reportData = Array.from({ length: 12 }, (_, i) => {
+            const date = new Date(currentYear, currentMonth - 11 + i, 1);
+            return {
+                name: monthNames[date.getMonth()],
+                total: 0
+            };
+        });
 
         // Map aggregation results to report format
         aggregationResult.forEach((item) => {
-            reportData[item._id.month - 1].total = item.totalSales;
+            const reportItem = reportData.find((rd) => rd.name === monthNames[item._id.month - 1]);
+            if (reportItem) {
+                reportItem.total = item.totalSales;
+            }
         });
 
         return reportData;
