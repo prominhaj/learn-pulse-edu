@@ -1,50 +1,47 @@
 import BarChart from '@/components/globals/BarChart/BarChart';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
 import { formatPrice } from '@/lib/formatPrice';
 import RecentEnrollCard from './_components/RecentEnrollCard';
+import TotalCard from './_components/TotalCard';
+import { getCoursesByInstructorId } from '@/queries/courses';
+import { getUserData } from '@/lib/getUserData';
+import { getEnrollmentsForCourse, getMonthEnrollmentsSell } from '@/queries/enrollments';
 formatPrice;
 
 const DashboardPage = async () => {
+    const user = await getUserData();
+    const courses = await getCoursesByInstructorId(user?.id);
+    const enrollCourse = await Promise.all(
+        courses.map(async (course) => {
+            const enrollments = await getEnrollmentsForCourse(course.id);
+            return {
+                enrollmentsData: [...enrollments],
+                enrollments: enrollments.length,
+                totalPrice: course.price * enrollments.length
+            };
+        })
+    );
+    const totalEnroll = enrollCourse.reduce((acc, course) => acc + course.enrollments, 0);
+    const totalSalePrice = enrollCourse.reduce((acc, course) => acc + course.totalPrice, 0);
+
+    // Monthly Enrollments Report
+    const enrollByInstructorReports = await getMonthEnrollmentsSell(user?.id);
+
     return (
-        <div className='p-6 font-poppins'>
+        <div className='p-6 font-inter'>
             <div className='grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
                 {/* total courses */}
-                <Card>
-                    <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                        <CardTitle className='text-lg font-medium tracking-wide'>
-                            Total Courses
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className='text-2xl font-bold'>15</div>
-                    </CardContent>
-                </Card>
+                <TotalCard title='Total Courses' count={courses.length} />
                 {/* total enrollments */}
-                <Card>
-                    <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                        <CardTitle className='text-lg font-medium tracking-wide'>
-                            Total Enrollments
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className='text-2xl font-bold'>1000</div>
-                    </CardContent>
-                </Card>
-                {/* total Revinue */}
-                <Card>
-                    <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                        <CardTitle className='text-lg font-medium tracking-wide'>
-                            Total Revenue
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className='text-2xl font-bold'>{formatPrice(12000)}</div>
-                    </CardContent>
-                </Card>
+                <TotalCard title='Total Enrollments' count={totalEnroll} />
+                {/* total Revenue */}
+                <TotalCard title='Total Revenue' count={formatPrice(totalSalePrice)} />
             </div>
+
+            {/* Recent EnrollCard */}
             <div className='grid grid-cols-1 gap-5 pt-3 md:pt-5 xl:grid-cols-3'>
                 <Card className='py-3 xl:col-span-2'>
-                    <BarChart />
+                    <BarChart data={enrollByInstructorReports} />
                 </Card>
                 <Card className='p-3'>
                     <CardTitle className='text-xl font-medium tracking-wide'>

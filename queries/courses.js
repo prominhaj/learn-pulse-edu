@@ -99,3 +99,14 @@ export const getCourseDetailsByInstructor = async (instructorId) => {
         ratings: totalTestimonials.length > 0 ? avgRating.toPrecision(2) : 0
     };
 };
+
+export const getCoursesByInstructorId = async (instructorId) => {
+    try {
+        const courses = await Course.find({
+            instructor: instructorId
+        }).lean();
+        return replaceMongoIdInArray(courses);
+    } catch (error) {
+        throw new Error(error);
+    }
+};
