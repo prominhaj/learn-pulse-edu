@@ -44,7 +44,6 @@ export function DataTable({ columns, data }) {
     },
   });
 
-  console.log(table.getColumn("name"));
   return (
     <div>
       <div className="flex items-center justify-between py-4">
@@ -68,9 +67,9 @@ export function DataTable({ columns, data }) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

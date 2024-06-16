@@ -1,12 +1,23 @@
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import Course from '@/modals/courses-modal';
 import Enrollment from '@/modals/enrollment-model';
+import Report from '@/modals/report-model';
 import User from '@/modals/users-modal';
 import mongoose from 'mongoose';
 
 export const getEnrollmentsForCourse = async (courseId) => {
-    const enrollments = await Enrollment.find({ course_id: courseId }).lean();
-    return replaceMongoIdInArray(enrollments);
+    try {
+        const enrollments = await Enrollment.find({ course_id: courseId })
+            .populate({
+                path: 'user_id',
+                model: User,
+                select: '-password'
+            })
+            .lean();
+        return replaceMongoIdInArray(enrollments);
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 export const getEnrollmentsForUser = async (userId) => {

@@ -1,4 +1,3 @@
-import IconBadge from '@/components/globals/IconBadge/IconBadge';
 import { CircleDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
 import { CategoryForm } from './_components/category-form';
 import { DescriptionForm } from './_components/description-form';
@@ -9,6 +8,7 @@ import { TitleForm } from './_components/title-form';
 import { CourseActions } from './_components/course-action';
 import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
 import { QuizSetForm } from './_components/quiz-set-form';
+import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
 
 const EditCourse = () => {
     return (

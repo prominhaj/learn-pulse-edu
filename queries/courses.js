@@ -110,3 +110,12 @@ export const getCoursesByInstructorId = async (instructorId) => {
         throw new Error(error);
     }
 };
+
+export const getCourseByCourseId = async (courseId) => {
+    try {
+        const course = await Course.findOne({ _id: courseId }).lean();
+        return replaceMongoIdInObject(course);
+    } catch (error) {
+        throw new Error(error);
+    }
+};
