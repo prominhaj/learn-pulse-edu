@@ -1,6 +1,7 @@
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import Course from '@/modals/courses-modal';
 import Enrollment from '@/modals/enrollment-model';
+import User from '@/modals/users-modal';
 import mongoose from 'mongoose';
 
 export const getEnrollmentsForCourse = async (courseId) => {
@@ -132,6 +133,35 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
         });
 
         return reportData;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+export const getRecentEnrollments = async (instructorId) => {
+    try {
+        const enrollments = await Enrollment.find({ status: 'complete' })
+            .populate({
+                path: 'course_id',
+                model: Course,
+                populate: {
+                    path: 'instructor',
+                    model: User
+                }
+            })
+            .populate({
+                path: 'user_id',
+                model: User
+            })
+            .sort({ enrollment_date: -1 })
+            .limit(5)
+            .lean();
+
+        const filterInstructorEnrollCourses = enrollments.filter(
+            (enrollment) => enrollment?.course_id?.instructor?._id.toString() === instructorId
+        );
+
+        return replaceMongoIdInArray(filterInstructorEnrollCourses);
     } catch (error) {
         throw new Error(error);
     }

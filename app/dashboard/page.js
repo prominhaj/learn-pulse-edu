@@ -5,7 +5,11 @@ import RecentEnrollCard from './_components/RecentEnrollCard';
 import TotalCard from './_components/TotalCard';
 import { getCoursesByInstructorId } from '@/queries/courses';
 import { getUserData } from '@/lib/getUserData';
-import { getEnrollmentsForCourse, getMonthEnrollmentsSell } from '@/queries/enrollments';
+import {
+    getEnrollmentsForCourse,
+    getMonthEnrollmentsSell,
+    getRecentEnrollments
+} from '@/queries/enrollments';
 formatPrice;
 
 const DashboardPage = async () => {
@@ -27,6 +31,9 @@ const DashboardPage = async () => {
     // Monthly Enrollments Report
     const enrollByInstructorReports = await getMonthEnrollmentsSell(user?.id);
 
+    // Recent Enrollments Report
+    const recentEnrollments = await getRecentEnrollments(user?.id);
+
     return (
         <div className='p-6 font-inter'>
             <div className='grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
@@ -43,12 +50,20 @@ const DashboardPage = async () => {
                 <Card className='py-3 xl:col-span-2'>
                     <BarChart data={enrollByInstructorReports} />
                 </Card>
-                <Card className='p-3'>
+                <Card className='p-5'>
                     <CardTitle className='text-xl font-medium tracking-wide'>
                         Recent Enrollments
                     </CardTitle>
-                    <div className='pt-5'>
-                        <RecentEnrollCard />
+                    <div className='grid grid-cols-1 gap-4 pt-5'>
+                        {recentEnrollments.length < 0 ? (
+                            <p className='text-lg font-medium text-center text-muted-foreground'>
+                                No Recent Enroll Course
+                            </p>
+                        ) : (
+                            recentEnrollments.map((enroll) => (
+                                <RecentEnrollCard key={enroll.id} enroll={enroll} />
+                            ))
+                        )}
                     </div>
                 </Card>
             </div>
