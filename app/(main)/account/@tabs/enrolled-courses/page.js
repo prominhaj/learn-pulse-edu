@@ -8,15 +8,15 @@ const EnrolledCourses = async () => {
     const userData = await getUserByEmail(user?.email);
     const enrollCourses = await getEnrollmentsForUser(userData?.id);
 
-    return enrollCourses ? (
-        <div className='flex items-center justify-center'>
-            <h2 className='text-2xl font-semibold text-muted-foreground'>No Enrolls Course</h2>
-        </div>
-    ) : (
+    return enrollCourses.length ? (
         <div className='grid gap-6 sm:grid-cols-2'>
             {enrollCourses?.map((enrollCourse) => (
                 <EnrollCourseCard key={enrollCourse.id} enrollCourse={enrollCourse} />
             ))}
+        </div>
+    ) : (
+        <div className='flex items-center justify-center'>
+            <h2 className='text-2xl font-semibold text-muted-foreground'>No Enrolls Course</h2>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import IconBadge from '@/components/globals/IconBadge/IconBadge';
-import { CircleDollarSign, File, LayoutDashboard, ListChecks } from 'lucide-react';
+import { CircleDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
 import { CategoryForm } from './_components/category-form';
 import { DescriptionForm } from './_components/description-form';
 import { ImageForm } from './_components/image-form';
@@ -33,11 +33,11 @@ const EditCourse = () => {
                             }}
                             courseId={1}
                         />
-                        <DescriptionForm initialData={{}} courseId={1} />
-                        <ImageForm initialData={{}} courseId={1} />
-                        <CategoryForm initialData={{}} courseId={1} />
+                        <DescriptionForm courseId={1} />
+                        <ImageForm courseId={1} />
+                        <CategoryForm courseId={1} />
 
-                        <QuizSetForm initialData={{}} courseId={1} />
+                        <QuizSetForm courseId={1} />
                     </div>
                     <div className='space-y-6'>
                         <div>
@@ -46,14 +46,14 @@ const EditCourse = () => {
                                 <h2 className='text-xl'>Course Modules</h2>
                             </div>
 
-                            <ModulesForm initialData={[]} courseId={[]} />
+                            <ModulesForm />
                         </div>
                         <div>
                             <div className='flex items-center gap-x-2'>
                                 <IconBadge icon={CircleDollarSign} />
                                 <h2 className='text-xl'>Sell you course</h2>
                             </div>
-                            <PriceForm initialData={{}} courseId={1} />
+                            <PriceForm courseId={1} />
                         </div>
                     </div>
                 </div>

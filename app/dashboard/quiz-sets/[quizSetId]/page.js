@@ -1,6 +1,6 @@
 'use client';
 import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
-import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
+import IconBadge from '@/components/globals/IconBadge/IconBadge';
 import { LayoutDashboard } from 'lucide-react';
 import { QuizSetAction } from './_components/quiz-set-action';
 import { TitleForm } from './_components/title-form';

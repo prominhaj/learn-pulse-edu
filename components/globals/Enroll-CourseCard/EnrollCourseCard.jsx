@@ -8,7 +8,7 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
     const category = await getCategoryDetails(enrollCourse?.course_id?.category.toString());
 
     // Course Details
-    const course = enrollCourse.course_id;
+    const course = enrollCourse?.course_id;
     const courseTitle = course?.title;
     const courseImg = course?.thumbnail?.url;
     const modules = course?.modules;
@@ -29,22 +29,22 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
     const totalQuizzes = quizzes?.length;
 
     // Find attempted quizzes
-    const quizzesTaken = quizzes.filter(q => q.attempted);
+    const quizzesTaken = quizzes?.filter(q => q.attempted);
 
     // Find how many quizzes answered correct
 
-    const totalCorrect = quizzesTaken.map(quiz => {
+    const totalCorrect = quizzesTaken?.map(quiz => {
         const item = quiz.options
         return item.filter(o => {
             return o.isCorrect === true && o.isSelected === true
         })
     }).filter(elem => elem.length > 0).flat();
 
-    const marksFromQuizzes = totalCorrect?.length * 5;
+    const marksFromQuizzes = totalCorrect?.length * 5 || 0;
 
     const otherMarks = report?.quizAssessment?.otherMarks;
 
-    const totalMarks = (marksFromQuizzes + otherMarks);
+    const totalMarks = (marksFromQuizzes + otherMarks) || 0;
 
     return (
         <div className='h-full p-3 overflow-hidden transition duration-300 border rounded-lg bg-background group hover:shadow-sm'>
@@ -71,13 +71,13 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
                         <span>{modules.length} Chapters</span>
                     </div>
                 </div>
-                <div className='pb-2 mb-2 border-b '>
+                <div className='pb-2 mb-2 border-b'>
                     <div className='flex items-center justify-between'>
                         <div className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
-                            Total Modules: {modules.length}
+                            Total Modules: {modules?.length}
                         </div>
                         <div className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
-                            Completed Modules <Badge variant='outline'>{totalModuleCompleted}</Badge>
+                            Completed Modules {totalModuleCompleted || 0}
                         </div>
                     </div>
                     <div className='flex items-center justify-between mt-2'>
@@ -86,10 +86,11 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
                         </div>
 
                         <div className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
-                            Quiz taken <Badge variant='outline'>{quizzesTaken.length}</Badge>
+                            Quiz taken {quizzesTaken?.length || 0}
                         </div>
                     </div>
-                    <div className='flex items-center justify-between mt-2'>
+
+                    <div className='flex items-center justify-between pt-1.5 mt-2 border-t'>
                         <div className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
                             Mark from Quizzes
                         </div>
@@ -104,7 +105,7 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
                         </div>
 
                         <div className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
-                            {otherMarks}
+                            {otherMarks || 0}
                         </div>
                     </div>
                 </div>
