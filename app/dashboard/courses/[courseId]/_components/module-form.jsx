@@ -87,7 +87,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
   };
 
   return (
-    <div className="relative p-4 mt-6 border rounded-md bg-slate-100 dark:bg-slate-800 dark:border-gray-700">
+    <div className="relative p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
       {isUpdating && (
         <div className="absolute top-0 right-0 flex items-center justify-center w-full h-full rounded-md bg-gray-500/20">
           <Loader2 className="w-6 h-6 animate-spin text-sky-700" />
