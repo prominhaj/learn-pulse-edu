@@ -2,8 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,10 +17,8 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-
-const formSchema = z.object({
-  price: z.coerce.number(),
-});
+import { coursePriceSchema } from "@/lib/FormValidation/course/courseSchema";
+import { updateCourse } from "@/app/actions/course";
 
 export const PriceForm = ({ initialData, courseId }) => {
   const router = useRouter();
@@ -31,7 +27,7 @@ export const PriceForm = ({ initialData, courseId }) => {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(coursePriceSchema),
     defaultValues: {
       price: initialData?.price || undefined,
     },
@@ -41,9 +37,10 @@ export const PriceForm = ({ initialData, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Course updated");
-      toggleEdit();
+      await updateCourse(courseId, values);
       router.refresh();
+      toast.success("Price has been updated");
+      toggleEdit();
     } catch (error) {
       toast.error("Something went wrong");
     }
