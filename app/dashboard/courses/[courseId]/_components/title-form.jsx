@@ -1,10 +1,6 @@
 "use client";
-
-import * as z from "zod";
-// import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import {
   Form,
   FormControl,
@@ -17,12 +13,9 @@ import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
-});
+import { updateCourse } from "@/app/actions/course";
+import { courseTitleSchema } from "@/lib/FormValidation/course/courseSchema";
+import { toast } from "sonner";
 
 export const TitleForm = ({ initialData = {}, courseId }) => {
   const router = useRouter();
@@ -31,7 +24,7 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(courseTitleSchema),
     defaultValues: initialData,
   });
 
@@ -39,10 +32,10 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
-      //   await axios.patch(`/api/courses/${courseId}`, values);
-
-      toggleEdit();
+      await updateCourse(courseId, values);
       router.refresh();
+      toast.success("title has been updated");
+      toggleEdit();
     } catch (error) {
       toast.error("Something went wrong");
     }

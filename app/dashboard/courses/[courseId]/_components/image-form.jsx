@@ -64,8 +64,10 @@ export const ImageForm = ({ initialData, courseId }) => {
             <Image
               alt="Upload"
               fill
+              sizes="(min-width: 808px) 50vw, 100vw"
               className="object-cover rounded-md aspect-video"
               src={initialData?.url}
+              priority
             />
           </div>
         ))}
