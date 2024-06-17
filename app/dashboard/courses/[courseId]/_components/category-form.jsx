@@ -2,8 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -18,10 +16,8 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-
-const formSchema = z.object({
-  categoryId: z.string().min(1),
-});
+import { courseCategorySchema } from "@/lib/FormValidation/course/courseSchema";
+import { updateCourse } from "@/app/actions/course";
 
 export const CategoryForm = ({
   initialData,
@@ -34,9 +30,9 @@ export const CategoryForm = ({
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(courseCategorySchema),
     defaultValues: {
-      categoryId: initialData || "",
+      category: initialData || "",
     },
   });
 
@@ -44,9 +40,11 @@ export const CategoryForm = ({
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Course updated");
-      toggleEdit();
+      const selectedCategory = options.find(option => option.value === values.category);
+      await updateCourse(courseId, { category: selectedCategory?.id });
       router.refresh();
+      toast.success("Category has been updated");
+      toggleEdit();
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -90,7 +88,7 @@ export const CategoryForm = ({
           >
             <FormField
               control={form.control}
-              name="categoryId"
+              name="category"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
