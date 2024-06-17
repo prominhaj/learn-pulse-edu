@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // import axios from "axios";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
@@ -21,18 +21,39 @@ const formSchema = z.object({
 export const ImageForm = ({ initialData, courseId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [image, setImage] = useState(null)
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values) => {
-    try {
-      toast.success("Course updated");
-      toggleEdit();
-      router.refresh();
-    } catch (error) {
-      toast.error("Something went wrong");
+  useEffect(() => {
+    if (image) {
+      const fileUploader = async () => {
+        try {
+          const formData = new FormData();
+          formData.append("image", image[0]);
+          formData.append("courseId", courseId);
+          formData.append("public_id", initialData?.public_id);
+
+          const response = await fetch("/api/upload-image", {
+            method: "POST",
+            body: formData,
+          })
+          const result = await response.json();
+
+          if (result?.success) {
+            router.refresh();
+            toast.success(result?.message);
+            toggleEdit();
+          }
+
+        } catch (error) {
+          toast.error(error.message);
+        }
+      }
+      fileUploader()
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image])
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
@@ -73,7 +94,7 @@ export const ImageForm = ({ initialData, courseId }) => {
         ))}
       {isEditing && (
         <div>
-          <UploadDropzone />
+          <UploadDropzone onUpload={setImage} />
           <div className="mt-4 text-xs text-muted-foreground">
             16:9 aspect ratio recommended
           </div>

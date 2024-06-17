@@ -1,5 +1,4 @@
 "use client";
-// import uploadIcon from "@/assets/icons/upload.svg";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { CloudUpload } from "lucide-react";
@@ -8,14 +7,8 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
 export const UploadDropzone = (props) => {
-    const { isMulti = false, label } = props;
-
-    const [droppedFiles, setDroppedFiles] = useState(null);
-
-    console.log(droppedFiles);
-
+    const { isMulti = false, label, onUpload } = props;
     const [isUploading, setIsUploading] = useState(false);
-
     const [uploadProgress, setUploadProgress] = useState(0);
 
     // upload progress utility
@@ -40,8 +33,7 @@ export const UploadDropzone = (props) => {
 
         setIsUploading(true);
         const progressInterval = startSimulatedProgress();
-
-        setDroppedFiles(acceptedFiles);
+        onUpload(acceptedFiles);
 
         // await new Promise((resolve) => {
         //   setTimeout(() => {
@@ -50,7 +42,7 @@ export const UploadDropzone = (props) => {
         // });
         setUploadProgress(100);
         clearInterval(progressInterval);
-    }, []);
+    }, [onUpload]);
 
     const { getRootProps, getInputProps, fileRejections } = useDropzone({
         onDrop,
@@ -74,7 +66,7 @@ export const UploadDropzone = (props) => {
                 isUploading ? "pointer-events-none !cursor-not-allowed opacity-80" : ""
             )}
         >
-            <input multiple={isMulti} {...getInputProps()} disabled={isUploading} />
+            <input name="file" multiple={isMulti} {...getInputProps()} disabled={isUploading} />
             <div className="flex flex-col items-center gap-3 text-center !text-[#858585] dark:!text-gray-300">
                 <CloudUpload size={48} className="text-gray-600 dark:text-gray-400" />
                 <h4 className="!font-normal  !text-[#858585] dark:!text-gray-400">
