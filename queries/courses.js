@@ -7,6 +7,7 @@ import Testimonial from '@/modals/testimonials-modal';
 import User from '@/modals/users-modal';
 import { getTestimonialsForCourse } from './testimonials';
 import { getEnrollmentsForCourse } from './enrollments';
+import { getUserData } from '@/lib/getUserData';
 
 export const getCourses = async () => {
     const courses = await Course.find({})
@@ -21,6 +22,21 @@ export const getCourses = async () => {
         })
         .lean();
     return replaceMongoIdInArray(courses);
+};
+
+// Create Course
+export const createCourse = async (courseData) => {
+    try {
+        const user = await getUserData();
+        const course = await Course.create({
+            ...courseData,
+            instructor: user?.id
+        });
+
+        return JSON.parse(JSON.stringify(course));
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 export const getCourseDetails = async (id) => {

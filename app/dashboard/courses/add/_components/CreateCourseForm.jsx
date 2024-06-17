@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { createCourseSchema } from '@/lib/FormValidation/course/courseSchema';
+import { addNewCourse } from '@/app/actions/course';
 
 const CreateCourseForm = () => {
     const router = useRouter();
@@ -33,12 +34,12 @@ const CreateCourseForm = () => {
 
     const onSubmit = async (values) => {
         try {
-            // router.push(`/dashboard/courses/${1}`);
+            const newCourse = await addNewCourse(values);
+            router.push(`/dashboard/courses/${newCourse?._id}`);
             toast.success('Course created');
         } catch (error) {
-            toast.error('Something went wrong');
+            toast.error(error.message);
         }
-        console.log(values);
     };
 
 
