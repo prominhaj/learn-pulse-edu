@@ -35,7 +35,7 @@ export const ImageForm = ({ initialData, courseId }) => {
   };
 
   return (
-    <div className="p-4 mt-6 border rounded-md bg-gray-50">
+    <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
         Course Image
         <Button variant="ghost" onClick={toggleEdit}>
@@ -56,7 +56,7 @@ export const ImageForm = ({ initialData, courseId }) => {
       </div>
       {!isEditing &&
         (!initialData?.imageUrl ? (
-          <div className="flex items-center justify-center rounded-md h-60 bg-slate-200">
+          <div className="flex items-center justify-center mt-2 rounded-md h-60 bg-slate-200 dark:bg-slate-700">
             <ImageIcon className="w-10 h-10 text-slate-500" />
           </div>
         ) : (

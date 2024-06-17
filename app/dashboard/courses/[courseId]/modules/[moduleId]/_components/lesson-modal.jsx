@@ -1,4 +1,4 @@
-import { IconBadge } from "@/components/icon-badge";
+
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,7 @@ import { LessonDescriptionForm } from "./lesson-description-form";
 import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 import { CourseActions } from "../../../_components/course-action";
+import { IconBadge } from "@/components/globals/IconBadge/IconBadge";
 export const LessonModal = ({ open, setOpen }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -32,9 +33,9 @@ export const LessonModal = ({ open, setOpen }) => {
             <div className="w-full">
               <Link
                 href={`/dashboard/courses/${1}`}
-                className="flex items-center text-sm hover:opacity-75 transition mb-6"
+                className="flex items-center mb-6 text-sm transition hover:opacity-75"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to course setup
               </Link>
               <div className="flex items-center justify-end">
@@ -42,7 +43,7 @@ export const LessonModal = ({ open, setOpen }) => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+          <div className="grid grid-cols-1 gap-6 mt-16 md:grid-cols-2">
             <div className="space-y-4">
               <div>
                 <div className="flex items-center gap-x-2">

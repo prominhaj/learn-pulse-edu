@@ -4,8 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Editor } from "@/components/editor";
-import { Preview } from "@/components/preview";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,6 +17,8 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Editor } from "@/components/globals/Editor/editor";
+import { Preview } from "@/components/globals/Preview/Preview";
 
 const formSchema = z.object({
   description: z.string().min(1),
@@ -50,15 +50,15 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="p-4 mt-6 border rounded-md bg-slate-100">
+      <div className="flex items-center justify-between font-medium">
         Chapter Description
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="w-4 h-4 mr-2" />
               Edit Description
             </>
           )}
@@ -81,7 +81,7 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}

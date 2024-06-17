@@ -62,7 +62,7 @@ export const QuizSetForm = ({
   };
 
   return (
-    <div className="p-4 mt-6 border rounded-md bg-gray-50">
+    <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
         Quiz Set
         <Button variant="ghost" onClick={toggleEdit}>

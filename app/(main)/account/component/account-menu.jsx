@@ -27,8 +27,9 @@ function Menu() {
 			<li className="mt-2 navbar-item account-menu">
 				<Button
 					onClick={() => signOut()}
-					variant="outline"
-					className="flex items-center w-full"
+					variant="destructive"
+					size="sm"
+					className="flex items-center w-full text-sm"
 				>
 					Logout
 				</Button>
