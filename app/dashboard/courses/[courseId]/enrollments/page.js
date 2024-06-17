@@ -8,7 +8,7 @@ const EnrollmentsPage = async ({ params: { courseId } }) => {
     const course = await getCourseByCourseId(courseId);
     const enrollments = await getEnrollmentsForCourse(courseId);
     const enrollmentsData = await populateEnrollmentData(enrollments);
-    console.log(enrollmentsData);
+
     return (
         <div className='p-6'>
             <h2>{course?.title}</h2>

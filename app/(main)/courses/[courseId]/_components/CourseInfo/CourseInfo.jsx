@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-const CourseInfo = ({ course }) => {
+const CourseInfo = ({ course, alreadyEnrolledCourse }) => {
     const {
         id,
         title,
@@ -67,7 +67,14 @@ const CourseInfo = ({ course }) => {
                         </div>
                     </div>
                     <div className='flex flex-wrap items-center justify-center gap-3 mt-6'>
-                        <EnrollButton courseId={id} />
+                        {/* Enroll Course */}
+                        {alreadyEnrolledCourse ? (
+                            <Link href="" className={cn(buttonVariants({ size: "lg" }))}>
+                                Access Course
+                            </Link>
+                        ) : (
+                            <EnrollButton courseId={id} />
+                        )}
                         <Link
                             href=''
                             className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}

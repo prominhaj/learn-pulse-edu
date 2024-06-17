@@ -4,6 +4,8 @@ import CourseDetails from './_components/CourseDetails/CourseDetails';
 import Testimonials from './_components/Testimonials/Testimonials';
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import RelatedCourse from './_components/RelatedCourse/RelatedCourse';
+import { hasEnrollmentForCourse } from '@/queries/enrollments';
+import { getUserData } from '@/lib/getUserData';
 
 // Generate MetaData
 export const generateMetadata = async ({ params: { courseId } }) => {
@@ -20,10 +22,12 @@ export const generateMetadata = async ({ params: { courseId } }) => {
 
 const SingleCoursePage = async ({ params: { courseId } }) => {
     const { course, relatedCourses } = await getCourseDetails(courseId);
+    const user = await getUserData();
+    const alreadyEnrolledCourse = await hasEnrollmentForCourse(courseId, user?.id);
 
     return (
         <>
-            <CourseInfo course={course} />
+            <CourseInfo alreadyEnrolledCourse={alreadyEnrolledCourse} course={course} />
 
             {/* Overview */}
             <CourseDetails course={course} />

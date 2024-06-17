@@ -4,9 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import EnrollButton from "../EnrollButton/EnrollButton";
 import { Card } from "@/components/ui/card";
+import { getUserData } from "@/lib/getUserData";
+import { hasEnrollmentForCourse } from "@/queries/enrollments";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
-const CourseCard = ({ course }) => {
+const CourseCard = async ({ course }) => {
     const { id, title, thumbnail: { url }, price, category, modules } = course;
+    const user = await getUserData();
+    const isEnroll = await hasEnrollmentForCourse(id, user?.id);
 
     return (
         <>
@@ -50,7 +56,13 @@ const CourseCard = ({ course }) => {
                         {formatPrice(price)}
                     </h4>
 
-                    <EnrollButton asLink={true} courseId={id} />
+                    {isEnroll ? (
+                        <Link href="" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                            Access Course
+                        </Link>
+                    ) : (
+                        <EnrollButton asLink={true} courseId={id} />
+                    )}
                 </div>
             </Card>
         </>

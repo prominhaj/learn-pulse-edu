@@ -113,34 +113,34 @@ export const columns = [
       );
     }
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const { id } = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-8 h-4 p-0">
-              <span className="sr-only">Open Menu</span>
-              <MoreHorizontal className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/dashboard/courses/${id}`}>
-              <DropdownMenuItem className="cursor-pointer">
-                <Pencil className="w-4 h-4 mr-2" />
-                Edit
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`/dashboard/courses/${id}/enrollments`}>
-              <DropdownMenuItem className="cursor-pointer">
-                <GraduationCap className="w-4 h-4 mr-2" />
-                View Enrollments
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const { id } = row.original;
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="w-8 h-4 p-0">
+  //             <span className="sr-only">Open Menu</span>
+  //             <MoreHorizontal className="w-4 h-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <Link href={`/dashboard/courses/${id}`}>
+  //             <DropdownMenuItem className="cursor-pointer">
+  //               <Pencil className="w-4 h-4 mr-2" />
+  //               Edit
+  //             </DropdownMenuItem>
+  //           </Link>
+  //           <Link href={`/dashboard/courses/${id}/enrollments`}>
+  //             <DropdownMenuItem className="cursor-pointer">
+  //               <GraduationCap className="w-4 h-4 mr-2" />
+  //               View Enrollments
+  //             </DropdownMenuItem>
+  //           </Link>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
 ];

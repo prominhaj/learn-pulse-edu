@@ -1,7 +1,6 @@
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import Course from '@/modals/courses-modal';
 import Enrollment from '@/modals/enrollment-model';
-import Report from '@/modals/report-model';
 import User from '@/modals/users-modal';
 import mongoose from 'mongoose';
 
@@ -173,6 +172,26 @@ export const getRecentEnrollments = async (instructorId) => {
         );
 
         return replaceMongoIdInArray(filterInstructorEnrollCourses);
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+export const hasEnrollmentForCourse = async (courseId, studentId) => {
+    try {
+        const enrollment = await Enrollment.findOne({
+            course_id: courseId,
+            user_id: studentId
+        })
+            .populate({
+                path: 'course_id',
+                model: Course
+            })
+            .lean();
+
+        if (!enrollment) return false;
+
+        return true;
     } catch (error) {
         throw new Error(error);
     }
