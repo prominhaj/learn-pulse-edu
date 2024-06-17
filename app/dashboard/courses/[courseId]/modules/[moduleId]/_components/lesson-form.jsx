@@ -90,20 +90,20 @@ export const LessonForm = ({ initialData, courseId }) => {
   };
 
   return (
-    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
       {isUpdating && (
-        <div className="absolute h-full w-full bg-gray-500/20 top-0 right-0 rounded-md flex items-center justify-center">
-          <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
+        <div className="absolute top-0 right-0 flex items-center justify-center w-full h-full rounded-md bg-gray-500/20">
+          <Loader2 className="w-6 h-6 animate-spin text-sky-700" />
         </div>
       )}
-      <div className="font-medium flex items-center justify-between">
+      <div className="flex items-center justify-between font-medium">
         Module Lessions
         <Button variant="ghost" onClick={toggleCreating}>
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
-              <PlusCircle className="h-4 w-4 mr-2" />
+              <PlusCircle className="w-4 h-4 mr-2" />
               Add a chapter
             </>
           )}
@@ -114,7 +114,7 @@ export const LessonForm = ({ initialData, courseId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -154,7 +154,7 @@ export const LessonForm = ({ initialData, courseId }) => {
         </div>
       )}
       {!isCreating && (
-        <p className="text-xs text-muted-foreground mt-4">
+        <p className="mt-4 text-xs text-muted-foreground">
           Drag & Drop to reorder the modules
         </p>
       )}

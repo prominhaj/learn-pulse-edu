@@ -60,7 +60,7 @@ export const ModuleList = ({ items, onReorder, onEdit }) => {
                 {(provided) => (
                   <div
                     className={cn(
-                      "flex items-center gap-x-2 bg-slate-200 dark:bg-gray-700/80 border-slate-200 dark:border-gray-600 border text-slate-700 rounded-md mb-4 text-sm dark:text-slate-300",
+                      "flex items-center gap-x-2 rounded-md mb-4 text-sm dark:text-slate-300 bg-slate-200 dark:bg-gray-700/80 border-slate-200 dark:border-gray-600 border text-slate-700",
                       module.isPublished &&
                       "bg-sky-100 dark:bg-sky-900 border-sky-200 dark:border-sky-700 text-sky-700 dark:text-sky-400"
                     )}

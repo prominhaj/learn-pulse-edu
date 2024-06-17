@@ -61,39 +61,39 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                 {(provided) => (
                   <div
                     className={cn(
-                      "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
+                      "flex items-center gap-x-2 rounded-md mb-4 text-sm dark:text-slate-300 bg-slate-200 dark:bg-gray-700/80 border-slate-200 dark:border-gray-600 border text-slate-700",
                       module.isPublished &&
-                        "bg-sky-100 border-sky-200 text-sky-700"
+                      "bg-sky-100 dark:bg-sky-900 border-sky-200 dark:border-sky-700 text-sky-700 dark:text-sky-400"
                     )}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                   >
                     <div
                       className={cn(
-                        "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
+                        "px-2 py-3 border-r border-r-slate-200 dark:border-r-gray-500 hover:bg-slate-300 rounded-l-md transition",
                         module.isPublished &&
-                          "border-r-sky-200 hover:bg-sky-200"
+                        "border-r-sky-200 dark:border-r-sky-800 hover:bg-sky-200 dark:hover:bg-sky-800"
                       )}
                       {...provided.dragHandleProps}
                     >
-                      <Grip className="h-5 w-5" />
+                      <Grip className="w-5 h-5" />
                     </div>
                     <div className="flex items-center gap-2">
                       <CirclePlay size={18} />
                       {module.title}
                     </div>
-                    <div className="ml-auto pr-2 flex items-center gap-x-2">
+                    <div className="flex items-center pr-2 ml-auto gap-x-2">
                       <Badge
                         className={cn(
-                          "bg-gray-500",
-                          module.isPublished && "bg-emerald-600"
+                          "bg-gray-500 dark:bg-gray-300",
+                          module.isPublished && "bg-emerald-600 dark:bg-emerald-400"
                         )}
                       >
                         {module.isPublished ? "Published" : "Draft"}
                       </Badge>
                       <Pencil
                         onClick={() => onEdit(module.id)}
-                        className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
+                        className="w-4 h-4 transition cursor-pointer hover:opacity-75"
                       />
                     </div>
                   </div>

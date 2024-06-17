@@ -46,26 +46,26 @@ export const ModuleTitleForm = ({ initialData, courseId, chapterId }) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
+      <div className="flex items-center justify-between font-medium">
         Module title
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="w-4 h-4 mr-2" />
               Edit Title
             </>
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{"Reactive Accelerator"}</p>}
+      {!isEditing && <p className="mt-2 text-sm">{"Reactive Accelerator"}</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
