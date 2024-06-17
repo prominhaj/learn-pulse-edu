@@ -86,7 +86,7 @@ export const CategoryForm = ({
   };
 
   const selectedOptions = options.find(
-    (option) => option.value === initialData.categoryId
+    (option) => option.value === initialData?.categoryId
   );
 
   return (
@@ -108,7 +108,7 @@ export const CategoryForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.categoryId && "text-slate-500 italic"
+            !initialData?.categoryId && "text-slate-500 italic"
           )}
         >
           {selectedOptions?.label || "No category"}

@@ -7,8 +7,7 @@ const courseSchema = new Schema(
             required: true
         },
         sub_title: {
-            type: String,
-            required: true
+            type: String
         },
         description: {
             type: String,
@@ -16,12 +15,10 @@ const courseSchema = new Schema(
         },
         thumbnail: {
             url: {
-                type: String,
-                required: true
+                type: String
             },
             public_id: {
-                type: String,
-                required: true
+                type: String
             }
         },
         modules: [
@@ -32,17 +29,17 @@ const courseSchema = new Schema(
         ],
         price: {
             type: Number,
+            default: 0,
             required: true
         },
         active: {
             type: Boolean,
             required: true,
-            default: true
+            default: false
         },
         category: {
             type: Schema.Types.ObjectId,
-            ref: 'Category',
-            required: true
+            ref: 'Category'
         },
         instructor: {
             type: Schema.Types.ObjectId,
@@ -56,7 +53,6 @@ const courseSchema = new Schema(
             }
         ],
         learning: {
-            required: true,
             type: [String]
         },
         quizSet: {

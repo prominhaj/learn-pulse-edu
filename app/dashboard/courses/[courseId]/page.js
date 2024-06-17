@@ -1,7 +1,6 @@
 import { CircleDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
 import { CategoryForm } from './_components/category-form';
 import { DescriptionForm } from './_components/description-form';
-import { ImageForm } from './_components/image-form';
 import { ModulesForm } from './_components/module-form';
 import { PriceForm } from './_components/price-form';
 import { TitleForm } from './_components/title-form';
@@ -9,6 +8,7 @@ import { CourseActions } from './_components/course-action';
 import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
 import { QuizSetForm } from './_components/quiz-set-form';
 import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
+import { ImageForm } from './_components/image-form';
 
 const EditCourse = () => {
     return (
@@ -33,7 +33,10 @@ const EditCourse = () => {
                             }}
                             courseId={1}
                         />
-                        <DescriptionForm courseId={1} />
+                        <DescriptionForm
+                            initialData={{ description: 'Learn Javascript' }}
+                            courseId={1}
+                        />
                         <ImageForm courseId={1} />
                         <CategoryForm courseId={1} />
 
