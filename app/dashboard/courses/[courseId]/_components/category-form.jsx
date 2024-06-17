@@ -26,40 +26,7 @@ const formSchema = z.object({
 export const CategoryForm = ({
   initialData,
   courseId,
-  options = [
-    {
-      value: "design",
-      label: "Design",
-    },
-    {
-      value: "development",
-      label: "Development",
-    },
-    {
-      value: "marketing",
-      label: "Marketing",
-    },
-    {
-      value: "it_software",
-      label: "IT & Software",
-    },
-    {
-      value: "personal_development",
-      label: "Personal Development",
-    },
-    {
-      value: "business",
-      label: "Business",
-    },
-    {
-      value: "photography",
-      label: "Photography",
-    },
-    {
-      value: "music",
-      label: "Music",
-    },
-  ],
+  options
 }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -69,7 +36,7 @@ export const CategoryForm = ({
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      categoryId: initialData?.categoryId || "",
+      categoryId: initialData || "",
     },
   });
 
@@ -86,7 +53,7 @@ export const CategoryForm = ({
   };
 
   const selectedOptions = options.find(
-    (option) => option.value === initialData?.categoryId
+    (option) => option.id === initialData
   );
 
   return (
@@ -108,13 +75,13 @@ export const CategoryForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData?.categoryId && "text-slate-500 italic"
+            !initialData && "text-slate-500 italic"
           )}
         >
           {selectedOptions?.label || "No category"}
         </p>
       )}
-      {console.log({ options })}
+
       {isEditing && (
         <Form {...form}>
           <form

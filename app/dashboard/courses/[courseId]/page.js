@@ -9,8 +9,22 @@ import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
 import { QuizSetForm } from './_components/quiz-set-form';
 import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
 import { ImageForm } from './_components/image-form';
+import { getCourseDetails } from '@/queries/courses';
+import { getCategories } from '@/queries/categories';
 
-const EditCourse = () => {
+const EditCoursePage = async ({ params: { courseId } }) => {
+    const course = await getCourseDetails(courseId, true);
+    const categories = await getCategories();
+
+    // modified Categories
+    const modifiedCategories = categories?.map((c) => {
+        return {
+            id: c.id,
+            value: c.title,
+            label: c.title
+        };
+    });
+
     return (
         <>
             <AlertBanner
@@ -29,18 +43,22 @@ const EditCourse = () => {
                         </div>
                         <TitleForm
                             initialData={{
-                                title: 'Reactive Accelerator'
+                                title: course?.title
                             }}
-                            courseId={1}
+                            courseId={courseId}
                         />
                         <DescriptionForm
-                            initialData={{ description: 'Learn Javascript' }}
-                            courseId={1}
+                            initialData={{ description: course?.description }}
+                            courseId={courseId}
                         />
-                        <ImageForm courseId={1} />
-                        <CategoryForm courseId={1} />
+                        <ImageForm initialData={course?.thumbnail} courseId={courseId} />
+                        <CategoryForm
+                            initialData={course?.category?._id.toString()}
+                            options={modifiedCategories}
+                            courseId={courseId}
+                        />
 
-                        <QuizSetForm courseId={1} />
+                        <QuizSetForm courseId={courseId} />
                     </div>
                     <div className='space-y-6'>
                         <div>
@@ -56,7 +74,7 @@ const EditCourse = () => {
                                 <IconBadge icon={CircleDollarSign} />
                                 <h2 className='text-xl'>Sell you course</h2>
                             </div>
-                            <PriceForm courseId={1} />
+                            <PriceForm initialData={course} courseId={courseId} />
                         </div>
                     </div>
                 </div>
@@ -64,4 +82,4 @@ const EditCourse = () => {
         </>
     );
 };
-export default EditCourse;
+export default EditCoursePage;

@@ -70,15 +70,15 @@ export const UploadDropzone = (props) => {
         <div
             {...getRootProps()}
             className={cn(
-                "mt-3 flex cursor-pointer items-center justify-center rounded-md border border-dashed p-3 py-12 hover:bg-muted/30",
+                "mt-3 flex cursor-pointer items-center justify-center rounded-md border dark:border-gray-700 border-dashed p-3 py-12 hover:bg-muted/30",
                 isUploading ? "pointer-events-none !cursor-not-allowed opacity-80" : ""
             )}
         >
             <input multiple={isMulti} {...getInputProps()} disabled={isUploading} />
-            <div className="flex flex-col items-center gap-3 text-center !text-[#858585]">
-                <CloudUpload size={48} className="text-gray-600" />
-                <h4 className="!font-normal  !text-[#858585]">
-                    <span className="font-semibold text-black underline">
+            <div className="flex flex-col items-center gap-3 text-center !text-[#858585] dark:!text-gray-300">
+                <CloudUpload size={48} className="text-gray-600 dark:text-gray-400" />
+                <h4 className="!font-normal  !text-[#858585] dark:!text-gray-400">
+                    <span className="font-semibold text-black underline dark:text-white">
                         Click to upload
                     </span>{" "}
                     or drag and drop <br />

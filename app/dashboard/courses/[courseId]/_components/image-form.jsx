@@ -8,9 +8,9 @@ import Image from "next/image";
 import { toast } from "sonner";
 import * as z from "zod";
 
-import UploadDropzone from "@/components/globals/FileUpload/FileUpload";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { UploadDropzone } from "@/components/globals/FileUpload/FileUpload";
 
 const formSchema = z.object({
   imageUrl: z.string().min(1, {
@@ -40,13 +40,13 @@ export const ImageForm = ({ initialData, courseId }) => {
         Course Image
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing && <>Cancel</>}
-          {!isEditing && !initialData?.imageUrl && (
+          {!isEditing && !initialData?.url && (
             <>
               <PlusCircle className="w-4 h-4 mr-2" />
               Add an image
             </>
           )}
-          {!isEditing && initialData?.imageUrl && (
+          {!isEditing && initialData?.url && (
             <>
               <Pencil className="w-4 h-4 mr-2" />
               Edit image
@@ -55,7 +55,7 @@ export const ImageForm = ({ initialData, courseId }) => {
         </Button>
       </div>
       {!isEditing &&
-        (!initialData?.imageUrl ? (
+        (!initialData?.url ? (
           <div className="flex items-center justify-center mt-2 rounded-md h-60 bg-slate-200 dark:bg-gray-800">
             <ImageIcon className="w-10 h-10 text-slate-500" />
           </div>
@@ -64,8 +64,8 @@ export const ImageForm = ({ initialData, courseId }) => {
             <Image
               alt="Upload"
               fill
-              className="object-cover rounded-md"
-              src={initialData?.imageUrl}
+              className="object-cover rounded-md aspect-video"
+              src={initialData?.url}
             />
           </div>
         ))}

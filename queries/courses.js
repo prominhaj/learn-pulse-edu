@@ -41,7 +41,7 @@ export const createCourse = async (courseData) => {
     }
 };
 
-export const getCourseDetails = async (id) => {
+export const getCourseDetails = async (id, isCourseEditPage) => {
     try {
         const course = await Course.findById(id)
             .populate({
@@ -69,6 +69,11 @@ export const getCourseDetails = async (id) => {
                 }
             })
             .lean();
+
+        // use isCourseEditPage
+        if (isCourseEditPage) {
+            return replaceMongoIdInObject(course);
+        }
 
         // Check Course Not Active
         if (!course.active) {
