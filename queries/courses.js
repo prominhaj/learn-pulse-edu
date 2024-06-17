@@ -10,7 +10,9 @@ import { getEnrollmentsForCourse } from './enrollments';
 import { getUserData } from '@/lib/getUserData';
 
 export const getCourses = async () => {
-    const courses = await Course.find({})
+    const courses = await Course.find({
+        active: true
+    })
         .select(['title', 'subtitle', 'thumbnail', 'modules', 'price', 'category'])
         .populate({
             path: 'category',
@@ -40,42 +42,52 @@ export const createCourse = async (courseData) => {
 };
 
 export const getCourseDetails = async (id) => {
-    const course = await Course.findById(id)
-        .populate({
-            path: 'category',
-            model: Category
-        })
-        .populate({
-            path: 'instructor',
-            model: User
-        })
-        .populate({
-            path: 'testimonials',
-            model: Testimonial,
-            populate: {
-                path: 'userId',
+    try {
+        const course = await Course.findById(id)
+            .populate({
+                path: 'category',
+                model: Category
+            })
+            .populate({
+                path: 'instructor',
                 model: User
-            }
-        })
-        .populate({
-            path: 'modules',
-            model: Module,
-            populate: {
-                path: 'lessonIds',
-                model: Lesson
-            }
-        })
-        .lean();
+            })
+            .populate({
+                path: 'testimonials',
+                model: Testimonial,
+                populate: {
+                    path: 'userId',
+                    model: User
+                }
+            })
+            .populate({
+                path: 'modules',
+                model: Module,
+                populate: {
+                    path: 'lessonIds',
+                    model: Lesson
+                }
+            })
+            .lean();
 
-    const relatedCourse = await Course.find({
-        category: course.category._id,
-        _id: { $ne: id }
-    }).lean();
+        // Check Course Not Active
+        if (!course.active) {
+            throw new Error('Course is not active');
+        }
 
-    return {
-        course: replaceMongoIdInObject(course),
-        relatedCourses: replaceMongoIdInArray(relatedCourse)
-    };
+        const relatedCourse = await Course.find({
+            category: course.category._id,
+            active: true,
+            _id: { $ne: id }
+        }).lean();
+
+        return {
+            course: replaceMongoIdInObject(course),
+            relatedCourses: replaceMongoIdInArray(relatedCourse)
+        };
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 export const getCourseDetailsByInstructor = async (instructorId) => {
