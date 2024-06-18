@@ -2,8 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,10 +15,9 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-
-const formSchema = z.object({
-  title: z.string().min(1),
-});
+import { lessonTitleSchema } from "@/lib/FormValidation/lesson/lesson";
+import { updateLesson } from "@/app/actions/lesson";
+import { getSlug } from "@/lib/convertData";
 
 export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
   const router = useRouter();
@@ -29,7 +26,7 @@ export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(lessonTitleSchema),
     defaultValues: initialData,
   });
 
@@ -37,9 +34,11 @@ export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
 
   const onSubmit = async (values) => {
     try {
+      values['slug'] = getSlug(values?.title)
+      await updateLesson(lessonId, values)
+      router.refresh();
       toast.success("Lesson updated");
       toggleEdit();
-      router.refresh();
     } catch {
       toast.error("Something went wrong");
     }
@@ -61,7 +60,7 @@ export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
         </Button>
       </div>
       {!isEditing && (
-        <p className="mt-2 text-sm">{"Introduction to React.js"}</p>
+        <p className="mt-2 text-sm">{initialData?.title}</p>
       )}
       {isEditing && (
         <Form {...form}>

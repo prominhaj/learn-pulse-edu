@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { CirclePlay } from "lucide-react";
 import Link from "next/link";
 
-export const LessonList = ({ items, onReorder, onEdit, courseId, moduleId }) => {
+export const LessonList = ({ items, onReorder, courseId, moduleId }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [lessons, setLessons] = useState(items);
 
@@ -94,7 +94,6 @@ export const LessonList = ({ items, onReorder, onEdit, courseId, moduleId }) => 
                       </Badge>
                       <Link href={`/dashboard/courses/${courseId}/modules/${moduleId}/lesson/${lesson.id}`}>
                         <Pencil
-                          // onClick={() => onEdit(lesson.id)}
                           className="w-4 h-4 transition cursor-pointer hover:opacity-75"
                         />
                       </Link>

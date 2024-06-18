@@ -16,20 +16,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { LessonList } from "./lesson-list";
-import { LessonModal } from "./lesson-modal";
 import { createModuleLessonSchema } from "@/lib/FormValidation/course/courseSchema";
 import { getSlug } from "@/lib/convertData";
 import { createLesson, reOrderLesson } from "@/app/actions/lesson";
 
 export const LessonForm = ({ initialData, moduleId, courseId }) => {
-  const [isEditing, setIsEditing] = useState(false);
   const [lessons, setLessons] = useState(initialData);
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const toggleCreating = () => setIsCreating((current) => !current);
-  const toggleEditing = () => setIsEditing((current) => !current);
 
   const form = useForm({
     resolver: zodResolver(createModuleLessonSchema),
@@ -76,11 +73,6 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
     } finally {
       setIsUpdating(false);
     }
-  };
-
-  const onEdit = (id) => {
-    // router.push(`/dashboard/courses/${courseId}/modules/${moduleId}/lesson/${id}`);
-    setIsEditing(true);
   };
 
   return (
@@ -143,7 +135,6 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
           <LessonList
             courseId={courseId}
             moduleId={moduleId}
-            onEdit={onEdit}
             onReorder={onReorder}
             items={lessons || []}
           />
@@ -154,7 +145,6 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
           Drag & Drop to reorder the modules
         </p>
       )}
-      <LessonModal courseId={courseId} open={isEditing} setOpen={setIsEditing} />
     </div>
   );
 };

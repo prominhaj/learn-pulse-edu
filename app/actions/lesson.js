@@ -31,3 +31,11 @@ export const reOrderLesson = async (data) => {
         throw new Error(e);
     }
 };
+
+export const updateLesson = async (lessonId, updateLesson) => {
+    try {
+        await Lesson.findByIdAndUpdate(lessonId, updateLesson);
+    } catch (error) {
+        throw new Error(error);
+    }
+};

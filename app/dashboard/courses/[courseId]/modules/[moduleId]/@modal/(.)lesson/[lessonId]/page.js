@@ -1,7 +1,14 @@
+import { getLesson } from '@/queries/lesson';
 import LessonModal from './_component/LessonModal';
 
-const LessonModalPage = ({ params: { lessonId, courseId } }) => {
-    return <LessonModal courseId={courseId} />;
+const LessonModalPage = async ({ params: { lessonId, courseId, moduleId } }) => {
+    const lesson = await getLesson(lessonId);
+
+    return (
+        <>
+            <LessonModal lesson={lesson} courseId={courseId} />
+        </>
+    );
 };
 
 export default LessonModalPage;
