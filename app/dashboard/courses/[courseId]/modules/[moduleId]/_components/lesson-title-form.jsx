@@ -19,7 +19,7 @@ import { lessonTitleSchema } from "@/lib/FormValidation/lesson/lesson";
 import { updateLesson } from "@/app/actions/lesson";
 import { getSlug } from "@/lib/convertData";
 
-export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
+export const LessonTitleForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 

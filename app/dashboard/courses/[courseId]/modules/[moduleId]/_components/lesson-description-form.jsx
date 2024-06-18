@@ -19,12 +19,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Editor } from "@/components/globals/Editor/editor";
 import { Preview } from "@/components/globals/Preview/Preview";
+import { updateLesson } from "@/app/actions/lesson";
 
 const formSchema = z.object({
   description: z.string().min(1),
 });
 
-export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
+export const LessonDescriptionForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -33,7 +34,7 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || "",
+      description: initialData || "",
     },
   });
 
@@ -41,9 +42,10 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Lesson updated");
-      toggleEdit();
+      await updateLesson(lessonId, values)
       router.refresh();
+      toast.success("Lesson description updated");
+      toggleEdit();
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -68,12 +70,11 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
         <div
           className={cn(
             "text-sm mt-2",
-            !initialData.description && "text-slate-500 italic"
+            !initialData && "text-slate-500 italic"
           )}
         >
-          {!initialData.description && "No description"}
-          {initialData.description && (
-            <Preview value={initialData.description} />
+          {initialData && (
+            <Preview value={initialData} />
           )}
         </div>
       )}

@@ -8,6 +8,7 @@ import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 
 const LessonModalContent = ({ courseId, lesson }) => {
+    console.log(lesson);
     return (
         <div>
             <div className='flex items-center justify-between'>
@@ -31,11 +32,10 @@ const LessonModalContent = ({ courseId, lesson }) => {
                             <IconBadge icon={LayoutDashboard} />
                             <h2 className='text-xl'>Customize Your chapter</h2>
                         </div>
-                        <LessonTitleForm initialData={{ title: lesson?.title }} courseId={'1'} lessonId={lesson?.id} />
+                        <LessonTitleForm initialData={{ title: lesson?.title }} lessonId={lesson?.id} />
                         <LessonDescriptionForm
-                            initialData={{}}
-                            courseId={'1'}
-                            lessonId={'1'}
+                            initialData={lesson?.description}
+                            lessonId={lesson?.id}
                         />
                     </div>
                     <div>
