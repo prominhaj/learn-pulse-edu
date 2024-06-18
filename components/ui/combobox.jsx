@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,12 +28,12 @@ export const Combobox = ({ options, value, onChange }) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="justify-between w-full"
         >
           {value
             ? options.find((option) => option.value === value)?.label
             : "Select options..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">

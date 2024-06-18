@@ -41,7 +41,6 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
-    console.log(values);
     try {
       const formData = new FormData();
       formData.append("title", values?.title);
@@ -80,6 +79,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
   };
 
   const onEdit = (id) => {
+    // router.push(`/dashboard/courses/${courseId}/modules/${moduleId}/lesson/${id}`);
     setIsEditing(true);
   };
 
@@ -141,6 +141,8 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
         >
           {!lessons?.length && "No module"}
           <LessonList
+            courseId={courseId}
+            moduleId={moduleId}
             onEdit={onEdit}
             onReorder={onReorder}
             items={lessons || []}

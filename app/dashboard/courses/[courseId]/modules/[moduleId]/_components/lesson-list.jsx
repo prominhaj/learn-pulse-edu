@@ -12,8 +12,9 @@ import { Grip, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { CirclePlay } from "lucide-react";
+import Link from "next/link";
 
-export const LessonList = ({ items, onReorder, onEdit }) => {
+export const LessonList = ({ items, onReorder, onEdit, courseId, moduleId }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [lessons, setLessons] = useState(items);
 
@@ -70,7 +71,7 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                   >
                     <div
                       className={cn(
-                        "px-2 py-3 border-r border-r-slate-200 dark:border-r-gray-500 hover:bg-slate-300 rounded-l-md transition",
+                        "px-2 py-3 border-r border-r-slate-200 dark:border-r-gray-500 dark:hover:bg-slate-500 hover:bg-slate-300 rounded-l-md transition",
                         lesson.active &&
                         "border-r-sky-200 dark:border-r-sky-800 hover:bg-sky-200 dark:hover:bg-sky-800"
                       )}
@@ -91,10 +92,12 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                       >
                         {lesson.active ? "Published" : "Draft"}
                       </Badge>
-                      <Pencil
-                        onClick={() => onEdit(lesson.id)}
-                        className="w-4 h-4 transition cursor-pointer hover:opacity-75"
-                      />
+                      <Link href={`/dashboard/courses/${courseId}/modules/${moduleId}/lesson/${lesson.id}`}>
+                        <Pencil
+                          // onClick={() => onEdit(lesson.id)}
+                          className="w-4 h-4 transition cursor-pointer hover:opacity-75"
+                        />
+                      </Link>
                     </div>
                   </div>
                 )}

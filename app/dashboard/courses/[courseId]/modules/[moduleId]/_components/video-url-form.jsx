@@ -69,8 +69,8 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
       </div>
       {!isEditing && (
         <>
-          <p className="mt-2 text-sm">
-            {"https://www.youtube.com/embed/Cn4G2lZ_g2I?si=8FxqU8_NU6rYOrG1"}
+          <p className="w-full mt-2 overflow-hidden text-sm text-wrap">
+            https://www.youtube.com/embed/Cn4G2lZ_g2I?si=8FxqU8_NU6rYOrG1
           </p>
           <div className="mt-6">
             <VideoPlayer />
