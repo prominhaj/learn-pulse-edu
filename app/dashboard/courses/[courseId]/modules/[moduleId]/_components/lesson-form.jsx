@@ -21,7 +21,7 @@ import { createModuleLessonSchema } from "@/lib/FormValidation/course/courseSche
 import { getSlug } from "@/lib/convertData";
 import { createLesson, reOrderLesson } from "@/app/actions/lesson";
 
-export const LessonForm = ({ initialData, moduleId }) => {
+export const LessonForm = ({ initialData, moduleId, courseId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [lessons, setLessons] = useState(initialData);
   const router = useRouter();
@@ -152,7 +152,7 @@ export const LessonForm = ({ initialData, moduleId }) => {
           Drag & Drop to reorder the modules
         </p>
       )}
-      <LessonModal open={isEditing} setOpen={setIsEditing} />
+      <LessonModal courseId={courseId} open={isEditing} setOpen={setIsEditing} />
     </div>
   );
 };

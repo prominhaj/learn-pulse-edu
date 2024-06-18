@@ -18,7 +18,9 @@ import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 import { CourseActions } from "../../../_components/course-action";
 import { IconBadge } from "@/components/globals/IconBadge/IconBadge";
-export const LessonModal = ({ open, setOpen }) => {
+
+
+export const LessonModal = ({ open, setOpen, courseId }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
@@ -32,7 +34,7 @@ export const LessonModal = ({ open, setOpen }) => {
           <div className="flex items-center justify-between">
             <div className="w-full">
               <Link
-                href={`/dashboard/courses/${1}`}
+                href={`/dashboard/courses/${courseId}`}
                 className="flex items-center mb-6 text-sm transition hover:opacity-75"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />

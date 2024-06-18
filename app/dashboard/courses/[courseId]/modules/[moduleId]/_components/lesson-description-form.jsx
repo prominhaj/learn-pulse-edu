@@ -50,7 +50,7 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
   };
 
   return (
-    <div className="p-4 mt-6 border rounded-md bg-slate-100">
+    <div className="p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
         Chapter Description
         <Button variant="ghost" onClick={toggleEdit}>

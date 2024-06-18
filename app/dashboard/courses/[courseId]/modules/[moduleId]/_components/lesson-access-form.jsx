@@ -49,15 +49,15 @@ export const LessonAccessForm = ({ initialData, courseId, lessonId }) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
+      <div className="flex items-center justify-between font-medium">
         Lesson access
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="w-4 h-4 mr-2" />
               Edit access
             </>
           )}
@@ -81,13 +81,13 @@ export const LessonAccessForm = ({ initialData, courseId, lessonId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
               name="isFree"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className="flex flex-row items-start p-4 space-x-3 space-y-0 border rounded-md dark:border-gray-700">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
