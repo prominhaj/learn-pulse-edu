@@ -8,17 +8,18 @@ const lessonSchema = new Schema(
         },
         description: {
             type: String,
-            required: true
+            required: false
         },
         duration: {
             type: Number,
+            default: 0,
             required: true
         },
         video_url: {
             type: String,
-            required: true
+            required: false
         },
-        published: {
+        active: {
             type: Boolean,
             required: true,
             default: false
@@ -30,11 +31,18 @@ const lessonSchema = new Schema(
         access: {
             type: String,
             required: true,
-            default: 'public',
+            default: 'private',
             enum: ['public', 'private']
+        },
+        order: {
+            type: Number,
+            required: true,
+            default: 0
         }
     },
     { timestamps: true }
 );
 
-export const Lesson = mongoose.models.Lesson ?? mongoose.model('Lesson', lessonSchema);
+const Lesson = mongoose.models.Lesson ?? mongoose.model('Lesson', lessonSchema);
+
+export default Lesson;

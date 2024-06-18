@@ -38,7 +38,7 @@ const SingleCoursePage = async ({ params: { courseId } }) => {
             )}
 
             {/* Related Course */}
-            <RelatedCourse relatedCourses={relatedCourses} />
+            {relatedCourses ? <RelatedCourse relatedCourses={relatedCourses} /> : null}
         </>
     );
 };

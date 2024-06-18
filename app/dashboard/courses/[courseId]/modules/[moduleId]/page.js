@@ -5,8 +5,13 @@ import { LessonForm } from './_components/lesson-form';
 import { CourseActions } from '../../_components/course-action';
 import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
 import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
+import { getModuleById } from '@/queries/module';
+import { replaceMongoIdInArray } from '@/lib/convertData';
 
-const Module = async ({ params }) => {
+const Module = async ({ params: { courseId, moduleId } }) => {
+    const getModule = await getModuleById(moduleId);
+    const lessons = replaceMongoIdInArray(getModule?.lessonIds);
+
     return (
         <>
             <AlertBanner
@@ -18,7 +23,7 @@ const Module = async ({ params }) => {
                 <div className='flex items-center justify-between'>
                     <div className='w-full'>
                         <Link
-                            href={`/dashboard/courses/${1}`}
+                            href={`/dashboard/courses/${courseId}`}
                             className='flex items-center mb-6 text-sm transition hover:opacity-75'
                         >
                             <ArrowLeft className='w-4 h-4 mr-2' />
@@ -36,7 +41,11 @@ const Module = async ({ params }) => {
                                 <IconBadge icon={LayoutDashboard} />
                                 <h2 className='text-xl'>Customize Your module</h2>
                             </div>
-                            <ModuleTitleForm initialData={{}} courseId={1} chapterId={1} />
+                            <ModuleTitleForm
+                                initialData={{ title: getModule?.title }}
+                                courseId={courseId}
+                                chapterId={moduleId}
+                            />
                         </div>
                         <div>
                             <div className='flex items-center gap-x-2'>

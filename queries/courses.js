@@ -88,7 +88,7 @@ export const getCourseDetails = async (id, isCourseEditPage) => {
 
         return {
             course: replaceMongoIdInObject(course),
-            relatedCourses: replaceMongoIdInArray(relatedCourse)
+            relatedCourses: relatedCourse?.length > 0 ? replaceMongoIdInArray(relatedCourse) : false
         };
     } catch (error) {
         throw new Error(error);
