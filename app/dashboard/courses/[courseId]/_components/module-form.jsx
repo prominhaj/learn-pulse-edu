@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,11 +17,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ModuleList } from "./module-list";
-import { reOrderModules } from "@/app/actions/module";
-
-const formSchema = z.object({
-  title: z.string().min(1),
-});
+import { createModule, reOrderModules } from "@/app/actions/module";
+import { courseCreateModuleSchema } from "@/lib/FormValidation/course/courseSchema";
+import { getSlug } from "@/lib/convertData";
 
 export const ModulesForm = ({ initialData, courseId }) => {
   const [modules, setModules] = useState(initialData);
@@ -33,7 +30,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
   const toggleCreating = () => setIsCreating((current) => !current);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(courseCreateModuleSchema),
     defaultValues: {
       title: "",
     },
@@ -43,18 +40,27 @@ export const ModulesForm = ({ initialData, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
+
+      const formData = new FormData();
+      formData.append("title", values?.title);
+      formData.append("slug", getSlug(values?.title));
+      formData.append("courseId", courseId);
+      formData.append("order", modules.length);
+
+      const resModule = await createModule(formData);
       setModules((modules) => [
         ...modules,
         {
-          id: Date.now().toString(),
+          id: resModule?._id.toString(),
           title: values.title,
         },
       ]);
-      toast.success("Module created");
-      toggleCreating();
+
       router.refresh();
+      toast.success("Module has been created");
+      toggleCreating();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
   };
 
