@@ -18,12 +18,13 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { updateLesson } from "@/app/actions/lesson";
 
 const formSchema = z.object({
   isFree: z.boolean().default(false),
 });
 
-export const LessonAccessForm = ({ initialData, courseId, lessonId }) => {
+export const LessonAccessForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -32,7 +33,7 @@ export const LessonAccessForm = ({ initialData, courseId, lessonId }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isFree: !!initialData.isFree,
+      isFree: !!initialData?.isFree,
     },
   });
 
@@ -40,9 +41,16 @@ export const LessonAccessForm = ({ initialData, courseId, lessonId }) => {
 
   const onSubmit = async (values) => {
     try {
+      const payload = {};
+      if (values?.isFree) {
+        payload["access"] = "public";
+      } else {
+        payload["access"] = "private";
+      }
+      await updateLesson(lessonId, payload);
+      router.refresh();
       toast.success("Lesson updated");
       toggleEdit();
-      router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -67,10 +75,10 @@ export const LessonAccessForm = ({ initialData, courseId, lessonId }) => {
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.isFree && "text-slate-500 italic"
+            !initialData?.isFree && "text-slate-500 italic"
           )}
         >
-          {initialData.isFree ? (
+          {initialData?.isFree ? (
             <>This chapter is free for preview</>
           ) : (
             <>This chapter is not free</>

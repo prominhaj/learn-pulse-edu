@@ -43,7 +43,7 @@ const LessonModalContent = ({ courseId, lesson }) => {
                             <IconBadge icon={Eye} />
                             <h2 className='text-xl'>Access Settings</h2>
                         </div>
-                        <LessonAccessForm initialData={{}} courseId={'1'} chapterId={'1'} />
+                        <LessonAccessForm initialData={{ isFree: lesson?.access !== 'private' }} lessonId={lesson?.id} />
                     </div>
                 </div>
                 <div>
