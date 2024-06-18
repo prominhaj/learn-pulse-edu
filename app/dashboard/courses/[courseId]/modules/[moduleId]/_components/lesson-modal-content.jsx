@@ -8,7 +8,6 @@ import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 
 const LessonModalContent = ({ courseId, lesson }) => {
-    console.log(lesson);
     return (
         <div>
             <div className='flex items-center justify-between'>
