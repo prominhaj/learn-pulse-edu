@@ -1,13 +1,13 @@
 import { replaceMongoIdInArray, replaceMongoIdInObject } from '@/lib/convertData';
 import Category from '@/modals/categories-modal';
 import Course from '@/modals/courses-modal';
-import { Lesson } from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import Testimonial from '@/modals/testimonials-modal';
 import User from '@/modals/users-modal';
 import { getTestimonialsForCourse } from './testimonials';
 import { getEnrollmentsForCourse } from './enrollments';
 import { getUserData } from '@/lib/getUserData';
+import Lesson from '@/modals/lessons-modal';
 
 export const getCourses = async () => {
     const courses = await Course.find({

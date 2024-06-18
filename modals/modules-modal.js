@@ -38,5 +38,6 @@ const moduleSchema = new Schema(
     { timestamps: true }
 );
 
-const Module = mongoose.models.Module ?? mongoose.model('Module', moduleSchema);
+const Module = mongoose.models?.Module ?? mongoose.model('Module', moduleSchema);
+
 export default Module;

@@ -10,7 +10,7 @@ import { replaceMongoIdInArray } from '@/lib/convertData';
 
 const Module = async ({ params: { courseId, moduleId } }) => {
     const getModule = await getModuleById(moduleId);
-    const lessons = replaceMongoIdInArray(getModule?.lessonIds);
+    const lessons = replaceMongoIdInArray(getModule?.lessonIds).sort((a, b) => a?.order - b?.order);
 
     return (
         <>
@@ -52,7 +52,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
                                 <IconBadge icon={BookOpenCheck} />
                                 <h2 className='text-xl'>Module Lessons</h2>
                             </div>
-                            <LessonForm />
+                            <LessonForm initialData={lessons || []} moduleId={moduleId} />
                         </div>
                     </div>
                     <div>

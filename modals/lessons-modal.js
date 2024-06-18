@@ -7,8 +7,7 @@ const lessonSchema = new Schema(
             required: true
         },
         description: {
-            type: String,
-            required: false
+            type: String
         },
         duration: {
             type: Number,
@@ -16,8 +15,7 @@ const lessonSchema = new Schema(
             required: true
         },
         video_url: {
-            type: String,
-            required: false
+            type: String
         },
         active: {
             type: Boolean,
@@ -26,7 +24,7 @@ const lessonSchema = new Schema(
         },
         slug: {
             type: String,
-            require: false
+            require: true
         },
         access: {
             type: String,
@@ -43,6 +41,6 @@ const lessonSchema = new Schema(
     { timestamps: true }
 );
 
-const Lesson = mongoose.models.Lesson ?? mongoose.model('Lesson', lessonSchema);
+const Lesson = mongoose.models?.Lesson ?? mongoose.model('Lesson', lessonSchema);
 
 export default Lesson;
