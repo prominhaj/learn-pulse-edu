@@ -18,21 +18,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ModuleList } from "./module-list";
+import { reOrderModules } from "@/app/actions/module";
 
 const formSchema = z.object({
   title: z.string().min(1),
 });
-const initialModules = [
-  {
-    id: "1",
-    title: "Module 1",
-    isPublished: true,
-  },
-  {
-    id: "2",
-    title: "Module 2",
-  },
-];
+
 export const ModulesForm = ({ initialData, courseId }) => {
   const [modules, setModules] = useState(initialData);
   const router = useRouter();
@@ -68,12 +59,11 @@ export const ModulesForm = ({ initialData, courseId }) => {
   };
 
   const onReorder = async (updateData) => {
-    console.log({ updateData });
     try {
+      reOrderModules(updateData);
       setIsUpdating(true);
-
-      toast.success("Chapters reordered");
       router.refresh();
+      toast.success("Chapters reordered");
     } catch {
       toast.error("Something went wrong");
     } finally {
