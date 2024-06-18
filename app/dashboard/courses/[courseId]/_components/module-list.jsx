@@ -61,7 +61,7 @@ export const ModuleList = ({ items, onReorder, onEdit }) => {
                   <div
                     className={cn(
                       "flex items-center gap-x-2 rounded-md mb-4 text-sm dark:text-slate-300 bg-slate-200 dark:bg-gray-700/80 border-slate-200 dark:border-gray-600 border text-slate-700",
-                      module.isPublished &&
+                      module?.active &&
                       "bg-sky-100 dark:bg-sky-900 border-sky-200 dark:border-sky-700 text-sky-700 dark:text-sky-400"
                     )}
                     ref={provided.innerRef}
@@ -69,8 +69,8 @@ export const ModuleList = ({ items, onReorder, onEdit }) => {
                   >
                     <div
                       className={cn(
-                        "px-2 py-3 border-r border-r-slate-200 dark:border-r-gray-500 hover:bg-slate-300 rounded-l-md transition",
-                        module.isPublished &&
+                        "px-2 py-3 border-r border-r-slate-200 dark:border-r-gray-500 dark:hover:bg-gray-800 hover:bg-slate-300 rounded-l-md transition",
+                        module?.active &&
                         "border-r-sky-200 dark:border-r-sky-800 hover:bg-sky-200 dark:hover:bg-sky-800"
                       )}
                       {...provided.dragHandleProps}
@@ -82,10 +82,10 @@ export const ModuleList = ({ items, onReorder, onEdit }) => {
                       <Badge
                         className={cn(
                           "bg-gray-500 dark:bg-gray-300",
-                          module.isPublished && "bg-emerald-600 dark:bg-emerald-400"
+                          module?.active && "bg-emerald-600 dark:bg-emerald-400"
                         )}
                       >
-                        {module.isPublished ? "Published" : "Draft"}
+                        {module?.active ? "Published" : "Draft"}
                       </Badge>
                       <Pencil
                         onClick={() => onEdit(module.id)}

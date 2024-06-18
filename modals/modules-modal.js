@@ -7,12 +7,12 @@ const moduleSchema = new Schema(
             required: true
         },
         description: {
-            type: String,
-            required: true
+            type: String
         },
-        status: {
+        active: {
             type: String,
-            required: true
+            required: true,
+            default: false
         },
         slug: {
             type: String,
@@ -28,7 +28,12 @@ const moduleSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Lesson'
             }
-        ]
+        ],
+        order: {
+            type: Number,
+            required: true,
+            default: 0
+        }
     },
     { timestamps: true }
 );

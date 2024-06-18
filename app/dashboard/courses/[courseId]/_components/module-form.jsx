@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -35,7 +34,7 @@ const initialModules = [
   },
 ];
 export const ModulesForm = ({ initialData, courseId }) => {
-  const [modules, setModules] = useState(initialModules);
+  const [modules, setModules] = useState(initialData);
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -83,7 +82,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
   };
 
   const onEdit = (id) => {
-    router.push(`/dashboard/courses/1/modules/${1}`);
+    router.push(`/dashboard/courses/${courseId}/modules/${1}`);
   };
 
   return (
