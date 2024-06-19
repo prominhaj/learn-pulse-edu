@@ -1,4 +1,4 @@
-import { CircleDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
+import { BookOpen, CircleDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
 import { CategoryForm } from './_components/category-form';
 import { DescriptionForm } from './_components/description-form';
 import { ModulesForm } from './_components/module-form';
@@ -14,6 +14,7 @@ import { getCategories } from '@/queries/categories';
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import { getImage } from '@/lib/getImage';
 import { SubTitleForm } from './_components/sub-title-form';
+import { LearningForm } from './_components/learning-form';
 
 const EditCoursePage = async ({ params: { courseId } }) => {
     const course = await getCourseDetails(courseId, true);
@@ -89,6 +90,13 @@ const EditCoursePage = async ({ params: { courseId } }) => {
                                 <h2 className='text-xl'>Sell you course</h2>
                             </div>
                             <PriceForm initialData={course} courseId={courseId} />
+                        </div>
+                        <div>
+                            <div className='flex items-center gap-x-2'>
+                                <IconBadge icon={BookOpen} />
+                                <h2 className='text-xl'>Course Learning</h2>
+                            </div>
+                            <LearningForm initialData={course?.learning} />
                         </div>
                     </div>
                 </div>
