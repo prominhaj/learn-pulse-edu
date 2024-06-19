@@ -96,7 +96,7 @@ const EditCoursePage = async ({ params: { courseId } }) => {
                                 <IconBadge icon={BookOpen} />
                                 <h2 className='text-xl'>Course Learning</h2>
                             </div>
-                            <LearningForm initialData={course?.learning} />
+                            <LearningForm initialData={course?.learning} courseId={courseId} />
                         </div>
                     </div>
                 </div>

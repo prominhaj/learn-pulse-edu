@@ -19,3 +19,17 @@ export const updateCourse = async (courseId, updatedData) => {
         throw new Error(error);
     }
 };
+
+// Learning
+
+export const addNewLearning = async (learningData, courseId) => {
+    try {
+        const course = await Course.findById(courseId);
+        course.learning.push(learningData);
+        course.save();
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+export const updateLearning = async () => {};
