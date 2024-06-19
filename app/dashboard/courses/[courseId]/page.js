@@ -12,6 +12,8 @@ import { ImageForm } from './_components/image-form';
 import { getCourseDetails } from '@/queries/courses';
 import { getCategories } from '@/queries/categories';
 import { replaceMongoIdInArray } from '@/lib/convertData';
+import { getImage } from '@/lib/getImage';
+import { SubTitleForm } from './_components/sub-title-form';
 
 const EditCoursePage = async ({ params: { courseId } }) => {
     const course = await getCourseDetails(courseId, true);
@@ -27,6 +29,9 @@ const EditCoursePage = async ({ params: { courseId } }) => {
     });
 
     const modules = replaceMongoIdInArray(course?.modules).sort((a, b) => a?.order - b?.order);
+
+    // Image Placeholder
+    const { base64, img } = await getImage(course?.thumbnail?.url);
 
     return (
         <>
@@ -50,11 +55,17 @@ const EditCoursePage = async ({ params: { courseId } }) => {
                             }}
                             courseId={courseId}
                         />
+                        <SubTitleForm
+                            initialData={{
+                                sub_title: course?.sub_title
+                            }}
+                            courseId={courseId}
+                        />
                         <DescriptionForm
                             initialData={{ description: course?.description }}
                             courseId={courseId}
                         />
-                        <ImageForm initialData={course?.thumbnail} courseId={courseId} />
+                        <ImageForm initialData={{ img, base64 }} courseId={courseId} />
                         <CategoryForm
                             initialData={course?.category?._id.toString()}
                             options={modifiedCategories}

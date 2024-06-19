@@ -1,22 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-// import axios from "axios";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { UploadDropzone } from "@/components/globals/FileUpload/FileUpload";
 
-const formSchema = z.object({
-  imageUrl: z.string().min(1, {
-    message: "Image is required",
-  }),
-});
 
 export const ImageForm = ({ initialData, courseId }) => {
   const router = useRouter();
@@ -61,13 +52,13 @@ export const ImageForm = ({ initialData, courseId }) => {
         Course Image
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing && <>Cancel</>}
-          {!isEditing && !initialData?.url && (
+          {!isEditing && !initialData?.img?.src && (
             <>
               <PlusCircle className="w-4 h-4 mr-2" />
               Add an image
             </>
           )}
-          {!isEditing && initialData?.url && (
+          {!isEditing && initialData?.img?.src && (
             <>
               <Pencil className="w-4 h-4 mr-2" />
               Edit image
@@ -76,18 +67,19 @@ export const ImageForm = ({ initialData, courseId }) => {
         </Button>
       </div>
       {!isEditing &&
-        (!initialData?.url ? (
+        (!initialData?.img?.src ? (
           <div className="flex items-center justify-center mt-2 rounded-md h-60 bg-slate-200 dark:bg-gray-800">
             <ImageIcon className="w-10 h-10 text-slate-500" />
           </div>
         ) : (
           <div className="relative mt-2 aspect-video">
             <Image
+              {...initialData?.img}
               alt="Upload"
-              fill
-              sizes="(min-width: 808px) 50vw, 100vw"
-              className="object-cover rounded-md aspect-video"
-              src={initialData?.url}
+              className="object-cover w-full h-full rounded-md aspect-video"
+              placeholder='blur'
+              blurDataURL={initialData?.base64}
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
               priority
             />
           </div>
