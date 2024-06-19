@@ -1,16 +1,20 @@
 import EnrollButton from "@/components/globals/EnrollButton/EnrollButton";
 import { buttonVariants } from "@/components/ui/button";
+import { getImage } from "@/lib/getImage";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-const CourseInfo = ({ course, alreadyEnrolledCourse }) => {
+const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
     const {
         id,
         title,
         sub_title,
         thumbnail: { url }
     } = course;
+
+    // Image Placeholder
+    const { base64, img } = await getImage(url);
 
     return (
         <div className='overflow-x-hidden'>
@@ -52,14 +56,13 @@ const CourseInfo = ({ course, alreadyEnrolledCourse }) => {
                             <div className='relative mx-auto'>
                                 <div className='lg:max-w-3xl lg:mx-auto'>
                                     <Image
-                                        className='w-full h-full rounded-lg'
-                                        width={800}
-                                        height={500}
-                                        src={url}
+                                        {...img}
                                         alt={title}
-                                        quality={100}
+                                        className="w-full h-full rounded-lg"
                                         placeholder='blur'
-                                        blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvXd1PQAGwgKUFYvW8AAAAABJRU5ErkJggg=='
+                                        quality={100}
+                                        blurDataURL={base64}
+                                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                                         priority
                                     />
                                 </div>

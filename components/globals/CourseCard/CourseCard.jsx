@@ -8,11 +8,15 @@ import { getUserData } from "@/lib/getUserData";
 import { hasEnrollmentForCourse } from "@/queries/enrollments";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { getImage } from "@/lib/getImage";
 
 const CourseCard = async ({ course }) => {
     const { id, title, thumbnail: { url }, price, category, modules } = course;
     const user = await getUserData();
     const isEnroll = await hasEnrollmentForCourse(id, user?.id);
+
+    // Image Placeholder
+    const { base64, img } = await getImage(url);
 
     return (
         <>
@@ -21,12 +25,12 @@ const CourseCard = async ({ course }) => {
                     <div>
                         <div className='relative w-full overflow-hidden rounded-md aspect-video'>
                             <Image
-                                src={url}
+                                {...img}
                                 alt={title}
-                                className='object-cover'
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                priority
-                                fill
+                                className="object-cover"
+                                placeholder='blur'
+                                blurDataURL={base64}
+                                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                             />
                         </div>
                         <div className='flex flex-col pt-2'>

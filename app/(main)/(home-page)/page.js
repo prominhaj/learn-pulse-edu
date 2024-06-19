@@ -1,6 +1,6 @@
 import HeroSection from '../_components/HeroSection/HeroSection';
 
-const HomePage = () => {
+const HomePage = async () => {
     return (
         <>
             <HeroSection />
