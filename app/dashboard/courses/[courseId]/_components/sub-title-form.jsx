@@ -56,7 +56,11 @@ export const SubTitleForm = ({ initialData = {}, courseId }) => {
                     )}
                 </Button>
             </div>
-            {!isEditing && <p className="mt-2 text-sm">{initialData.sub_title}</p>}
+            {!isEditing && initialData?.sub_title ?
+                <p className="mt-2 text-sm">{initialData.sub_title}</p>
+                :
+                <p className="italic text-center text-muted-foreground">No sub title add</p>
+            }
             {isEditing && (
                 <Form {...form}>
                     <form

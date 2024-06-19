@@ -2,8 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,15 +17,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { VideoPlayer } from "@/app/(player)/[course_slug]/[lesson]/_components/video-player";
-
-const formSchema = z.object({
-  url: z.string().min(1, {
-    message: "Required",
-  }),
-  duration: z.string().min(1, {
-    message: "Required",
-  }),
-});
+import { lessonVideoSchema } from "@/lib/FormValidation/lesson/lesson";
+import VideoUploader from "@/components/globals/VidoeUploder/VideoUploader";
 
 export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
   const router = useRouter();
@@ -36,13 +27,14 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(lessonVideoSchema),
     defaultValues: initialData,
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
+    console.log(values);
     try {
       toast.success("Lesson updated");
       toggleEdit();
@@ -69,24 +61,36 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
       </div>
       {!isEditing && (
         <>
-          <p className="w-full mt-2 overflow-hidden text-sm text-wrap">
-            https://www.youtube.com/embed/Cn4G2lZ_g2I?si=8FxqU8_NU6rYOrG1
-          </p>
-          <div className="mt-6">
-            <VideoPlayer />
-          </div>
+          {
+            initialData?.url ? <p className="w-full mt-2 overflow-hidden text-sm text-wrap">
+              {initialData?.url}
+            </p> : <p className="italic text-center text-muted-foreground">
+              No video URL add
+            </p>
+          }
+
+          {
+            initialData?.url && <div className="mt-6">
+              <VideoPlayer url={initialData?.url} />
+            </div>
+          }
         </>
       )}
-      {isEditing && (
+
+      {/* Video Uploader */}
+      <div className="mt-4">
+        <VideoUploader />
+      </div>
+
+      {/* {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="mt-4 space-y-4"
           >
-            {/* url */}
             <FormField
               control={form.control}
-              name="url"
+              name="video_url"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Video URL</FormLabel>
@@ -101,7 +105,6 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
                 </FormItem>
               )}
             />
-            {/* duration */}
             <FormField
               control={form.control}
               name="duration"
@@ -126,7 +129,7 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
             </div>
           </form>
         </Form>
-      )}
+      )} */}
     </div>
   );
 };

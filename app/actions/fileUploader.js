@@ -13,7 +13,8 @@ const streamUpload = (fileStream, folder) => {
             {
                 folder: `learn-pulse-edu/${folder}`,
                 resource_type: 'auto',
-                unique_filename: true
+                unique_filename: true,
+                chunk_size: 6000000
             },
             (error, result) => {
                 if (error) {

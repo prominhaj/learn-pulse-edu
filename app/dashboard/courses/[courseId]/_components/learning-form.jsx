@@ -98,7 +98,7 @@ export const LearningForm = ({ initialData, courseId }) => {
             </div>
             <div>
                 {
-                    learnings?.map((learning, index) => (
+                    learnings.length > 0 ? learnings?.map((learning, index) => (
                         <div key={index} className="flex items-center justify-between gap-3 space-y-2">
                             <li className="list-disc">
                                 {learning}
@@ -112,7 +112,7 @@ export const LearningForm = ({ initialData, courseId }) => {
                                 </button>
                             </div>
                         </div>
-                    ))
+                    )) : <p className="italic text-center text-muted-foreground">No learning please add</p>
                 }
                 {isEditing && (
                     <LearningAddForm handler={handleEditLearning} error={error} defaultValue={oldLearning} />
