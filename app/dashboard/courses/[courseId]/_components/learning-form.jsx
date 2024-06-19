@@ -1,16 +1,15 @@
 "use client";
-import { addNewLearning, deleteLearning } from "@/app/actions/course";
-import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
+import { addNewLearning, deleteLearning, updateLearning } from "@/app/actions/course";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 import { Delete, Pencil, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import LearningAddForm from "./LearningAddForm";
 
 export const LearningForm = ({ initialData, courseId }) => {
     const [learnings, setLearnings] = useState(initialData);
+    const [oldLearning, setOldLearning] = useState(null);
     const [error, setError] = useState(null);
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
@@ -39,6 +38,33 @@ export const LearningForm = ({ initialData, courseId }) => {
             toast.error("Something Went Wrong")
         }
         toggleAdd();
+    }
+
+    // Handle Edit Learning
+    const editLearningMode = (index) => {
+        setOldLearning(learnings[index])
+        toggleEdit()
+    }
+
+    const handleEditLearning = async (formData) => {
+        setError(null)
+        try {
+            const newLearning = formData.get("learning");
+
+            // validate Form
+            if (!newLearning) {
+                setError("Please Enter Learning")
+                return;
+            }
+
+            const updatedLearning = await updateLearning(newLearning, oldLearning, courseId);
+            setLearnings(updatedLearning)
+            router.refresh()
+            toggleEdit()
+            toast.success("Learning updated successfully")
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
     }
 
     // Delete Learning
@@ -78,7 +104,7 @@ export const LearningForm = ({ initialData, courseId }) => {
                                 {learning}
                             </li>
                             <div className="flex items-center gap-2">
-                                <button onClick={toggleEdit}>
+                                <button onClick={() => editLearningMode(index)}>
                                     <Pencil className="w-5 h-5" />
                                 </button>
                                 <button onClick={() => handleDeleteLearning(learning)}>
@@ -88,19 +114,11 @@ export const LearningForm = ({ initialData, courseId }) => {
                         </div>
                     ))
                 }
+                {isEditing && (
+                    <LearningAddForm handler={handleEditLearning} error={error} defaultValue={oldLearning} />
+                )}
                 {isAdd && (
-                    <form action={handleAddLearning} className="flex items-start gap-2 mt-4">
-                        <div className="w-full">
-                            <Input className={cn(error && "border-red-500")} name="learning" type="text" placeholder="Add course learning" />
-                            {
-                                error &&
-                                <p className="text-red-500"><small>{error}</small></p>
-                            }
-                        </div>
-                        <SubmitButton>
-                            Save
-                        </SubmitButton>
-                    </form>
+                    <LearningAddForm handler={handleAddLearning} error={error} />
                 )}
             </div>
         </div>
