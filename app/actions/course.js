@@ -33,3 +33,14 @@ export const addNewLearning = async (learningData, courseId) => {
 };
 
 export const updateLearning = async () => {};
+
+export const deleteLearning = async (deleteItem, courseId) => {
+    try {
+        const course = await Course.findById(courseId);
+        course.learning.pull(deleteItem);
+        course.save();
+        return JSON.parse(JSON.stringify(course?.learning));
+    } catch (error) {
+        throw new Error(error);
+    }
+};

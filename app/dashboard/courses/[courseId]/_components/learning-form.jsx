@@ -1,5 +1,5 @@
 "use client";
-import { addNewLearning } from "@/app/actions/course";
+import { addNewLearning, deleteLearning } from "@/app/actions/course";
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,6 +41,18 @@ export const LearningForm = ({ initialData, courseId }) => {
         toggleAdd();
     }
 
+    // Delete Learning
+    const handleDeleteLearning = async (learning) => {
+        try {
+            const updatedLearning = await deleteLearning(learning, courseId);
+            setLearnings(updatedLearning)
+            router.refresh()
+            toast.success("Learning deleted successfully")
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
+    }
+
     return (
         <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2 text-base font-medium">
@@ -69,7 +81,7 @@ export const LearningForm = ({ initialData, courseId }) => {
                                 <button onClick={toggleEdit}>
                                     <Pencil className="w-5 h-5" />
                                 </button>
-                                <button>
+                                <button onClick={() => handleDeleteLearning(learning)}>
                                     <Delete className="w-6 h-6" />
                                 </button>
                             </div>
