@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -40,7 +40,9 @@ export const QuizSetForm = ({
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => {
+    setIsEditing((current) => !current);
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -51,15 +53,15 @@ export const QuizSetForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  const onSubmit = useCallback(async (values) => {
     try {
-      toast.success("Course updated");
+      toast.success("Quiz Set updated");
       toggleEdit();
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
     }
-  };
+  }, [router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
@@ -86,7 +88,7 @@ export const QuizSetForm = ({
           {"No quiz set selected"}
         </p>
       )}
-      {console.log({ options })}
+
       {isEditing && (
         <Form {...form}>
           <form
