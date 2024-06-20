@@ -36,13 +36,15 @@ const EditCoursePage = async ({ params: { courseId } }) => {
 
     return (
         <>
-            <AlertBanner
-                label='This course is unpublished. It will not be visible in the course.'
-                variant='warning'
-            />
+            {!course?.active && (
+                <AlertBanner
+                    label='This course is unpublished. It will not be visible in the course.'
+                    variant='warning'
+                />
+            )}
             <div className='p-6'>
                 <div className='flex items-center justify-end'>
-                    <CourseActions />
+                    <CourseActions active={course?.active} courseId={courseId} />
                 </div>
                 <div className='grid grid-cols-1 gap-6 mt-16 md:grid-cols-2'>
                     <div>

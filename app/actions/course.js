@@ -20,6 +20,17 @@ export const updateCourse = async (courseId, updatedData) => {
     }
 };
 
+export const coursePublished = async (courseId) => {
+    try {
+        const course = await Course.findById(courseId);
+        await Course.findByIdAndUpdate(courseId, {
+            active: !course?.active
+        });
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 // Learning
 
 export const addNewLearning = async (learningData, courseId) => {
