@@ -4,7 +4,7 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import VideoUploader from "@/components/globals/VidoeUploder/VideoUploader";
-import Player from "@/components/globals/Player/Player";
+import Player from 'next-video/player';
 
 export const VideoUrlForm = ({ initialData, lessonId }) => {
   const router = useRouter();
@@ -32,12 +32,15 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
       {!isEditing && (
         videoUrl ? (
           <div className="w-full mt-4 h-60">
-            <Player className="object-cover w-full h-full" source={videoUrl} />
+            <Player
+              className="object-cover w-full h-full"
+              src={videoUrl}
+            />
           </div>
         ) : (
-          <p className="italic text-center text-muted-foreground">
-            No video added
-          </p>
+          <div className="mt-4">
+            <VideoUploader lessonId={lessonId} onVideoUrl={setVideoUrl} />
+          </div>
         )
       )}
 

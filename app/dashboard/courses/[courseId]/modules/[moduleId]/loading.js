@@ -1,7 +1,11 @@
-import React from 'react';
+import Loading from '@/components/globals/Loading/Loading';
 
 const loading = () => {
-    return <div>loading...</div>;
+    return (
+        <>
+            <Loading />
+        </>
+    );
 };
 
 export default loading;

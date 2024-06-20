@@ -13,7 +13,7 @@ const CategorySection = async () => {
                     <SectionTitle>Categories</SectionTitle>
 
                     <Link
-                        href={'/courses'}
+                        href='/courses'
                         className='flex items-center gap-1 text-sm font-medium hover:opacity-80'
                     >
                         Browse All <ArrowRightIcon className='w-4 h-4' />
@@ -21,7 +21,7 @@ const CategorySection = async () => {
                 </div>
 
                 <div className='grid justify-center grid-cols-2 gap-4 mx-auto md:grid-cols-3 2xl:grid-cols-4'>
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                         <CategoryCard key={category.id} category={category} />
                     ))}
                 </div>

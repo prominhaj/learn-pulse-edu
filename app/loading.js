@@ -1,6 +1,6 @@
 import Loading from '@/components/globals/Loading/Loading';
 
-const DashBoardLoading = () => {
+const RootLoadingPage = () => {
     return (
         <>
             <Loading />
@@ -8,4 +8,4 @@ const DashBoardLoading = () => {
     );
 };
 
-export default DashBoardLoading;
+export default RootLoadingPage;

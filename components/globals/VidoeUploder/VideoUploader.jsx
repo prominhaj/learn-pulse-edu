@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
+import Spinner from "../Loading/Spinner";
 
 const VideoUploader = ({ lessonId, onVideoUrl }) => {
     const router = useRouter();
@@ -43,7 +44,7 @@ const VideoUploader = ({ lessonId, onVideoUrl }) => {
                     'Content-Type': 'multipart/form-data',
                 },
                 onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    const percentCompleted = Math.round((progressEvent?.loaded * 100) / progressEvent?.total);
                     setUploadProgress(percentCompleted);
                 },
             });
@@ -67,14 +68,14 @@ const VideoUploader = ({ lessonId, onVideoUrl }) => {
     return (
         <>
             <form onSubmit={handleSubmit} className="grid gap-4">
-                {
-                    isUploading ? <Skeleton className="w-full h-32 rounded-lg" /> : (
-                        <div
-                            onDragOver={handleDragOver}
-                            onDrop={handleDrop}
-                            className="relative flex items-center justify-center h-32 transition-colors border border-dashed rounded-lg border-muted-foreground hover:border-primary"
-                        >
-                            {file ? (
+                <div
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    className="relative flex items-center justify-center h-32 transition-colors border border-dashed rounded-lg border-muted-foreground hover:border-primary"
+                >
+                    {
+                        isUploading ? <Spinner /> : (
+                            file ? (
                                 <div className="text-center">
                                     <Button onClick={() => setFile(null)} className="absolute z-20 top-1 right-1" size="sm">
                                         <Trash className="w-4 h-4" />
@@ -87,18 +88,17 @@ const VideoUploader = ({ lessonId, onVideoUrl }) => {
                                     <UploadIcon className="w-8 h-8 text-muted-foreground" />
                                     <p className="mt-2 text-muted-foreground">Drag and drop a video file or click to select</p>
                                 </div>
-                            )}
-                            <input
-                                type="file"
-                                accept="video/*"
-                                disabled={file}
-                                className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
-                                onChange={handleFileChange}
-                            />
-                        </div>
-                    )
-                }
-
+                            )
+                        )
+                    }
+                    <input
+                        type="file"
+                        accept="video/*"
+                        disabled={file}
+                        className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                        onChange={handleFileChange}
+                    />
+                </div>
                 <div className="grid gap-2">
                     <Progress value={uploadProgress} />
                     <Button type="submit" disabled={!file || isUploading}>

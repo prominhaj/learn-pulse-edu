@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { formatMyDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { GraduationCap } from "lucide-react";
 import { Star } from "lucide-react";

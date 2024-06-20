@@ -56,7 +56,7 @@ const DashboardPage = async () => {
     }
 
     const { courses, totalEnroll, totalSalePrice, enrollByInstructorReports, recentEnrollments } =
-        await fetchDashboardData(user.id);
+        await fetchDashboardData(user?.id);
 
     return (
         <div className='p-6 font-inter'>
@@ -79,12 +79,12 @@ const DashboardPage = async () => {
                         Recent Enrollments
                     </CardTitle>
                     <div className='grid grid-cols-1 gap-4 pt-5'>
-                        {recentEnrollments.length === 0 ? (
+                        {recentEnrollments?.length === 0 ? (
                             <p className='text-lg font-medium text-center text-muted-foreground'>
                                 No Recent Enroll Course
                             </p>
                         ) : (
-                            recentEnrollments.map((enroll) => (
+                            recentEnrollments?.map((enroll) => (
                                 <RecentEnrollCard key={enroll.id} enroll={enroll} />
                             ))
                         )}
