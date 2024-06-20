@@ -1,7 +1,10 @@
 'use server';
 
 import Course from '@/modals/courses-modal';
+import Lesson from '@/modals/lessons-modal';
+import Module from '@/modals/modules-modal';
 import { createCourse } from '@/queries/courses';
+import { deleteFile } from './fileUploader';
 
 export const addNewCourse = async (data) => {
     try {
@@ -28,6 +31,56 @@ export const coursePublished = async (courseId) => {
         });
     } catch (error) {
         throw new Error(error);
+    }
+};
+
+export const deleteCourse = async (courseId) => {
+    try {
+        // Fetch the course along with its modules and lessons in one go
+        const course = await Course.findById(courseId).populate({
+            path: 'modules',
+            populate: {
+                path: 'lessonIds'
+            }
+        });
+
+        if (!course) {
+            throw new Error('Course not found');
+        }
+
+        const modules = course.modules;
+
+        // Delete the course thumbnail if it exists
+        if (course.thumbnail?.public_id) {
+            await deleteFile(course.thumbnail.public_id, 'image');
+        }
+
+        // Delete associated files and documents
+        await Promise.all(
+            modules.map(async (module) => {
+                const lessons = module.lessonIds;
+
+                // Delete lesson videos if they exist
+                await Promise.all(
+                    lessons.map(async (lesson) => {
+                        if (lesson.video?.public_id) {
+                            await deleteFile(lesson.video.public_id);
+                        }
+                    })
+                );
+
+                // Delete all lessons in the module
+                await Lesson.deleteMany({ _id: { $in: lessons.map((lesson) => lesson._id) } });
+
+                // Delete the module itself
+                await Module.findByIdAndDelete(module._id);
+            })
+        );
+
+        // Delete the course itself
+        await Course.findByIdAndDelete(courseId);
+    } catch (error) {
+        throw new Error(error.message);
     }
 };
 

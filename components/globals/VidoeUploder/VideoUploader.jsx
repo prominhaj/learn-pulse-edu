@@ -96,6 +96,7 @@ const VideoUploader = ({ lessonId, onVideoUrl, initialData, toggleEdit, setIsUpl
                 <input
                     type="file"
                     accept="video/*"
+                    multiple={false}
                     disabled={file}
                     className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
                     onChange={handleFileChange}
