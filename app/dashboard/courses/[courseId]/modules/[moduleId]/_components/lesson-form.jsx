@@ -1,6 +1,11 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { Loader2, PlusCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,10 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Loader2, PlusCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 import { LessonList } from "./lesson-list";
 import { createModuleLessonSchema } from "@/lib/FormValidation/course/courseSchema";
 import { getSlug } from "@/lib/convertData";
@@ -22,49 +23,49 @@ import { createLesson, reOrderLesson } from "@/app/actions/lesson";
 
 export const LessonForm = ({ initialData, moduleId, courseId }) => {
   const [lessons, setLessons] = useState(initialData);
-  const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const toggleCreating = () => setIsCreating((current) => !current);
+  const router = useRouter();
+
+  const toggleCreating = useCallback(() => setIsCreating((prev) => !prev), []);
 
   const form = useForm({
     resolver: zodResolver(createModuleLessonSchema),
-    defaultValues: {
-      title: "",
-    },
+    defaultValues: { title: "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  const onSubmit = useCallback(async (values) => {
     try {
       const formData = new FormData();
-      formData.append("title", values?.title);
+      formData.append("title", values.title);
       formData.append("moduleId", moduleId);
-      formData.append("order", lessons?.length);
-      formData.append("slug", getSlug(values?.title));
+      formData.append("order", lessons.length);
+      formData.append("slug", getSlug(values.title));
 
       const lesson = await createLesson(formData);
 
-      setLessons((lessons) => [
-        ...lessons,
+      setLessons((prevLessons) => [
+        ...prevLessons,
         {
-          id: lesson?._id,
+          id: lesson._id,
           title: values.title,
         },
       ]);
+
       toast.success("Lesson created");
       toggleCreating();
       router.refresh();
     } catch (error) {
       toast.error(error.message);
     }
-  };
+  }, [lessons.length, moduleId, router, toggleCreating]);
 
-  const onReorder = async (updateData) => {
+  const onReorder = useCallback(async (updateData) => {
     try {
-      reOrderLesson(updateData);
+      await reOrderLesson(updateData);
       setIsUpdating(true);
       router.refresh();
       toast.success("Lesson reordered");
@@ -73,7 +74,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
     } finally {
       setIsUpdating(false);
     }
-  };
+  }, [router]);
 
   return (
     <div className="relative p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
@@ -85,23 +86,16 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
       <div className="flex items-center justify-between font-medium">
         Module Lessons
         <Button variant="ghost" onClick={toggleCreating}>
-          {isCreating ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <PlusCircle className="w-4 h-4 mr-2" />
-              Add a chapter
-            </>
-          )}
+          {isCreating ? "Cancel" : <>
+            <PlusCircle className="w-4 h-4 mr-2" />
+            Add a chapter
+          </>}
         </Button>
       </div>
 
       {isCreating && (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control}
               name="title"
@@ -124,20 +118,17 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
           </form>
         </Form>
       )}
+
       {!isCreating && (
-        <div
-          className={cn(
-            "text-sm mt-2",
-            !lessons?.length && "text-slate-500 italic"
+        <div className={cn("text-sm mt-2", !lessons.length && "text-slate-500 italic")}>
+          {!lessons.length ? "No module" : (
+            <LessonList
+              courseId={courseId}
+              moduleId={moduleId}
+              onReorder={onReorder}
+              items={lessons}
+            />
           )}
-        >
-          {!lessons?.length && "No module"}
-          <LessonList
-            courseId={courseId}
-            moduleId={moduleId}
-            onReorder={onReorder}
-            items={lessons || []}
-          />
         </div>
       )}
       {!isCreating && (

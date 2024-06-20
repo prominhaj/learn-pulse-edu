@@ -62,7 +62,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
                     <div>
                         <div className='flex items-center gap-x-2'>
                             {/* <IconBadge icon={Video} />
-              <h2 className="text-xl">Add a video</h2> */}
+                            <h2 className='text-xl'>Add a video</h2> */}
                         </div>
                         {/* <ChapterVideoForm
               initialData={chapter}
