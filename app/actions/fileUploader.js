@@ -45,7 +45,7 @@ export const fileUploader = async (formData, fileName, folder, oldPublicId = nul
 
         // Optionally delete the old file
         if (oldPublicId) {
-            await cloudinary.uploader.destroy(oldPublicId, { resource_type: 'image' });
+            await cloudinary.uploader.destroy(oldPublicId, { resource_type: 'video' });
         }
 
         return uploadResult;

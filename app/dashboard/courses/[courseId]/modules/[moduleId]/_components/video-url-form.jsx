@@ -1,24 +1,22 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import VideoUploader from "@/components/globals/VidoeUploder/VideoUploader";
 import Player from 'next-video/player';
 
 export const VideoUrlForm = ({ initialData, lessonId }) => {
-  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [videoUrl, setVideoUrl] = useState(initialData?.url);
+  const [isUploading, setIsUploading] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
-
 
   return (
     <div className="p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
         Video Upload
-        <Button variant="ghost" onClick={toggleEdit}>
+        <Button disabled={isUploading} variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
@@ -39,7 +37,14 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
           </div>
         ) : (
           <div className="mt-4">
-            <VideoUploader lessonId={lessonId} onVideoUrl={setVideoUrl} />
+            <VideoUploader
+              lessonId={lessonId}
+              onVideoUrl={setVideoUrl}
+              initialData={initialData}
+              toggleEdit={toggleEdit}
+              setIsUploading={setIsUploading}
+              isUploading={isUploading}
+            />
           </div>
         )
       )}
@@ -47,7 +52,14 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
       {/* Video Uploader */}
       {isEditing && (
         <div className="mt-4">
-          <VideoUploader lessonId={lessonId} onVideoUrl={setVideoUrl} />
+          <VideoUploader
+            lessonId={lessonId}
+            onVideoUrl={setVideoUrl}
+            initialData={initialData}
+            toggleEdit={toggleEdit}
+            setIsUploading={setIsUploading}
+            isUploading={isUploading}
+          />
         </div>
       )}
     </div>

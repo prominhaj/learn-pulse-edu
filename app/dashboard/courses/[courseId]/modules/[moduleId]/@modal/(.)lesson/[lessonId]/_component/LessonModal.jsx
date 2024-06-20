@@ -14,7 +14,7 @@ const LessonModal = ({ courseId, moduleId, lesson }) => {
     return (
         <Dialog defaultOpen={true} open={true} onOpenChange={modalClose}>
             <DialogContent
-                className='sm:max-w-[1200px] w-[96%] overflow-y-auto max-h-[90vh]'
+                className='sm:max-w-[1200px] w-[96%] max-h-[90vh]'
                 onInteractOutside={(e) => {
                     e.preventDefault();
                 }}

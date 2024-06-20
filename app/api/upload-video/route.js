@@ -6,9 +6,15 @@ export const POST = async (request) => {
     try {
         const formData = await request.formData();
         const lessonId = formData.get('lessonId');
+        const public_id = formData.get('public_id');
 
         // Video upload
-        const videoUpload = await fileUploader(formData, 'video_file', 'Videos/Courses');
+        const videoUpload = await fileUploader(
+            formData,
+            'video_file',
+            'Videos/Courses',
+            public_id && public_id
+        );
 
         const videoUrl = {
             duration: videoUpload?.duration?.toFixed(0),

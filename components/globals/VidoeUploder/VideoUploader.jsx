@@ -5,15 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import Spinner from "../Loading/Spinner";
 
-const VideoUploader = ({ lessonId, onVideoUrl }) => {
+const VideoUploader = ({ lessonId, onVideoUrl, initialData, toggleEdit, setIsUploading, isUploading }) => {
     const router = useRouter();
     const [file, setFile] = useState(null);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [isUploading, setIsUploading] = useState(false);
 
     // DragOver and Drag
     const handleDragOver = (e) => {
@@ -37,6 +35,7 @@ const VideoUploader = ({ lessonId, onVideoUrl }) => {
         const formData = new FormData();
         formData.append('video_file', file);
         formData.append('lessonId', lessonId);
+        formData.append('public_id', initialData?.public_id)
 
         try {
             const response = await axios.post('/api/upload-video', formData, {
@@ -56,6 +55,9 @@ const VideoUploader = ({ lessonId, onVideoUrl }) => {
                 setFile(null)
                 setUploadProgress(0)
                 router.refresh()
+                if (initialData?.public_id) {
+                    toggleEdit()
+                }
             }
         } catch (error) {
             toast.error(error.message)
