@@ -1,13 +1,14 @@
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
-import { CourseActions } from "../../../_components/course-action";
 import { IconBadge } from "@/components/globals/IconBadge/IconBadge";
 import { LessonTitleForm } from "./lesson-title-form";
 import { LessonDescriptionForm } from "./lesson-description-form";
 import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
+import { LessonActions } from "./lesson-actions";
 
-const LessonModalContent = ({ courseId, lesson }) => {
+const LessonModalContent = ({ courseId, lesson, moduleId }) => {
+
     return (
         <div>
             <div className='flex items-center justify-between'>
@@ -20,7 +21,7 @@ const LessonModalContent = ({ courseId, lesson }) => {
                         Back to course setup
                     </Link>
                     <div className='flex items-center justify-end'>
-                        <CourseActions />
+                        <LessonActions active={lesson?.active} moduleId={moduleId} lessonId={lesson?.id} />
                     </div>
                 </div>
             </div>

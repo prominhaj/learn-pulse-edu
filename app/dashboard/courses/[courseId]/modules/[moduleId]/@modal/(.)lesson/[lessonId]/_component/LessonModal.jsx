@@ -8,6 +8,7 @@ const LessonModal = ({ courseId, moduleId, lesson }) => {
     const router = useRouter();
 
     const modalClose = () => {
+        router.refresh()
         router.back()
     }
 

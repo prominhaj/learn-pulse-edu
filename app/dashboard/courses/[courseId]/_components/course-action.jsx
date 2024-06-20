@@ -1,19 +1,21 @@
 "use client";
-
 import { Trash } from "lucide-react";
+import { SubmitActionBtn } from "./submit-action-btn";
 
-import { Button } from "@/components/ui/button";
-
-export const CourseActions = ({ isPublished = false }) => {
+export const CourseActions = ({ active, onActive, onDelete }) => {
   return (
     <div className="flex items-center gap-x-2">
-      <Button variant="outline" size="sm">
-        {isPublished ? "Unpublish" : "Publish"}
-      </Button>
+      <form action={onActive}>
+        <SubmitActionBtn variant="outline">
+          {active ? "UnPublish" : "Publish"}
+        </SubmitActionBtn>
+      </form>
 
-      <Button size="sm">
-        <Trash className="h-4 w-4" />
-      </Button>
+      <form action={onDelete}>
+        <SubmitActionBtn>
+          <Trash className="w-4 h-4" />
+        </SubmitActionBtn>
+      </form>
     </div>
   );
 };

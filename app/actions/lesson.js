@@ -39,3 +39,12 @@ export const updateLesson = async (lessonId, updateLesson) => {
         throw new Error(error);
     }
 };
+
+export const lessonPublished = async (lessonId) => {
+    try {
+        const lesson = await Lesson.findById(lessonId);
+        await Lesson.findByIdAndUpdate(lessonId, { active: !lesson.active }, { lean: true });
+    } catch (error) {
+        throw new Error(error);
+    }
+};
