@@ -1,7 +1,10 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,10 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/formatPrice";
 import { cn } from "@/lib/utils";
-import { Pencil } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 import { coursePriceSchema } from "@/lib/FormValidation/course/courseSchema";
 import { updateCourse } from "@/app/actions/course";
 
@@ -24,7 +23,9 @@ export const PriceForm = ({ initialData, courseId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => {
+    setIsEditing((prev) => !prev);
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(coursePriceSchema),
@@ -35,16 +36,17 @@ export const PriceForm = ({ initialData, courseId }) => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  // Handle form submission
+  const onSubmit = useCallback(async (values) => {
     try {
       await updateCourse(courseId, values);
       router.refresh();
       toast.success("Price has been updated");
       toggleEdit();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Failed to update price");
     }
-  };
+  }, [courseId, router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
@@ -61,22 +63,13 @@ export const PriceForm = ({ initialData, courseId }) => {
           )}
         </Button>
       </div>
-      {!isEditing && (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !initialData?.price && "text-slate-500 italic"
-          )}
-        >
+      {!isEditing ? (
+        <p className={cn("text-sm mt-2", !initialData?.price && "text-slate-500 italic")}>
           {initialData?.price ? formatPrice(initialData?.price) : "No price"}
         </p>
-      )}
-      {isEditing && (
+      ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control}
               name="price"
