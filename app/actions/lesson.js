@@ -16,6 +16,9 @@ export const createLesson = async (data) => {
         findModule.lessonIds.push(createdLesson._id);
         findModule.save();
 
+        // Revalidate the path
+        revalidatePath(`/dashboard/courses`);
+
         return JSON.parse(JSON.stringify(createdLesson));
     } catch (e) {
         throw new Error(e);

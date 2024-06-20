@@ -1,31 +1,31 @@
 "use client";
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import LessonModalContent from '../../../../_components/lesson-modal-content';
 
 const LessonModal = ({ courseId, moduleId, lesson }) => {
     const router = useRouter();
+    const pathname = usePathname();
+
+    const modalOpen = pathname === `/dashboard/courses/${courseId}/modules/${moduleId}/lesson/${lesson?.id}`;
 
     const modalClose = () => {
-        router.back()
-    }
+        router.push(`/dashboard/courses/${courseId}/modules/${moduleId}`);
+    };
 
     return (
-        <Dialog defaultOpen={true} open={true} onOpenChange={modalClose}>
+        <Dialog open={modalOpen} onOpenChange={modalClose}>
             <DialogContent
                 className='sm:max-w-[1200px] w-[96%] max-h-[90vh]'
-                onInteractOutside={(e) => {
-                    e.preventDefault();
-                }}
+                onInteractOutside={(e) => e.preventDefault()}
             >
-                <>
-                    <LessonModalContent
-                        lesson={lesson}
-                        courseId={courseId}
-                        moduleId={moduleId}
-                        modalClose={modalClose} />
-                </>
+                <LessonModalContent
+                    lesson={lesson}
+                    courseId={courseId}
+                    moduleId={moduleId}
+                    modalClose={modalClose}
+                />
             </DialogContent>
         </Dialog>
     );

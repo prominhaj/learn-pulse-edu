@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2, PlusCircle } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,7 +21,6 @@ import { getSlug } from "@/lib/convertData";
 import { createLesson, reOrderLesson } from "@/app/actions/lesson";
 
 export const LessonForm = ({ initialData, moduleId, courseId }) => {
-  const [lessons, setLessons] = useState(initialData);
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -42,26 +40,17 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("moduleId", moduleId);
-      formData.append("order", lessons.length);
+      formData.append("order", initialData?.length);
       formData.append("slug", getSlug(values.title));
 
-      const lesson = await createLesson(formData);
-
-      setLessons((prevLessons) => [
-        ...prevLessons,
-        {
-          id: lesson._id,
-          title: values.title,
-        },
-      ]);
+      await createLesson(formData);
 
       toast.success("Lesson created");
       toggleCreating();
-      router.refresh();
     } catch (error) {
       toast.error(error.message);
     }
-  }, [lessons.length, moduleId, router, toggleCreating]);
+  }, [initialData?.length, moduleId, toggleCreating]);
 
   const onReorder = useCallback(async (updateData) => {
     try {
@@ -120,13 +109,13 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
       )}
 
       {!isCreating && (
-        <div className={cn("text-sm mt-2", !lessons.length && "text-slate-500 italic")}>
-          {!lessons.length ? "No module" : (
+        <div className={cn("text-sm mt-2", !initialData.length && "text-slate-500 italic")}>
+          {!initialData.length ? "No module" : (
             <LessonList
               courseId={courseId}
               moduleId={moduleId}
               onReorder={onReorder}
-              items={lessons}
+              items={initialData}
             />
           )}
         </div>
