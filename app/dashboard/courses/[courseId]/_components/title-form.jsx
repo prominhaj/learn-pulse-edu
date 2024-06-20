@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { updateCourse } from "@/app/actions/course";
 import { courseTitleSchema } from "@/lib/FormValidation/course/courseSchema";
@@ -21,7 +21,7 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => setIsEditing((prev) => !prev), []);
 
   const form = useForm({
     resolver: zodResolver(courseTitleSchema),
@@ -30,39 +30,33 @@ export const TitleForm = ({ initialData = {}, courseId }) => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  const onSubmit = useCallback(async (values) => {
     try {
       await updateCourse(courseId, values);
       router.refresh();
-      toast.success("title has been updated");
+      toast.success("Title has been updated");
       toggleEdit();
     } catch (error) {
       toast.error("Something went wrong");
     }
-  };
+  }, [courseId, router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
-        Course Title
+        <span>Course Title</span>
         <Button variant="ghost" onClick={toggleEdit}>
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="w-4 h-4 mr-2" />
-              Edit Title
-            </>
-          )}
+          {isEditing ? "Cancel" : <>
+            <Pencil className="w-4 h-4 mr-2" />
+            Edit Title
+          </>}
         </Button>
       </div>
-      {!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
-      {isEditing && (
+      {!isEditing ? (
+        <p className="mt-2 text-sm">{initialData.title}</p>
+      ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control}
               name="title"
