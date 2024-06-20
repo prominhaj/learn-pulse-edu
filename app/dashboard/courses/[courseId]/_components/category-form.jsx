@@ -14,7 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { courseCategorySchema } from "@/lib/FormValidation/course/courseSchema";
 import { updateCourse } from "@/app/actions/course";
@@ -27,7 +27,9 @@ export const CategoryForm = ({
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => {
+    setIsEditing((current) => !current);
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(courseCategorySchema),
@@ -38,9 +40,9 @@ export const CategoryForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  const onSubmit = useCallback(async (values) => {
     try {
-      const selectedCategory = options.find(option => option.value === values.category);
+      const selectedCategory = options.find((option) => option.value === values.category);
       await updateCourse(courseId, { category: selectedCategory?.id });
       router.refresh();
       toast.success("Category has been updated");
@@ -48,7 +50,7 @@ export const CategoryForm = ({
     } catch (error) {
       toast.error("Something went wrong");
     }
-  };
+  }, [courseId, options, router, toggleEdit]);
 
   const selectedOptions = options.find(
     (option) => option.id === initialData
