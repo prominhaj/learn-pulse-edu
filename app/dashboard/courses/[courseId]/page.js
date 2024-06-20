@@ -32,7 +32,7 @@ const EditCoursePage = async ({ params: { courseId } }) => {
     const modules = replaceMongoIdInArray(course?.modules).sort((a, b) => a?.order - b?.order);
 
     // Image Placeholder
-    const { base64, img } = await getImage(course?.thumbnail?.url);
+    const { base64, img } = (await getImage(course?.thumbnail?.url)) || {};
 
     return (
         <>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -16,14 +16,18 @@ export const ImageForm = ({ initialData, courseId, public_id }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [image, setImage] = useState(null)
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => {
+    setIsEditing((current) => !current);
+  }, []);
 
-  const handleUpload = async () => {
+  const handleUpload = useCallback(async () => {
     if (!image) {
       toast.error("Please select an image");
       return;
     }
+
     setIsUploading(true);
+
     try {
       const formData = new FormData();
       formData.append("image", image);
@@ -33,13 +37,16 @@ export const ImageForm = ({ initialData, courseId, public_id }) => {
       const response = await fetch("/api/upload-image", {
         method: "POST",
         body: formData,
-      })
+      });
+
       const result = await response.json();
 
       if (result?.success) {
         router.refresh();
         toast.success(result?.message);
         toggleEdit();
+      } else {
+        toast.error(result?.message || "Failed to upload image");
       }
 
     } catch (error) {
@@ -48,7 +55,7 @@ export const ImageForm = ({ initialData, courseId, public_id }) => {
     finally {
       setIsUploading(false);
     }
-  }
+  }, [image, courseId, public_id, router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
