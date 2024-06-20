@@ -22,7 +22,7 @@ import { courseCreateModuleSchema } from "@/lib/FormValidation/course/courseSche
 import { getSlug } from "@/lib/convertData";
 
 export const ModulesForm = ({ initialData, courseId }) => {
-  const [modules, setModules] = useState(initialData);
+  // const [modules, setModules] = useState(initialData);
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -45,16 +45,16 @@ export const ModulesForm = ({ initialData, courseId }) => {
       formData.append("title", values?.title);
       formData.append("slug", getSlug(values?.title));
       formData.append("courseId", courseId);
-      formData.append("order", modules.length);
+      formData.append("order", initialData?.length);
 
-      const resModule = await createModule(formData);
-      setModules((modules) => [
-        ...modules,
-        {
-          id: resModule?._id.toString(),
-          title: values.title,
-        },
-      ]);
+      await createModule(formData);
+      // setModules((modules) => [
+      //   ...modules,
+      //   {
+      //     id: resModule?._id.toString(),
+      //     title: values.title,
+      //   },
+      // ]);
 
       router.refresh();
       toast.success("Module has been created");
@@ -134,14 +134,14 @@ export const ModulesForm = ({ initialData, courseId }) => {
         <div
           className={cn(
             "text-sm mt-2",
-            !modules?.length && "text-slate-500 dark:text-slate-400 italic"
+            !initialData?.length && "text-slate-500 dark:text-slate-400 italic"
           )}
         >
-          {!modules?.length && "No module"}
+          {!initialData?.length && "No module"}
           <ModuleList
             onEdit={onEdit}
             onReorder={onReorder}
-            items={modules || []}
+            items={initialData || []}
           />
         </div>
       )}

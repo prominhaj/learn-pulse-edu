@@ -14,10 +14,12 @@ const Module = async ({ params: { courseId, moduleId } }) => {
 
     return (
         <>
-            <AlertBanner
-                label='This module is unpublished. It will not be visible in the course.'
-                variant='warning'
-            />
+            {!getModule?.active && (
+                <AlertBanner
+                    label='This module is unpublished. It will not be visible in the course.'
+                    variant='warning'
+                />
+            )}
 
             <div className='p-6'>
                 <div className='flex items-center justify-between'>
