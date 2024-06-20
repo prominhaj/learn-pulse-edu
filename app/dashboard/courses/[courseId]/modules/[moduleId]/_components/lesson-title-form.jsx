@@ -1,7 +1,8 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
 import { lessonTitleSchema } from "@/lib/FormValidation/lesson/lesson";
 import { updateLesson } from "@/app/actions/lesson";
@@ -23,7 +23,7 @@ export const LessonTitleForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => setIsEditing((current) => !current), []);
 
   const form = useForm({
     resolver: zodResolver(lessonTitleSchema),
@@ -32,42 +32,31 @@ export const LessonTitleForm = ({ initialData, lessonId }) => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  const onSubmit = useCallback(async (values) => {
     try {
-      values['slug'] = getSlug(values?.title)
-      await updateLesson(lessonId, values)
+      values.slug = getSlug(values.title);
+      await updateLesson(lessonId, values);
       router.refresh();
       toast.success("Lesson updated");
       toggleEdit();
     } catch {
       toast.error("Something went wrong");
     }
-  };
+  }, [lessonId, router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
         Lesson title
         <Button variant="ghost" onClick={toggleEdit}>
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="w-4 h-4 mr-2" />
-              Edit Title
-            </>
-          )}
+          {isEditing ? "Cancel" : <><Pencil className="w-4 h-4 mr-2" /> Edit Title</>}
         </Button>
       </div>
-      {!isEditing && (
+      {!isEditing ? (
         <p className="mt-2 text-sm">{initialData?.title}</p>
-      )}
-      {isEditing && (
+      ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control}
               name="title"

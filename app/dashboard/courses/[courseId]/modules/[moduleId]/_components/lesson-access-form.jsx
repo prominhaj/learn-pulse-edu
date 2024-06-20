@@ -1,9 +1,10 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,25 +14,19 @@ import {
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { updateLesson } from "@/app/actions/lesson";
-
-const formSchema = z.object({
-  isFree: z.boolean().default(false),
-});
+import { lessonAccessSchema } from "@/lib/FormValidation/lesson/lesson";
 
 export const LessonAccessForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => setIsEditing((current) => !current), []);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(lessonAccessSchema),
     defaultValues: {
       isFree: !!initialData?.isFree,
     },
@@ -39,14 +34,11 @@ export const LessonAccessForm = ({ initialData, lessonId }) => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
+  const onSubmit = useCallback(async (values) => {
     try {
-      const payload = {};
-      if (values?.isFree) {
-        payload["access"] = "public";
-      } else {
-        payload["access"] = "private";
-      }
+      const payload = {
+        access: values.isFree ? "public" : "private",
+      };
       await updateLesson(lessonId, payload);
       router.refresh();
       toast.success("Lesson updated");
@@ -54,43 +46,23 @@ export const LessonAccessForm = ({ initialData, lessonId }) => {
     } catch (error) {
       toast.error("Something went wrong");
     }
-  };
+  }, [lessonId, router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 bg-gray-100 border rounded-md dark:bg-gray-800/70 dark:border-gray-700">
       <div className="flex items-center justify-between font-medium">
         Lesson access
         <Button variant="ghost" onClick={toggleEdit}>
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="w-4 h-4 mr-2" />
-              Edit access
-            </>
-          )}
+          {isEditing ? "Cancel" : <><Pencil className="w-4 h-4 mr-2" /> Edit access</>}
         </Button>
       </div>
-      {!isEditing && (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !initialData?.isFree && "text-slate-500 italic"
-          )}
-        >
-          {initialData?.isFree ? (
-            <>This chapter is free for preview</>
-          ) : (
-            <>This chapter is not free</>
-          )}
+      {!isEditing ? (
+        <p className={cn("text-sm mt-2", !initialData?.isFree && "text-slate-500 italic")}>
+          {initialData?.isFree ? "This chapter is free for preview" : "This chapter is not free"}
         </p>
-      )}
-      {isEditing && (
+      ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control}
               name="isFree"
@@ -100,12 +72,12 @@ export const LessonAccessForm = ({ initialData, lessonId }) => {
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormDescription>
-                      Check this box if you want to make this chapter free for
-                      preview
+                      Check this box if you want to make this chapter free for preview
                     </FormDescription>
                   </div>
                 </FormItem>
