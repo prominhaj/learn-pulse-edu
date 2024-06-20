@@ -40,3 +40,14 @@ export const updateModule = async (moduleId, moduleData) => {
         throw new Error(error);
     }
 };
+
+export const modulePublished = async (moduleId) => {
+    try {
+        const getModule = await Module.findById(moduleId);
+        await Module.findByIdAndUpdate(moduleId, {
+            active: !getModule?.active
+        });
+    } catch (error) {
+        throw new Error(error);
+    }
+};

@@ -2,11 +2,11 @@ import { ArrowLeft, BookOpenCheck, Eye, LayoutDashboard, Video } from 'lucide-re
 import Link from 'next/link';
 import { ModuleTitleForm } from './_components/module-title-form';
 import { LessonForm } from './_components/lesson-form';
-import { CourseActions } from '../../_components/course-action';
 import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
 import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
 import { getModuleById } from '@/queries/module';
 import { replaceMongoIdInArray } from '@/lib/convertData';
+import { ModuleActions } from './_components/module-actions';
 
 const Module = async ({ params: { courseId, moduleId } }) => {
     const getModule = await getModuleById(moduleId);
@@ -30,7 +30,11 @@ const Module = async ({ params: { courseId, moduleId } }) => {
                             Back to course setup
                         </Link>
                         <div className='flex items-center justify-end'>
-                            <CourseActions />
+                            <ModuleActions
+                                active={getModule?.active}
+                                courseId={courseId}
+                                moduleId={moduleId}
+                            />
                         </div>
                     </div>
                 </div>
