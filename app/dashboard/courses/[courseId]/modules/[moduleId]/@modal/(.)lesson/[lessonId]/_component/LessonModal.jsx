@@ -8,7 +8,6 @@ const LessonModal = ({ courseId, moduleId, lesson }) => {
     const router = useRouter();
 
     const modalClose = () => {
-        router.refresh()
         router.back()
     }
 
@@ -21,7 +20,11 @@ const LessonModal = ({ courseId, moduleId, lesson }) => {
                 }}
             >
                 <>
-                    <LessonModalContent lesson={lesson} courseId={courseId} />
+                    <LessonModalContent
+                        lesson={lesson}
+                        courseId={courseId}
+                        moduleId={moduleId}
+                        modalClose={modalClose} />
                 </>
             </DialogContent>
         </Dialog>

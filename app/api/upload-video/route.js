@@ -13,7 +13,8 @@ export const POST = async (request) => {
             formData,
             'video_file',
             'Videos/Courses',
-            public_id && public_id
+            public_id && public_id,
+            'video'
         );
 
         const videoUrl = {

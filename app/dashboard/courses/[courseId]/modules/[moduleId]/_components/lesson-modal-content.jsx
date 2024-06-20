@@ -7,7 +7,7 @@ import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 import { LessonActions } from "./lesson-actions";
 
-const LessonModalContent = ({ courseId, lesson, moduleId }) => {
+const LessonModalContent = ({ courseId, lesson, moduleId, modalClose }) => {
 
     return (
         <div>
@@ -21,7 +21,13 @@ const LessonModalContent = ({ courseId, lesson, moduleId }) => {
                         Back to course setup
                     </Link>
                     <div className='flex items-center justify-end'>
-                        <LessonActions active={lesson?.active} moduleId={moduleId} lessonId={lesson?.id} />
+                        <LessonActions
+                            modalClose={modalClose}
+                            active={lesson?.active}
+                            courseId={courseId}
+                            moduleId={moduleId}
+                            lessonId={lesson?.id}
+                        />
                     </div>
                 </div>
             </div>

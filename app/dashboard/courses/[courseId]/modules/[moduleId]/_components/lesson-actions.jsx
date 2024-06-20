@@ -1,11 +1,11 @@
 "use client";
 import { Trash } from "lucide-react";
 import { SubmitActionBtn } from "../../../_components/submit-action-btn";
-import { lessonPublished } from "@/app/actions/lesson";
+import { deleteLesson, lessonPublished } from "@/app/actions/lesson";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export const LessonActions = ({ active, moduleId, lessonId }) => {
+export const LessonActions = ({ active, courseId, moduleId, lessonId, modalClose }) => {
     const router = useRouter();
 
     // Handle Publish
@@ -19,6 +19,20 @@ export const LessonActions = ({ active, moduleId, lessonId }) => {
         }
     }
 
+    // Handle Lesson Delete
+    const handleDelete = async () => {
+        try {
+            await deleteLesson(lessonId, moduleId)
+            toast.success("Lesson Deleted Successfully!");
+            if (modalClose) {
+                modalClose()
+            }
+            router.push(`/dashboard/courses/${courseId}/modules/${moduleId}`)
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     return (
         <div className="flex items-center gap-x-2">
             <form action={handlePublish}>
@@ -27,7 +41,7 @@ export const LessonActions = ({ active, moduleId, lessonId }) => {
                 </SubmitActionBtn>
             </form>
 
-            <form action="">
+            <form action={handleDelete}>
                 <SubmitActionBtn>
                     <Trash className="w-4 h-4" />
                 </SubmitActionBtn>

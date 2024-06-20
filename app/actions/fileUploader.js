@@ -29,7 +29,13 @@ const streamUpload = (fileStream, folder) => {
     });
 };
 
-export const fileUploader = async (formData, fileName, folder, oldPublicId = null) => {
+export const fileUploader = async (
+    formData,
+    fileName,
+    folder,
+    oldPublicId = null,
+    resource_type = 'image'
+) => {
     try {
         const file = formData.get(fileName);
 
@@ -45,11 +51,20 @@ export const fileUploader = async (formData, fileName, folder, oldPublicId = nul
 
         // Optionally delete the old file
         if (oldPublicId) {
-            await cloudinary.uploader.destroy(oldPublicId, { resource_type: 'video' });
+            await cloudinary.uploader.destroy(oldPublicId, { resource_type: resource_type });
         }
 
         return uploadResult;
     } catch (error) {
         throw new Error(`File upload failed: ${error.message}`);
+    }
+};
+
+export const deleteFile = async (publicId, resourceType = 'video') => {
+    try {
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
+        return result;
+    } catch (error) {
+        throw new Error(`File delete failed: ${error.message}`);
     }
 };
