@@ -14,8 +14,13 @@ const lessonSchema = new Schema(
             default: 0,
             required: true
         },
-        video_url: {
-            type: String
+        video: {
+            url: {
+                type: String
+            },
+            public_id: {
+                type: String
+            }
         },
         active: {
             type: Boolean,

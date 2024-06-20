@@ -3,11 +3,18 @@ import { useState } from "react"
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import { Trash } from "lucide-react";
+import { toast } from "sonner";
+import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
-const VideoUploader = () => {
-    const [file, setFile] = useState(null)
-    const [progress, setProgress] = useState(0)
+const VideoUploader = ({ lessonId, onVideoUrl }) => {
+    const router = useRouter();
+    const [file, setFile] = useState(null);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isUploading, setIsUploading] = useState(false);
 
+    // DragOver and Drag
     const handleDragOver = (e) => {
         e.preventDefault()
     }
@@ -21,46 +28,85 @@ const VideoUploader = () => {
 
     // Handle Upload Submit
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setIsUploading(true)
+
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('video_file', file);
+        formData.append('lessonId', lessonId);
+
+        try {
+            const response = await axios.post('/api/upload-video', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setUploadProgress(percentCompleted);
+                },
+            });
+
+            // Response
+            if (response?.data?.success) {
+                onVideoUrl(response?.data?.video?.url)
+                toast.success(response?.data?.message)
+                setFile(null)
+                setUploadProgress(0)
+                router.refresh()
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+        finally {
+            setIsUploading(false)
+        }
     }
 
     return (
-        <form onSubmit={handleSubmit} className="grid gap-4">
-            <div
+        <>
+            <form onSubmit={handleSubmit} className="grid gap-4">
+                {
+                    isUploading ? <Skeleton className="w-full h-32 rounded-lg" /> : (
+                        <div
+                            onDragOver={handleDragOver}
+                            onDrop={handleDrop}
+                            className="relative flex items-center justify-center h-32 transition-colors border border-dashed rounded-lg border-muted-foreground hover:border-primary"
+                        >
+                            {file ? (
+                                <div className="text-center">
+                                    <Button onClick={() => setFile(null)} className="absolute z-20 top-1 right-1" size="sm">
+                                        <Trash className="w-4 h-4" />
+                                    </Button>
+                                    <p className="font-medium">{file.name}</p>
+                                    <p className="text-muted-foreground">{file.type}</p>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center">
+                                    <UploadIcon className="w-8 h-8 text-muted-foreground" />
+                                    <p className="mt-2 text-muted-foreground">Drag and drop a video file or click to select</p>
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                accept="video/*"
+                                disabled={file}
+                                className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                                onChange={handleFileChange}
+                            />
+                        </div>
+                    )
+                }
 
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                className="relative flex items-center justify-center h-32 transition-colors border border-dashed rounded-lg border-muted-foreground hover:border-primary"
-            >
-                {file ? (
-                    <div className="text-center">
-                        <Button onClick={() => setFile(null)} className="absolute z-20 top-1 right-1" size="sm">
-                            <Trash className="w-4 h-4" />
-                        </Button>
-                        <p className="font-medium">{file.name}</p>
-                        <p className="text-muted-foreground">{file.type}</p>
-                    </div>
-                ) : (
-                    <div className="flex flex-col items-center">
-                        <UploadIcon className="w-8 h-8 text-muted-foreground" />
-                        <p className="mt-2 text-muted-foreground">Drag and drop a video file or click to select</p>
-                    </div>
-                )}
-                <input
-                    type="file"
-                    accept="video/*"
-                    disabled={file}
-                    className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
-                    onChange={handleFileChange}
-                />
-            </div>
-            <div className="grid gap-2">
-                <Progress value={progress} />
-                <Button type="submit" disabled={!file}>
-                    Upload Video
-                </Button>
-            </div>
-        </form>
+                <div className="grid gap-2">
+                    <Progress value={uploadProgress} />
+                    <Button type="submit" disabled={!file || isUploading}>
+                        Upload Video
+                    </Button>
+                </div>
+            </form>
+        </>
     )
 }
 

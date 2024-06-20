@@ -30,8 +30,8 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import UploadDropzone from '@/components/globals/FileUpload/FileUpload';
 import { Combobox } from '@/components/ui/combobox';
+import { UploadDropzone } from '@/components/globals/FileUpload/FileUpload';
 
 const formSchema = z.object({
     title: z.string().min(1, {

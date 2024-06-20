@@ -23,6 +23,7 @@ export const getCourses = async () => {
             model: Module
         })
         .lean();
+
     return replaceMongoIdInArray(courses);
 };
 

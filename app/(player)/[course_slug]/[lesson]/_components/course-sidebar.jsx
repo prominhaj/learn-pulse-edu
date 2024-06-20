@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CourseProgress } from "@/components/course-progress";
+// import { CourseProgress } from "@/components/course-progress";
 import {
   Accordion,
   AccordionContent,
@@ -21,13 +21,13 @@ export const CourseSidebar = () => {
   const isCompleted = true;
   return (
     <>
-      <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-        <div className="p-8 flex flex-col border-b">
+      <div className="flex flex-col h-full overflow-y-auto border-r shadow-sm">
+        <div className="flex flex-col p-8 border-b">
           <h1 className="font-semibold">Reactive Accelerator</h1>
           {/* Check purchase */}
           {
             <div className="mt-10">
-              <CourseProgress variant="success" value={80} />
+              {/* <CourseProgress variant="success" value={80} /> */}
             </div>
           }
         </div>
@@ -70,8 +70,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600 ",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -92,8 +92,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -145,8 +145,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600 ",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -167,8 +167,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -220,8 +220,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600 ",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -242,8 +242,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -295,8 +295,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600 ",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -317,8 +317,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -370,8 +370,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600 ",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
@@ -392,8 +392,8 @@ export const CourseSidebar = () => {
                     "flex items-center gap-x-2 text-slate-500 text-sm font-[500]  transition-all hover:text-slate-600",
                     false && "text-slate-700  hover:text-slate-700",
                     isCompleted &&
-                      false &&
-                      "text-emerald-700 hover:text-emerald-700"
+                    false &&
+                    "text-emerald-700 hover:text-emerald-700"
                   )}
                 >
                   <div className="flex items-center gap-x-2">
