@@ -66,7 +66,11 @@ const EditCoursePage = async ({ params: { courseId } }) => {
                             initialData={{ description: course?.description }}
                             courseId={courseId}
                         />
-                        <ImageForm initialData={{ img, base64 }} courseId={courseId} />
+                        <ImageForm
+                            initialData={{ img, base64 }}
+                            public_id={course?.thumbnail?.public_id}
+                            courseId={courseId}
+                        />
                         <CategoryForm
                             initialData={course?.category?._id.toString()}
                             options={modifiedCategories}

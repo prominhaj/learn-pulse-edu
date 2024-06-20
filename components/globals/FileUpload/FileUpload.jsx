@@ -1,91 +1,71 @@
 "use client";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CloudUpload } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { toast } from "sonner";
+import { CloudUpload, Trash } from "lucide-react";
+import Image from "next/image";
 
-export const UploadDropzone = (props) => {
-    const { isMulti = false, label, onUpload } = props;
-    const [isUploading, setIsUploading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
-
-    // upload progress utility
-    const startSimulatedProgress = () => {
-        setUploadProgress(0);
-
-        const interval = setInterval(() => {
-            setUploadProgress((prevProgress) => {
-                if (prevProgress >= 95) {
-                    clearInterval(interval);
-                    prevProgress;
-                }
-                return prevProgress + 5;
-            });
-        }, 500);
-
-        return interval;
+export const UploadDropzone = ({ onUpload, isUploading, image }) => {
+    const handleFileChange = (e) => {
+        onUpload(e.target.files[0]);
     };
 
-    const onDrop = useCallback(async (acceptedFiles) => {
-        // Do something with the files
-
-        setIsUploading(true);
-        const progressInterval = startSimulatedProgress();
-        onUpload(acceptedFiles);
-
-        // await new Promise((resolve) => {
-        //   setTimeout(() => {
-        //     resolve('resolved');
-        //   }, 3000);
-        // });
-        setUploadProgress(100);
-        clearInterval(progressInterval);
-    }, [onUpload]);
-
-    const { getRootProps, getInputProps, fileRejections } = useDropzone({
-        onDrop,
-        // accept: { 'image/jpeg': [], 'image/png': [] },
-        multiple: isMulti,
-    });
-
-    useEffect(() => {
-        if (fileRejections.length > 1) {
-            toast.error("error");
-        } else if (fileRejections.length > 0) {
-            toast.error("error");
-        }
-    }, [fileRejections]);
+    const handleRemoveImage = () => {
+        onUpload(null);
+    };
 
     return (
-        <div
-            {...getRootProps()}
-            className={cn(
-                "mt-3 flex cursor-pointer items-center justify-center rounded-md border dark:border-gray-700 border-dashed p-3 py-12 hover:bg-muted/30",
-                isUploading ? "pointer-events-none !cursor-not-allowed opacity-80" : ""
-            )}
-        >
-            <input name="file" multiple={isMulti} {...getInputProps()} disabled={isUploading} />
-            <div className="flex flex-col items-center gap-3 text-center !text-[#858585] dark:!text-gray-300">
-                <CloudUpload size={48} className="text-gray-600 dark:text-gray-400" />
-                <h4 className="!font-normal  !text-[#858585] dark:!text-gray-400">
-                    <span className="font-semibold text-black underline dark:text-white">
-                        Click to upload
-                    </span>{" "}
-                    or drag and drop <br />
-                    Maximum file size 50 MB.
-                </h4>
-                {/* <p>Only *.jpeg and *.png images will be accepted</p> */}
-                {isUploading ? (
-                    <div className="w-full max-w-xs mx-auto mt-4">
-                        <Progress
-                            value={uploadProgress}
-                            className="w-full h-1 bg-zinc-200"
+        <div>
+            <input
+                onChange={handleFileChange}
+                id="file-uploader"
+                name="file"
+                type="file"
+                accept="image/*"
+                multiple={false}
+                className="hidden"
+                disabled={isUploading}
+            />
+
+            {image ? (
+                <div className="relative mt-4">
+                    <Button
+                        disabled={isUploading}
+                        onClick={handleRemoveImage}
+                        className="absolute z-10 top-2 right-2"
+                        size="sm"
+                    >
+                        <Trash className="w-5 h-5" />
+                    </Button>
+                    <div className="overflow-hidden rounded max-h-[27.5rem]">
+                        <Image
+                            className="object-cover w-full h-full rounded"
+                            src={URL.createObjectURL(image)}
+                            width={500}
+                            height={400}
+                            alt="photo selected"
                         />
                     </div>
-                ) : null}
-            </div>
+                </div>
+            ) : (
+                <label
+                    htmlFor="file-uploader"
+                    className={cn(
+                        "mt-3 flex cursor-pointer items-center justify-center rounded-md border dark:border-gray-700 border-dashed p-3 py-12 hover:bg-muted/30",
+                        isUploading ? "pointer-events-none !cursor-not-allowed opacity-80" : ""
+                    )}
+                >
+                    <div className="flex flex-col items-center gap-3 text-center !text-[#858585] dark:!text-gray-300">
+                        <CloudUpload size={48} className="text-gray-600 dark:text-gray-400" />
+                        <h4 className="!font-normal !text-[#858585] dark:!text-gray-400">
+                            <span className="font-semibold text-black underline dark:text-white">
+                                Click to upload
+                            </span>{" "}
+                            or drag and drop <br />
+                            Maximum file size 50 MB.
+                        </h4>
+                    </div>
+                </label>
+            )}
         </div>
     );
 };
