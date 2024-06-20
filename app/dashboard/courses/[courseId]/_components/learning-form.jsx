@@ -1,10 +1,10 @@
 "use client";
-import { addNewLearning, deleteLearning, updateLearning } from "@/app/actions/course";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Delete, Pencil, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
+import { addNewLearning, deleteLearning, updateLearning } from "@/app/actions/course";
 import LearningAddForm from "./LearningAddForm";
 
 export const LearningForm = ({ initialData, courseId }) => {
@@ -15,94 +15,87 @@ export const LearningForm = ({ initialData, courseId }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isAdd, setIsAdd] = useState(false);
 
-    const toggleEdit = () => setIsEditing((current) => !current);
-    const toggleAdd = () => setIsAdd((current) => !current);
+    const toggleEdit = useCallback(() => setIsEditing((prev) => !prev), []);
+    const toggleAdd = useCallback(() => setIsAdd((prev) => !prev), []);
 
-    // Handle Add Learning 
-    const handleAddLearning = async (formData) => {
-        setError(null)
+    const handleAddLearning = useCallback(async (formData) => {
+        setError(null);
         try {
             const newLearning = formData.get("learning");
 
-            // validate Form
             if (!newLearning) {
-                setError("Please Enter Learning")
+                setError("Please enter learning");
                 return;
             }
 
-            await addNewLearning(newLearning, courseId)
-            setLearnings([...learnings, newLearning])
-            router.refresh()
-            toast.success("New learning added successfully")
+            await addNewLearning(newLearning, courseId);
+            setLearnings((prevLearnings) => [...prevLearnings, newLearning]);
+            router.refresh();
+            toast.success("New learning added successfully");
+            toggleAdd();
         } catch (error) {
-            toast.error("Something Went Wrong")
+            toast.error("Failed to add new learning");
         }
-        toggleAdd();
-    }
+    }, [courseId, router, toggleAdd]);
 
-    // Handle Edit Learning
-    const editLearningMode = (index) => {
-        setOldLearning(learnings[index])
-        toggleEdit()
-    }
+    const editLearningMode = useCallback((index) => {
+        setOldLearning(learnings[index]);
+        toggleEdit();
+    }, [learnings, toggleEdit]);
 
-    const handleEditLearning = async (formData) => {
-        setError(null)
+    const handleEditLearning = useCallback(async (formData) => {
+        setError(null);
         try {
             const newLearning = formData.get("learning");
 
-            // validate Form
             if (!newLearning) {
-                setError("Please Enter Learning")
+                setError("Please enter learning");
                 return;
             }
 
             const updatedLearning = await updateLearning(newLearning, oldLearning, courseId);
-            setLearnings(updatedLearning)
-            router.refresh()
-            toggleEdit()
-            toast.success("Learning updated successfully")
+            setLearnings((prevLearnings) =>
+                prevLearnings.map((learning, index) => (index === learnings.indexOf(oldLearning) ? updatedLearning : learning))
+            );
+            router.refresh();
+            toggleEdit();
+            toast.success("Learning updated successfully");
         } catch (error) {
-            toast.error("Something went wrong")
+            toast.error("Failed to update learning");
         }
-    }
+    }, [courseId, oldLearning, learnings, router, toggleEdit]);
 
-    // Delete Learning
-    const handleDeleteLearning = async (learning) => {
+    const handleDeleteLearning = useCallback(async (learning) => {
         try {
-            const updatedLearning = await deleteLearning(learning, courseId);
-            setLearnings(updatedLearning)
-            router.refresh()
-            toast.success("Learning deleted successfully")
+            await deleteLearning(learning, courseId);
+            setLearnings((prevLearnings) => prevLearnings.filter((item) => item !== learning));
+            router.refresh();
+            toast.success("Learning deleted successfully");
         } catch (error) {
-            toast.error("Something went wrong")
+            toast.error("Failed to delete learning");
         }
-    }
+    }, [courseId, router]);
 
     return (
         <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2 text-base font-medium">
                 Course Learning
-                {
-                    isAdd ? (
-                        <Button size="sm" variant="secondary" className="px-2.5 font-medium py-1" onClick={toggleAdd}>
-                            Cancel
-                        </Button>
-                    ) : (
-                        <Button onClick={toggleAdd} className="flex items-center gap-1.5 px-2.5 font-medium py-1" size="sm" variant="secondary">
-                            <Plus className="w-5 h-5" />
-                            Add
-                        </Button>
-                    )
-                }
+                {isAdd ? (
+                    <Button size="sm" variant="secondary" className="px-2.5 font-medium py-1" onClick={toggleAdd}>
+                        Cancel
+                    </Button>
+                ) : (
+                    <Button onClick={toggleAdd} className="flex items-center gap-1.5 px-2.5 font-medium py-1" size="sm" variant="secondary">
+                        <Plus className="w-5 h-5" />
+                        Add
+                    </Button>
+                )}
             </div>
             <div>
-                {
-                    learnings.length > 0 ? learnings?.map((learning, index) => (
+                {learnings.length > 0 ? (
+                    learnings.map((learning, index) => (
                         <div key={index} className="flex items-center justify-between gap-3 space-y-2">
-                            <li className="list-disc">
-                                {learning}
-                            </li>
+                            <li className="list-disc">{learning}</li>
                             <div className="flex items-center gap-2">
                                 <button onClick={() => editLearningMode(index)}>
                                     <Pencil className="w-5 h-5" />
@@ -112,14 +105,12 @@ export const LearningForm = ({ initialData, courseId }) => {
                                 </button>
                             </div>
                         </div>
-                    )) : <p className="italic text-center text-muted-foreground">No learning please add</p>
-                }
-                {isEditing && (
-                    <LearningAddForm handler={handleEditLearning} error={error} defaultValue={oldLearning} />
+                    ))
+                ) : (
+                    <p className="italic text-center text-muted-foreground">No learning, please add</p>
                 )}
-                {isAdd && (
-                    <LearningAddForm handler={handleAddLearning} error={error} />
-                )}
+                {isEditing && <LearningAddForm handler={handleEditLearning} error={error} defaultValue={oldLearning} />}
+                {isAdd && <LearningAddForm handler={handleAddLearning} error={error} />}
             </div>
         </div>
     );
