@@ -1,6 +1,11 @@
 import Footer from '@/components/globals/Footer/Footer';
 import Navbar from '@/components/globals/Navbar/Navbar';
 
+// Metadata
+export const metadata = {
+    title: 'Dashboard - Learn Pulse Edu'
+};
+
 const MainLayout = ({ children }) => {
     return (
         <div className='flex flex-col min-h-screen'>

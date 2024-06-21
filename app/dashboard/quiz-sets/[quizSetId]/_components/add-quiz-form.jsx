@@ -80,7 +80,7 @@ const formSchema = z.object({
   }),
 });
 
-export const AddQuizForm = ({ setQuizes }) => {
+export const AddQuizForm = ({ initialQuizes }) => {
   const router = useRouter();
 
   const form = useForm({
@@ -124,7 +124,7 @@ export const AddQuizForm = ({ setQuizes }) => {
           values.optionD,
         ],
       };
-      setQuizes((prevQuizes) => [...prevQuizes, structuredQuiz]);
+      initialQuizes((prevQuizes) => [...prevQuizes, structuredQuiz]);
       form.reset({
         title: "",
         description: "",
@@ -153,7 +153,7 @@ export const AddQuizForm = ({ setQuizes }) => {
   };
 
   return (
-    <div className="p-4 mt-6 border rounded-md bg-gray-50">
+    <div className="p-4 mt-6 border rounded-md dark:border-neutral-800 bg-gray-50 dark:bg-gray-900">
       <div className="flex items-center justify-between font-medium">
         Add New Quiz
       </div>

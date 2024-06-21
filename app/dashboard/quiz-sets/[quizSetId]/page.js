@@ -1,18 +1,14 @@
-'use client';
 import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
-import IconBadge from '@/components/globals/IconBadge/IconBadge';
-import { LayoutDashboard } from 'lucide-react';
 import { QuizSetAction } from './_components/quiz-set-action';
 import { TitleForm } from './_components/title-form';
 import { AddQuizForm } from './_components/add-quiz-form';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-import { Pencil } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Delete } from 'lucide-react';
-import { Trash } from 'lucide-react';
-import { CircleCheck } from 'lucide-react';
-import { Circle } from 'lucide-react';
+import BackButton from './_components/back-button';
+import QuizCard from './_components/quiz-card';
+
+// Metadata
+export const metadata = {
+    title: 'Quiz Set - Dashboard - Learn Pulse Edu'
+};
 
 const initialQuizes = [
     {
@@ -60,8 +56,8 @@ const initialQuizes = [
         ]
     }
 ];
+
 const EditQuizSet = () => {
-    const [quizes, setQuizes] = useState(initialQuizes);
     return (
         <>
             <AlertBanner
@@ -69,7 +65,8 @@ const EditQuizSet = () => {
                 variant='warning'
             />
             <div className='p-6'>
-                <div className='flex items-center justify-end'>
+                <div className='flex items-center justify-between'>
+                    <BackButton />
                     <QuizSetAction />
                 </div>
                 <div className='grid grid-cols-1 gap-6 mt-16 lg:grid-cols-2'>
@@ -82,49 +79,9 @@ const EditQuizSet = () => {
                             className='mb-6 rounded'
                         />
                         <div className='space-y-6'>
-                            {quizes.map((quiz) => {
-                                return (
-                                    <div
-                                        key={quiz.id}
-                                        className='p-4 border rounded-md shadow-md bg-gray-50 lg:p-6'
-                                    >
-                                        <h2 className='mb-3'>{quiz.title}</h2>
-
-                                        <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-                                            {quiz.options.map((option) => {
-                                                return (
-                                                    <div
-                                                        className={cn(
-                                                            'py-1.5 rounded-sm  text-sm flex items-center gap-1 text-gray-600'
-                                                        )}
-                                                        key={option.label}
-                                                    >
-                                                        {option.isTrue ? (
-                                                            <CircleCheck className='size-4 text-emerald-500 ' />
-                                                        ) : (
-                                                            <Circle className='size-4' />
-                                                        )}
-
-                                                        <p>{option.label}</p>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                        <div className='flex items-center justify-end gap-2 mt-6'>
-                                            <Button variant='ghost' size='sm'>
-                                                <Pencil className='w-3 mr-1' /> Edit
-                                            </Button>
-                                            <Button
-                                                size='sm'
-                                                className='text-destructive'
-                                                variant='ghost'
-                                            >
-                                                <Trash className='w-3 mr-1' /> Delete
-                                            </Button>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            {initialQuizes.map((quiz) => (
+                                <QuizCard key={quiz?.id} quiz={quiz} />
+                            ))}
                         </div>
                     </div>
                     {/*  */}
@@ -141,7 +98,7 @@ const EditQuizSet = () => {
                         </div>
 
                         <div className='max-w-[800px]'>
-                            <AddQuizForm setQuizes={setQuizes} />
+                            <AddQuizForm initialQuizes={initialQuizes} />
                         </div>
                     </div>
                 </div>
