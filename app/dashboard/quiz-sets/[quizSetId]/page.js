@@ -4,6 +4,8 @@ import { TitleForm } from './_components/title-form';
 import { AddQuizForm } from './_components/add-quiz-form';
 import BackButton from './_components/back-button';
 import QuizCard from './_components/quiz-card';
+import { getQuizSetById } from '@/queries/quiz-set';
+import { replaceMongoIdInObject } from '@/lib/convertData';
 
 // Metadata
 export const metadata = {
@@ -57,13 +59,17 @@ const initialQuizes = [
     }
 ];
 
-const EditQuizSet = () => {
+const EditQuizSet = async ({ params: { quizSetId } }) => {
+    const quizSet = await getQuizSetById(quizSetId);
+    console.log(quizSet);
     return (
         <>
-            <AlertBanner
-                label='This course is unpublished. It will not be visible in the course.'
-                variant='warning'
-            />
+            {!quizSet?.active && (
+                <AlertBanner
+                    label='This course is unpublished. It will not be visible in the course.'
+                    variant='warning'
+                />
+            )}{' '}
             <div className='p-6'>
                 <div className='flex items-center justify-between'>
                     <BackButton />
@@ -73,15 +79,19 @@ const EditQuizSet = () => {
                     {/* Quiz List */}
                     <div className='max-lg:order-2'>
                         <h2 className='mb-6 text-xl'>Quiz List</h2>
-                        <AlertBanner
-                            label='No Quiz are in the set, add some using the form above.'
-                            variant='warning'
-                            className='mb-6 rounded'
-                        />
+                        {quizSet?.quizIds?.length === 0 && (
+                            <AlertBanner
+                                label='No Quiz are in the set, add some using the form above.'
+                                variant='warning'
+                                className='mb-6 rounded'
+                            />
+                        )}
+
                         <div className='space-y-6'>
-                            {initialQuizes.map((quiz) => (
-                                <QuizCard key={quiz?.id} quiz={quiz} />
-                            ))}
+                            {quizSet?.quizIds?.map((quiz) => {
+                                const q = replaceMongoIdInObject(quiz);
+                                return <QuizCard key={q?._id} quiz={q} />;
+                            })}
                         </div>
                     </div>
                     {/*  */}
@@ -92,7 +102,7 @@ const EditQuizSet = () => {
                         <div className='max-w-[800px]'>
                             <TitleForm
                                 initialData={{
-                                    title: 'Reactive Accelerator'
+                                    title: quizSet?.title
                                 }}
                             />
                         </div>
