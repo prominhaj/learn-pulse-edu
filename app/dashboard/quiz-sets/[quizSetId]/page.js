@@ -61,7 +61,7 @@ const initialQuizes = [
 
 const EditQuizSet = async ({ params: { quizSetId } }) => {
     const quizSet = await getQuizSetById(quizSetId);
-    console.log(quizSet);
+
     return (
         <>
             {!quizSet?.active && (
@@ -101,6 +101,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                         </div>
                         <div className='max-w-[800px]'>
                             <TitleForm
+                                quizSetId={quizSetId}
                                 initialData={{
                                     title: quizSet?.title
                                 }}
