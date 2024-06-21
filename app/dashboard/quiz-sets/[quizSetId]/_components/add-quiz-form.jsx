@@ -109,7 +109,6 @@ export const AddQuizForm = ({ setQuizes }) => {
   });
 
   const { isSubmitting, isValid, errors } = form.formState;
-  console.log(errors);
 
   const onSubmit = async (values) => {
     try {
@@ -154,8 +153,8 @@ export const AddQuizForm = ({ setQuizes }) => {
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="p-4 mt-6 border rounded-md bg-gray-50">
+      <div className="flex items-center justify-between font-medium">
         Add New Quiz
       </div>
 
@@ -163,7 +162,7 @@ export const AddQuizForm = ({ setQuizes }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             {/* quiz title */}
             <FormField
@@ -210,7 +209,7 @@ export const AddQuizForm = ({ setQuizes }) => {
                   control={form.control}
                   name="optionA.isTrue"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3">
+                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -251,7 +250,7 @@ export const AddQuizForm = ({ setQuizes }) => {
                   control={form.control}
                   name="optionB.isTrue"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3">
+                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -292,7 +291,7 @@ export const AddQuizForm = ({ setQuizes }) => {
                   control={form.control}
                   name="optionC.isTrue"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3">
+                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -333,7 +332,7 @@ export const AddQuizForm = ({ setQuizes }) => {
                   control={form.control}
                   name="optionD.isTrue"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3">
+                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
                       <FormControl>
                         <Checkbox
                           checked={field.value}

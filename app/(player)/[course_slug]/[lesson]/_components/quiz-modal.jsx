@@ -16,7 +16,6 @@ function QuizModal({ quizes }) {
     const nextQuizIndex = quizIndex + 1;
     const prevQuizIndex = quizIndex - 1;
     if (type === "next" && nextQuizIndex <= lastQuizIndex) {
-      console.log("next");
       return setQuizIndex((prev) => prev + 1);
     }
     if (type === "prev" && prevQuizIndex >= 0) {
@@ -27,13 +26,13 @@ function QuizModal({ quizes }) {
   return (
     <>
       <div class="max-w-[270px] bg-white border border-border rounded-md dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
-        <div className="flex h-32 items-center justify-center bg-gradient-to-r from-sky-500 to-indigo-500 px-6 text-center">
+        <div className="flex items-center justify-center h-32 px-6 text-center bg-gradient-to-r from-sky-500 to-indigo-500">
           <span className="text-lg font-semibold text-white">
             Reactive Accelerator: Quiz Set 4.16 : Module 4 Lesson 16 Quiz Set
           </span>
         </div>
         <div class="p-4">
-          <div className="flex items-center justify-between gap-6 text-sm mb-2 font-medium text-gray-700">
+          <div className="flex items-center justify-between gap-6 mb-2 text-sm font-medium text-gray-700">
             <span>Total Mark</span>
             <Badge className="bg-success/20 text-primary hover:bg-success/20">
               10
@@ -43,7 +42,7 @@ function QuizModal({ quizes }) {
             Reactive Accelerator: Quiz Set of Module 4 Lesson 16: Lesson 16
           </p>
           <Button
-            className="flex gap-2 capitalize border-sky-500 text-sky-500 hover:text-sky-500 hover:bg-sky-500/5 w-full"
+            className="flex w-full gap-2 capitalize border-sky-500 text-sky-500 hover:text-sky-500 hover:bg-sky-500/5"
             variant="outline"
             onClick={() => setOpen(true)}
           >
@@ -66,16 +65,16 @@ function QuizModal({ quizes }) {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[95%] block">
-          <div className="pb-4 border-b border-border text-sm">
-            <span className="text-success inline-block mr-1">
+          <div className="pb-4 text-sm border-b border-border">
+            <span className="inline-block mr-1 text-success">
               {quizIndex + 1} / 2
             </span>{" "}
             টি প্রশ্ন
           </div>
           <div className="py-4">
-            <h3 className="text-xl font-medium mb-10">
+            <h3 className="mb-10 text-xl font-medium">
               <svg
-                className="text-success inline"
+                className="inline text-success"
                 stroke-width="0"
                 viewBox="0 0 512 512"
                 height="1em"
@@ -111,7 +110,7 @@ function QuizModal({ quizes }) {
               মার্কিং নেই
             </span>
           </div>
-          <div className="grid md:grid-cols-2 gap-5 mb-6">
+          <div className="grid gap-5 mb-6 md:grid-cols-2">
             {currentQuiz?.options.map((option) => (
               <div key={option.id}>
                 <input
@@ -120,7 +119,7 @@ function QuizModal({ quizes }) {
                   id={`option-${option.id}`}
                 />
                 <Label
-                  className="border border-border rounded px-2 py-3 block cursor-pointer hover:bg-gray-50 transition-all font-normal"
+                  className="block px-2 py-3 font-normal transition-all border rounded cursor-pointer border-border hover:bg-gray-50"
                   htmlFor={`option-${option.id}`}
                 >
                   {option.label}
@@ -128,7 +127,7 @@ function QuizModal({ quizes }) {
               </div>
             ))}
           </div>
-          <DialogFooter className="flex gap-4 justify-between w-full sm:justify-between">
+          <DialogFooter className="flex justify-between w-full gap-4 sm:justify-between">
             <Button
               className="gap-2 rounded-3xl"
               disabled={quizIndex === 0}

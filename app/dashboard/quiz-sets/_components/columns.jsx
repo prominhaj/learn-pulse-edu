@@ -21,42 +21,51 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title <ArrowUpDown className="ml-2 h-4 w-4" />
+          Title <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "totalQuiz",
+    accessorKey: "quizIds",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Total Quiz <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "isPublished",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Published <ArrowUpDown className="ml-2 h-4 w-4" />
+          Total Quiz <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const isPublished = row.getValue("isPublished") || false;
+      const quizIds = row.getValue("quizIds") || false;
 
       return (
-        <Badge className={cn("bg-gray-500", isPublished && "bg-success")}>
-          {isPublished ? "Published" : "Unpublished"}
+        <div className="ml-3">
+          {quizIds.length}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "active",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Published <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const active = row.getValue("active") || false;
+
+      return (
+        <Badge className={cn("bg-gray-500", active && "bg-success")}>
+          {active ? "Published" : "Unpublished"}
         </Badge>
       );
     },
@@ -68,15 +77,15 @@ export const columns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-4 w-8 p-0">
+            <Button variant="ghost" className="w-8 h-4 p-0">
               <span className="sr-only">Open Menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/dashboard/quiz-sets/${id}`}>
               <DropdownMenuItem>
-                <Pencil className="h-4 w-4 mr-2" />
+                <Pencil className="w-4 h-4 mr-2" />
                 Edit
               </DropdownMenuItem>
             </Link>

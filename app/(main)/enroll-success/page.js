@@ -63,7 +63,6 @@ const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) =>
                 ];
 
                 const emailSentResponse = await sendEmails(emailsToSend);
-                console.log(emailSentResponse);
             }
         } catch (error) {
             throw new Error(error);

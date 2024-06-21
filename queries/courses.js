@@ -142,7 +142,6 @@ export const getCoursesByInstructorId = async (instructorId) => {
             return course.toObject();
         });
 
-        console.log(plainCourses);
         return replaceMongoIdInArray(plainCourses);
     } catch (error) {
         throw new Error(error);
