@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteQuiz } from "@/app/actions/quiz";
-import { SubmitActionBtn } from "@/app/dashboard/courses/[courseId]/_components/submit-action-btn";
+import { SubmitActionBtn } from "@/app/dashboard/_components/submit-action-btn";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";

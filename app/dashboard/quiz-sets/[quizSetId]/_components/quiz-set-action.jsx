@@ -1,19 +1,34 @@
 "use client";
-
 import { Trash } from "lucide-react";
+import { SubmitActionBtn } from "@/app/dashboard/_components/submit-action-btn";
+import { useCallback } from "react";
+import { quizSetPublished } from "@/app/actions/quizSet";
+import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+export const QuizSetAction = ({ active = false, quizSetId }) => {
+  // Handle Publish
+  const handlePublished = useCallback(async () => {
+    try {
+      await quizSetPublished(quizSetId)
+      toast.success(`${active ? "Unpublished" : "Published"} Successfully!`)
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }, [active, quizSetId])
 
-export const QuizSetAction = ({ isPublished = false }) => {
   return (
     <div className="flex items-center gap-x-2">
-      <Button variant="outline" size="sm">
-        {isPublished ? "Unpublish" : "Publish"}
-      </Button>
+      <form action={handlePublished}>
+        <SubmitActionBtn variant="outline">
+          {active ? "Unpublish" : "Publish"}
+        </SubmitActionBtn>
+      </form>
 
-      <Button size="sm">
-        <Trash className="h-4 w-4" />
-      </Button>
+      <form action="">
+        <SubmitActionBtn>
+          <Trash className="w-4 h-4" />
+        </SubmitActionBtn>
+      </form>
     </div>
   );
 };

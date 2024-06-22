@@ -1,6 +1,6 @@
 "use client";
 import { Trash } from "lucide-react";
-import { SubmitActionBtn } from "../../../_components/submit-action-btn";
+import { SubmitActionBtn } from "../../../../../_components/submit-action-btn";
 import { deleteLesson, lessonPublished } from "@/app/actions/lesson";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

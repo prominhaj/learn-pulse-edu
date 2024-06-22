@@ -28,7 +28,7 @@ const EditQuizSet = async ({ params: { quizSetId }, searchParams: { quizId } }) 
             <div className='p-6'>
                 <div className='flex items-center justify-between'>
                     <BackButton />
-                    <QuizSetAction />
+                    <QuizSetAction active={quizSet?.active} quizSetId={quizSetId} />
                 </div>
                 <div className='grid grid-cols-1 gap-6 mt-16 lg:grid-cols-2'>
                     {/* Quiz List */}

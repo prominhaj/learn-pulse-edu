@@ -13,3 +13,17 @@ export const updateQuizSet = async (quizSetId, updatedData) => {
         throw new Error(error);
     }
 };
+
+export const quizSetPublished = async (quizSetId) => {
+    try {
+        const quizSet = await QuizSet.findById(quizSetId);
+        await QuizSet.findByIdAndUpdate(quizSetId, {
+            active: !quizSet?.active
+        });
+
+        // Revalidate Path
+        revalidatePath(`/dashboard/quiz-sets/${quizSetId}`);
+    } catch (error) {
+        throw new Error(error);
+    }
+};
