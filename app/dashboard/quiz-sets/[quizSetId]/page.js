@@ -6,61 +6,16 @@ import BackButton from './_components/back-button';
 import QuizCard from './_components/quiz-card';
 import { getQuizSetById } from '@/queries/quiz-set';
 import { replaceMongoIdInObject } from '@/lib/convertData';
+import { getQuizById } from '@/queries/quiz';
 
 // Metadata
 export const metadata = {
     title: 'Quiz Set - Dashboard - Learn Pulse Edu'
 };
 
-const initialQuizes = [
-    {
-        id: 1,
-        title: 'What is HTML ?',
-        options: [
-            {
-                label: 'A programming language',
-                isTrue: false
-            },
-            {
-                label: 'A markup language',
-                isTrue: true
-            },
-            {
-                label: 'A famous book',
-                isTrue: false
-            },
-            {
-                label: 'A famous tv show',
-                isTrue: false
-            }
-        ]
-    },
-    {
-        id: 2,
-        title: 'What is Javascript ?',
-        options: [
-            {
-                label: 'A programming language',
-                isTrue: true
-            },
-            {
-                label: 'A markup language',
-                isTrue: false
-            },
-            {
-                label: 'A famous book',
-                isTrue: false
-            },
-            {
-                label: 'A famous tv show',
-                isTrue: false
-            }
-        ]
-    }
-];
-
-const EditQuizSet = async ({ params: { quizSetId } }) => {
+const EditQuizSet = async ({ params: { quizSetId }, searchParams: { quizId } }) => {
     const quizSet = await getQuizSetById(quizSetId);
+    const getEditQuiz = await getQuizById(quizId);
 
     return (
         <>
@@ -109,7 +64,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                         </div>
 
                         <div className='max-w-[800px]'>
-                            <AddQuizForm initialQuizes={initialQuizes} />
+                            <AddQuizForm quizSetId={quizSetId} editQuiz={getEditQuiz} />
                         </div>
                     </div>
                 </div>

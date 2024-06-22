@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { quizSetTitleSchema } from "@/lib/FormValidation/quiz/quiz";
 import { updateQuizSet } from "@/app/actions/quizSet";
 import { toast } from "sonner";
@@ -19,7 +19,9 @@ import { toast } from "sonner";
 export const TitleForm = ({ initialData = {}, quizSetId }) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = useCallback(() => {
+    setIsEditing((current) => !current);
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(quizSetTitleSchema),
@@ -28,38 +30,32 @@ export const TitleForm = ({ initialData = {}, quizSetId }) => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values) => {
-    try {
-      await updateQuizSet(quizSetId, values);
-      toast.success("Quiz set title updated");
-      toggleEdit();
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
-  };
+  const onSubmit = useCallback(
+    async (values) => {
+      try {
+        await updateQuizSet(quizSetId, values);
+        toast.success("Quiz set title updated");
+        toggleEdit();
+      } catch (error) {
+        toast.error("Something went wrong");
+      }
+    },
+    [quizSetId, toggleEdit]
+  );
 
   return (
     <div className="p-4 mt-6 border rounded-md dark:border-neutral-800 bg-gray-50 dark:bg-gray-900">
       <div className="flex items-center justify-between font-medium">
         Quiz set title
-        <Button variant="ghost" onClick={toggleEdit}>
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="w-4 h-4 mr-2" />
-              Edit Title
-            </>
-          )}
+        <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+          {isEditing ? "Cancel" : <><Pencil className="w-4 h-4 mr-2" /> Edit Title</>}
         </Button>
       </div>
-      {!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
-      {isEditing && (
+      {!isEditing ? (
+        <p className="mt-2 text-sm">{initialData.title}</p>
+      ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control}
               name="title"

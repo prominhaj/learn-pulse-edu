@@ -1,11 +1,8 @@
 "use client";
 
-import * as z from "zod";
-// import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
 import {
   Form,
   FormControl,
@@ -16,141 +13,129 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { PlusCircle } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { addQuizFormSchema } from "@/lib/FormValidation/quiz/quiz";
+import { QuizOption } from "./quiz-option";
+import { useCallback, useEffect, useMemo } from "react";
+import { getSlug } from "@/lib/convertData";
+import { createAndUpdateQuiz } from "@/app/actions/quiz";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  title: z
-    .string({
-      required_error: "Question is required",
-    })
-    .min(1, {
-      message: "Title is required",
-    }),
-  description: z
-    .string({
-      required_error: "Description is required",
-    })
-    .min(1, {
-      message: "Description is required",
-    }),
-  optionA: z.object({
-    label: z
-      .string({
-        required_error: "Option label is required",
-      })
-      .min(1, {
-        message: "Option label is required",
-      }),
-    isTrue: z.boolean().default(false),
-  }),
-  optionB: z.object({
-    label: z
-      .string({
-        required_error: "Option label is required",
-      })
-      .min(1, {
-        message: "Option label is required",
-      }),
-    isTrue: z.boolean().default(false),
-  }),
-  optionC: z.object({
-    label: z
-      .string({
-        required_error: "Option label is required",
-      })
-      .min(1, {
-        message: "Option label is required",
-      }),
-    isTrue: z.boolean().default(false),
-  }),
-  optionD: z.object({
-    label: z
-      .string({
-        required_error: "Option label is required",
-      })
-      .min(1, {
-        message: "Option label is required",
-      }),
-    isTrue: z.boolean().default(false),
-  }),
-});
-
-export const AddQuizForm = ({ initialQuizes }) => {
+export const AddQuizForm = ({ quizSetId, editQuiz }) => {
   const router = useRouter();
 
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    mode: "all",
-    defaultValues: {
-      title: "",
-      description: "",
-      optionA: {
-        label: "",
-        isTrue: false,
-      },
-      optionB: {
-        label: "",
-        isTrue: false,
-      },
-      optionC: {
-        label: "",
-        isTrue: false,
-      },
-      optionD: {
-        label: "",
-        isTrue: false,
-      },
+
+  // Function to determine correct option based on editQuiz
+  const getCorrectOption = (editQuiz) => {
+    const correctOptionEdit = editQuiz?.options.reduce((acc, option, index) => {
+      if (option.is_correct) {
+        switch (index) {
+          case 0:
+            acc.push("optionA");
+            break;
+          case 1:
+            acc.push("optionB");
+            break;
+          case 2:
+            acc.push("optionC");
+            break;
+          case 3:
+            acc.push("optionD");
+            break;
+          default:
+            break;
+        }
+      }
+      return acc;
+    }, []);
+
+    return correctOptionEdit?.toString() || "";
+  };
+
+  // Initial quiz data based on editQuiz
+  const initialQuizData = useMemo(() => ({
+    title: editQuiz?.question || "",
+    description: editQuiz?.description || "",
+    optionA: {
+      text: editQuiz?.options[0]?.text || "",
+      is_correct: editQuiz?.options[0]?.is_correct || false,
     },
+    optionB: {
+      text: editQuiz?.options[1]?.text || "",
+      is_correct: editQuiz?.options[1]?.is_correct || false,
+    },
+    optionC: {
+      text: editQuiz?.options[2]?.text || "",
+      is_correct: editQuiz?.options[2]?.is_correct || false,
+    },
+    optionD: {
+      text: editQuiz?.options[3]?.text || "",
+      is_correct: editQuiz?.options[3]?.is_correct || false,
+    },
+    correctOption: getCorrectOption(editQuiz) || "",
+    mark: editQuiz?.mark || 5,
+  }), [editQuiz]);
+
+  // Form hook initialization
+  const form = useForm({
+    resolver: zodResolver(addQuizFormSchema),
+    mode: "onBlur",
+    defaultValues: initialQuizData,
   });
 
-  const { isSubmitting, isValid, errors } = form.formState;
+  useEffect(() => {
+    form.reset(initialQuizData);
+  }, [editQuiz, initialQuizData, form]);
 
-  const onSubmit = async (values) => {
+  const { isSubmitting } = form.formState;
+
+  // Form submission handler
+  const onSubmit = useCallback(async (values) => {
     try {
-      console.log({ values });
-
       const structuredQuiz = {
-        id: Date.now(),
-        title: values.title,
+        question: values.title,
+        slug: getSlug(values.title),
+        description: values.description,
         options: [
           values.optionA,
           values.optionB,
           values.optionC,
           values.optionD,
         ],
+        mark: values.mark,
       };
-      initialQuizes((prevQuizes) => [...prevQuizes, structuredQuiz]);
-      form.reset({
-        title: "",
-        description: "",
-        optionA: {
-          label: "",
-          isTrue: false,
-        },
-        optionB: {
-          label: "",
-          isTrue: false,
-        },
-        optionC: {
-          label: "",
-          isTrue: false,
-        },
-        optionD: {
-          label: "",
-          isTrue: false,
-        },
-      });
-      toggleEdit();
-      router.refresh();
+
+      if (editQuiz?.id) {
+        // Update Quiz
+        await createAndUpdateQuiz(structuredQuiz, quizSetId, editQuiz?.id);
+        toast.success("Quiz updated successfully");
+        form.reset();
+        router.push(`/dashboard/quiz-sets/${quizSetId}`)
+      }
+      else {
+        // Create Quiz
+        await createAndUpdateQuiz(structuredQuiz, quizSetId);
+        toast.success("Quiz created successfully");
+        form.reset();
+      }
+
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
-  };
+  }, [form, quizSetId, editQuiz, router]);
+
+  // Watch correctOption value changes
+  const correctOption = form.watch("correctOption");
+
+  // Handle correctOption change
+  const handleCorrectOptionChange = useCallback((option) => {
+    form.setValue("optionA.is_correct", option === "optionA");
+    form.setValue("optionB.is_correct", option === "optionB");
+    form.setValue("optionC.is_correct", option === "optionC");
+    form.setValue("optionD.is_correct", option === "optionD");
+    form.setValue("correctOption", option);
+  }, [form]);
 
   return (
     <div className="p-4 mt-6 border rounded-md dark:border-neutral-800 bg-gray-50 dark:bg-gray-900">
@@ -158,220 +143,97 @@ export const AddQuizForm = ({ initialQuizes }) => {
         Add New Quiz
       </div>
 
-      {
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
-            {/* quiz title */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quiz Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="Enter quiz question"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* quiz description */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quiz Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="Enter quiz description"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* --------------- OPTION A -------- */}
-            <div className="space-y-3">
-              <FormLabel>Option A</FormLabel>
-              <div className="flex items-start gap-3">
-                <FormField
-                  control={form.control}
-                  name="optionA.isTrue"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex-1">
-                  {/* option label  */}
-                  <FormField
-                    control={form.control}
-                    name="optionA.label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            disabled={isSubmitting}
-                            placeholder="Enter quiz question"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
+          {/* Quiz Title */}
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Quiz Title</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSubmitting}
+                    placeholder="Enter quiz question"
+                    {...field}
                   />
-                </div>
-              </div>
-            </div>
-            {/* --------------- OPTION A ENDS -------- */}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            {/* --------------- OPTION B -------- */}
-            <div className="space-y-3">
-              <FormLabel>Option B</FormLabel>
-              <div className="flex items-start gap-3">
-                <FormField
-                  control={form.control}
-                  name="optionB.isTrue"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex-1">
-                  {/* option label  */}
-                  <FormField
-                    control={form.control}
-                    name="optionB.label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            disabled={isSubmitting}
-                            placeholder="Enter quiz question"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+          {/* Quiz Description */}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Quiz Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={isSubmitting}
+                    placeholder="Enter quiz description"
+                    {...field}
                   />
-                </div>
-              </div>
-            </div>
-            {/* --------------- OPTION B ENDS -------- */}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            {/* --------------- OPTION C -------- */}
-            <div className="space-y-3">
-              <FormLabel>Option C</FormLabel>
-              <div className="flex items-start gap-3">
-                <FormField
-                  control={form.control}
-                  name="optionC.isTrue"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex-1">
-                  {/* option label  */}
-                  <FormField
-                    control={form.control}
-                    name="optionC.label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            disabled={isSubmitting}
-                            placeholder="Enter quiz question"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+          {/* Mark */}
+          <FormField
+            control={form.control}
+            name="mark"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mark</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={isSubmitting}
+                    placeholder="Enter mark for the quiz"
+                    {...field}
                   />
-                </div>
-              </div>
-            </div>
-            {/* --------------- OPTION C ENDS -------- */}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            {/* --------------- OPTION D -------- */}
-            <div className="space-y-3">
-              <FormLabel>Option D</FormLabel>
-              <div className="flex items-start gap-3">
-                <FormField
-                  control={form.control}
-                  name="optionD.isTrue"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start p-3 space-x-3 space-y-0 border rounded-md">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex-1">
-                  {/* option label  */}
-                  <FormField
-                    control={form.control}
-                    name="optionD.label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            disabled={isSubmitting}
-                            placeholder="Enter quiz question"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* --------------- OPTION D ENDS -------- */}
-            <div className="flex items-center justify-end gap-x-2">
-              <Button disabled={isSubmitting} type="submit">
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
-      }
+          {/* RadioGroup for selecting correct option */}
+          <RadioGroup value={correctOption} onValueChange={handleCorrectOptionChange}>
+            {["optionA", "optionB", "optionC", "optionD"].map((option) => (
+              <QuizOption
+                key={option}
+                form={form}
+                name={option}
+                isSubmitting={isSubmitting}
+                value={correctOption}
+                onChange={handleCorrectOptionChange}
+              />
+            ))}
+          </RadioGroup>
+
+          {/* Display error message if correctOption is not selected */}
+          {form.formState.errors.correctOption && (
+            <p className="text-red-500">
+              <small>
+                {form.formState.errors.correctOption.message}
+              </small>
+            </p>
+          )}
+
+          {/* Submit button */}
+          <div className="flex items-center justify-end gap-x-2">
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              Save
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 };
