@@ -5,7 +5,7 @@ import QuizCardActions from "./quiz-card-actions";
 const QuizCard = ({ quiz }) => {
     return (
         <div
-            className='p-4 border rounded-md shadow-md dark:border-gray-800 dark:shadow-gray-800 bg-gray-50 dark:bg-gray-900 lg:p-6'
+            className='p-4 border rounded-md shadow-md dark:border-gray-800 bg-gray-50 dark:bg-gray-900 lg:p-6'
         >
             <h2 className='mb-3'>{quiz?.question ?? "No question"}</h2>
 

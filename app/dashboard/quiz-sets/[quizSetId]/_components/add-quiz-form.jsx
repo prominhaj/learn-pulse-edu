@@ -17,14 +17,16 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { addQuizFormSchema } from "@/lib/FormValidation/quiz/quiz";
 import { QuizOption } from "./quiz-option";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getSlug } from "@/lib/convertData";
 import { createAndUpdateQuiz } from "@/app/actions/quiz";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/globals/Loading/Loading";
+import Spinner from "@/components/globals/Spinner/Spinner";
 
 export const AddQuizForm = ({ quizSetId, editQuiz }) => {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
 
   // Function to determine correct option based on editQuiz
   const getCorrectOption = (editQuiz) => {
@@ -92,6 +94,7 @@ export const AddQuizForm = ({ quizSetId, editQuiz }) => {
 
   // Form submission handler
   const onSubmit = useCallback(async (values) => {
+    setLoading(true)
     try {
       const structuredQuiz = {
         question: values.title,
@@ -122,6 +125,9 @@ export const AddQuizForm = ({ quizSetId, editQuiz }) => {
 
     } catch (error) {
       toast.error(error.message);
+    }
+    finally {
+      setLoading(false)
     }
   }, [form, quizSetId, editQuiz, router]);
 
@@ -228,8 +234,8 @@ export const AddQuizForm = ({ quizSetId, editQuiz }) => {
 
           {/* Submit button */}
           <div className="flex items-center justify-end gap-x-2">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              Save
+            <Button type="submit" className="w-full" disabled={loading || isSubmitting}>
+              {loading && <Spinner />}  Save
             </Button>
           </div>
         </form>

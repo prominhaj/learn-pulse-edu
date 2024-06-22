@@ -24,3 +24,18 @@ export const createAndUpdateQuiz = async (quizData, quizSetId, quizId) => {
         throw new Error(error);
     }
 };
+
+export const deleteQuiz = async (quizId, quizSetId) => {
+    try {
+        const quizSet = await QuizSet.findById(quizSetId);
+        quizSet?.quizIds?.pull(quizId);
+        quizSet?.save();
+
+        // Delete Quiz
+        await Quiz.findByIdAndDelete(quizId);
+        // Revalidate Path
+        revalidatePath(`/dashboard/quiz-sets/${quizSetId}`);
+    } catch (error) {
+        throw new Error(error);
+    }
+};
