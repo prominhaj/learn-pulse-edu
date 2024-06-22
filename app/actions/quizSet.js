@@ -4,6 +4,15 @@ import QuizSet from '@/modals/quiz-set-modal';
 import Quiz from '@/modals/quizzes-modal';
 import { revalidatePath } from 'next/cache';
 
+export const createQuizSet = async (data) => {
+    try {
+        const quizSet = await QuizSet.create(data);
+        return JSON.parse(JSON.stringify(quizSet));
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export const updateQuizSet = async (quizSetId, updatedData) => {
     try {
         await QuizSet.findByIdAndUpdate(quizSetId, updatedData);
