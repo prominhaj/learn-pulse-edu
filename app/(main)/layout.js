@@ -3,7 +3,7 @@ import Navbar from '@/components/globals/Navbar/Navbar';
 
 // Metadata
 export const metadata = {
-    title: 'Dashboard - Learn Pulse Edu'
+    title: 'Learn Pulse Edu'
 };
 
 const MainLayout = ({ children }) => {

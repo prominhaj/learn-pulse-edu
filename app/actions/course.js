@@ -5,6 +5,7 @@ import Lesson from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import { createCourse } from '@/queries/courses';
 import { deleteFile } from './fileUploader';
+import { revalidatePath } from 'next/cache';
 
 export const addNewCourse = async (data) => {
     try {
@@ -81,6 +82,18 @@ export const deleteCourse = async (courseId) => {
         await Course.findByIdAndDelete(courseId);
     } catch (error) {
         throw new Error(error.message);
+    }
+};
+
+// Updated Quiz Set
+export const updateCourseQuizSet = async (courseId, updateQuizSetId) => {
+    try {
+        await Course.findByIdAndUpdate(courseId, updateQuizSetId);
+
+        // Revalidation Path
+        revalidatePath(`/dashboard/courses/${courseId}`);
+    } catch (error) {
+        throw new Error(error);
     }
 };
 

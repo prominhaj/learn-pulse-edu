@@ -5,12 +5,12 @@ const TotalCard = ({ title, count }) => {
         <Card className="bg-background/50">
             <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
                 <CardTitle className='text-lg font-medium tracking-wide'>
-                    {title}
+                    {title ?? ""}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className='text-2xl font-bold'>
-                    {count}
+                    {count ?? 0}
                 </div>
             </CardContent>
         </Card>

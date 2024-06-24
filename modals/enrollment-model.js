@@ -24,6 +24,6 @@ const enrollmentSchema = new Schema({
     user_id: { type: Schema.ObjectId, ref: 'User' }
 });
 
-const Enrollment = mongoose.models.Enrollment ?? mongoose.model('Enrollment', enrollmentSchema);
+const Enrollment = mongoose.models?.Enrollment ?? mongoose.model('Enrollment', enrollmentSchema);
 
 export default Enrollment;

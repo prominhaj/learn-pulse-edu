@@ -1,9 +1,11 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Clock10, Video } from "lucide-react";
 import CourseLessonList from "../CourseLessonList/CourseLessonList";
+import { convertDuration } from "@/lib/date";
 
 const CourseModuleList = ({ module }) => {
     const moduleDuration = module?.lessonIds.reduce((acc, obj) => acc + obj.duration, 0);
+    const formatDuration = convertDuration(moduleDuration);
 
     return (
         <AccordionItem className='border-none' value='item-1'>
@@ -17,7 +19,7 @@ const CourseModuleList = ({ module }) => {
                     </span>
                     <span className='flex items-center gap-1.5'>
                         <Clock10 className='w-4 h-4' />
-                        {(moduleDuration / 60).toPrecision(2)} Hours
+                        {formatDuration?.duration} {formatDuration?.unit}
                     </span>
                 </div>
                 {/* header ends */}

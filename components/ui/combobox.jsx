@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,9 +16,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 export const Combobox = ({ options, value, onChange }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -30,8 +30,7 @@ export const Combobox = ({ options, value, onChange }) => {
           aria-expanded={open}
           className="justify-between w-full"
         >
-          {value
-            ? options.find((option) => option.value === value)?.label
+          {value ? options.find((option) => option.id === value)?.title
             : "Select options..."}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
@@ -44,9 +43,9 @@ export const Combobox = ({ options, value, onChange }) => {
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
-                  key={option.value}
+                  key={option.id}
                   onSelect={() => {
-                    onChange(option.value === value ? "" : option.value);
+                    onChange(option.id === value ? "" : option.id);
                     setOpen(false);
                   }}
                   className="cursor-pointer"
@@ -54,10 +53,10 @@ export const Combobox = ({ options, value, onChange }) => {
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === option.value ? "opacity-100" : "opacity-0"
+                      value === option.id ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option.label}
+                  {option.title}
                 </CommandItem>
               ))}
             </CommandGroup>

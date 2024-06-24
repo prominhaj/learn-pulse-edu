@@ -1,48 +1,14 @@
+import { unstable_noStore as noStore } from 'next/cache';
 import BarChart from '@/components/globals/BarChart/BarChart';
 import { Card, CardTitle } from '@/components/ui/card';
 import { formatPrice } from '@/lib/formatPrice';
 import RecentEnrollCard from './_components/RecentEnrollCard';
 import TotalCard from './_components/TotalCard';
-import { getCoursesByInstructorId } from '@/queries/courses';
 import { getUserData } from '@/lib/getUserData';
-import {
-    getEnrollmentsForCourse,
-    getMonthEnrollmentsSell,
-    getRecentEnrollments
-} from '@/queries/enrollments';
-
-const fetchDashboardData = async (userId) => {
-    try {
-        const courses = await getCoursesByInstructorId(userId);
-        const enrollCourse = await Promise.all(
-            courses.map(async (course) => {
-                const enrollments = await getEnrollmentsForCourse(course.id);
-                return {
-                    enrollmentsData: [...enrollments],
-                    enrollments: enrollments.length,
-                    totalPrice: course.price * enrollments.length
-                };
-            })
-        );
-
-        const totalEnroll = enrollCourse.reduce((acc, course) => acc + course.enrollments, 0);
-        const totalSalePrice = enrollCourse.reduce((acc, course) => acc + course.totalPrice, 0);
-        const enrollByInstructorReports = await getMonthEnrollmentsSell(userId);
-        const recentEnrollments = await getRecentEnrollments(userId);
-
-        return {
-            courses,
-            totalEnroll,
-            totalSalePrice,
-            enrollByInstructorReports,
-            recentEnrollments
-        };
-    } catch (error) {
-        throw new Error(error);
-    }
-};
+import { fetchDashboardData } from '@/lib/dashboard-helper';
 
 const DashboardPage = async () => {
+    noStore();
     const user = await getUserData();
 
     if (!user) {
@@ -54,15 +20,14 @@ const DashboardPage = async () => {
             </div>
         );
     }
-
     const { courses, totalEnroll, totalSalePrice, enrollByInstructorReports, recentEnrollments } =
-        await fetchDashboardData(user?.id);
+        (await fetchDashboardData(user?.id)) ?? {};
 
     return (
         <div className='p-6 font-inter'>
             <div className='grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
                 {/* total courses */}
-                <TotalCard title='Total Courses' count={courses.length} />
+                <TotalCard title='Total Courses' count={courses?.length} />
                 {/* total enrollments */}
                 <TotalCard title='Total Enrollments' count={totalEnroll} />
                 {/* total Revenue */}

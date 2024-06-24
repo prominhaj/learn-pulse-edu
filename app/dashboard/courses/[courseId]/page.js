@@ -15,10 +15,13 @@ import { replaceMongoIdInArray } from '@/lib/convertData';
 import { getImage } from '@/lib/getImage';
 import { SubTitleForm } from './_components/sub-title-form';
 import { LearningForm } from './_components/learning-form';
+import { getAllQuizSet, getQuizSetById } from '@/queries/quiz-set';
 
 const EditCoursePage = async ({ params: { courseId } }) => {
     const course = await getCourseDetails(courseId, true);
     const categories = await getCategories();
+    const getQuizSets = await getAllQuizSet();
+    const quizSet = await getQuizSetById(course?.quizSet);
 
     // modified Categories
     const modifiedCategories = categories?.map((c) => {
@@ -79,7 +82,12 @@ const EditCoursePage = async ({ params: { courseId } }) => {
                             courseId={courseId}
                         />
 
-                        <QuizSetForm courseId={courseId} />
+                        <QuizSetForm
+                            selectedQuizSetTitle={quizSet?.title}
+                            initialData={course?.quizSet}
+                            courseId={courseId}
+                            options={getQuizSets}
+                        />
                     </div>
                     <div className='space-y-6'>
                         <div>

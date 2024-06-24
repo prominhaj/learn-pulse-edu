@@ -1,10 +1,13 @@
 import { Accordion } from "@/components/ui/accordion";
 import { BookCheck, Clock10 } from "lucide-react";
 import CourseModuleList from "../../Module/CourseModuleList/CourseModuleList";
+import { convertDuration } from "@/lib/date";
 
 const Curriculum = ({ modules }) => {
     const totalDuration = modules?.reduce((acc, { lessonIds }) =>
         acc + (lessonIds?.reduce((a, { duration }) => a + duration, 0) || 0), 0);
+
+    const formatDuration = convertDuration(totalDuration);
 
     return (
         <>
@@ -15,7 +18,7 @@ const Curriculum = ({ modules }) => {
                 </span>
                 <span className='flex items-center gap-1.5'>
                     <Clock10 className='w-4 h-4' />
-                    {(totalDuration / 60).toPrecision(2)} Hours
+                    {formatDuration?.duration ?? 0} {formatDuration?.unit ?? "minutes"}
                 </span>
             </div>
             {/* contents */}

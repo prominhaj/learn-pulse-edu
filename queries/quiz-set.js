@@ -4,7 +4,7 @@ import Quiz from '@/modals/quizzes-modal';
 
 export const getAllQuizSet = async () => {
     try {
-        const allQuizSet = await QuizSet.find().lean();
+        const allQuizSet = await QuizSet.find({ active: true }).lean();
         return replaceMongoIdInArray(allQuizSet);
     } catch (error) {
         throw new Error(error);

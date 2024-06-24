@@ -10,21 +10,25 @@ import { getUserData } from '@/lib/getUserData';
 import Lesson from '@/modals/lessons-modal';
 
 export const getCourses = async () => {
-    const courses = await Course.find({
-        active: true
-    })
-        .select(['title', 'subtitle', 'thumbnail', 'modules', 'price', 'category'])
-        .populate({
-            path: 'category',
-            model: Category
+    try {
+        const courses = await Course.find({
+            active: true
         })
-        .populate({
-            path: 'modules',
-            model: Module
-        })
-        .lean();
+            .select(['title', 'subtitle', 'thumbnail', 'modules', 'price', 'category'])
+            .populate({
+                path: 'category',
+                model: Category
+            })
+            .populate({
+                path: 'modules',
+                model: Module
+            })
+            .lean();
 
-    return replaceMongoIdInArray(courses);
+        return replaceMongoIdInArray(courses);
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 // Create Course

@@ -2,8 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -15,29 +13,18 @@ import {
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import { quizSetSchema } from "@/lib/FormValidation/course/courseSchema";
+import { updateCourseQuizSet } from "@/app/actions/course";
 
-const formSchema = z.object({
-  quizSetId: z.string().min(1),
-});
 
 export const QuizSetForm = ({
   initialData,
+  selectedQuizSetTitle,
   courseId,
-  options = [
-    {
-      value: "quiz_set_1",
-      label: "Quiz Set 1",
-    },
-    {
-      value: "2",
-      label: "Quiz Set 2",
-    },
-  ],
+  options
 }) => {
-  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = useCallback(() => {
@@ -45,9 +32,9 @@ export const QuizSetForm = ({
   }, []);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(quizSetSchema),
     defaultValues: {
-      quizSetId: initialData?.quizSetId || "",
+      quizSetId: initialData || "",
     },
   });
 
@@ -55,13 +42,13 @@ export const QuizSetForm = ({
 
   const onSubmit = useCallback(async (values) => {
     try {
+      await updateCourseQuizSet(courseId, values);
       toast.success("Quiz Set updated");
       toggleEdit();
-      router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
     }
-  }, [router, toggleEdit]);
+  }, [toggleEdit, courseId]);
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
@@ -82,10 +69,10 @@ export const QuizSetForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData?.quizSetId && "text-slate-500 italic"
+            !selectedQuizSetTitle && "text-slate-500 italic"
           )}
         >
-          {"No quiz set selected"}
+          {selectedQuizSetTitle ? selectedQuizSetTitle : "No quiz set selected"}
         </p>
       )}
 
@@ -97,7 +84,7 @@ export const QuizSetForm = ({
           >
             <FormField
               control={form.control}
-              name="quizSetId"
+              name="quizSet"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
