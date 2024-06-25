@@ -154,7 +154,7 @@ export const getCoursesByInstructorId = async (instructorId) => {
 
 export const getCourseByCourseId = async (courseId) => {
     try {
-        const course = await Course.findOne({ _id: courseId }).lean();
+        const course = await Course.findById(courseId).lean();
         return replaceMongoIdInObject(course);
     } catch (error) {
         throw new Error(error);

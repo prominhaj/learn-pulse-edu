@@ -40,7 +40,7 @@ const Navbar = ({ children }) => {
 
     return (
         <>
-            <div className="flex gap-6 lg:gap-10">
+            <div className="z-50 flex gap-6 lg:gap-10">
                 <Logo />
                 {navLinks?.length ? (
                     <nav className="hidden gap-6 lg:flex">

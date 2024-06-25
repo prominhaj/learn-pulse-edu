@@ -1,6 +1,8 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuizModal from "./quiz-modal";
+
+
 const quizes = [
 	{
 		id: "quiz-1",
@@ -28,13 +30,13 @@ const quizes = [
 
 function VideoDescription() {
 	return (
-		<div className="mt-4">
+		<div className="mt-2 md:mt-4">
 			<Tabs defaultValue="details">
-				<TabsList className="bg-transparent p-0 border-b border-border w-full justify-start h-auto rounded-none">
-					<TabsTrigger className="capitalize" value="details">
+				<TabsList className="justify-start w-full h-auto p-0 bg-transparent border-b rounded-none border-border">
+					<TabsTrigger className="capitalize rounded-none data-[state=active]:border-blue-500 border-b-2 border-transparent pb-2" value="details">
 						Description
 					</TabsTrigger>
-					<TabsTrigger className="capitalize" value="quiz">
+					<TabsTrigger className="capitalize rounded-none data-[state=active]:border-blue-500 border-b-2 border-transparent pb-2" value="quiz">
 						Quiz
 					</TabsTrigger>
 				</TabsList>

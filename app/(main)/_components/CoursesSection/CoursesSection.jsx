@@ -1,10 +1,13 @@
-
 import CourseCard from '@/components/globals/CourseCard/CourseCard';
 import { SectionTitle } from '@/components/globals/SectionTitle/SectionTitle';
+import { getCourses } from '@/queries/courses';
 import { ArrowRightIcon } from 'lucide-react';
+import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 
-const CoursesSection = ({ courses }) => {
+const CoursesSection = async () => {
+    noStore();
+    const courses = await getCourses();
 
     return (
         <section id='courses' className='container pb-8 space-y-6 md:pb-12 lg:pb-16'>

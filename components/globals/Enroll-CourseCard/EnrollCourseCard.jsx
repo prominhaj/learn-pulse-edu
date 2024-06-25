@@ -1,8 +1,12 @@
-import { Badge } from '@/components/ui/badge';
 import { getCategoryDetails } from '@/queries/categories';
 import { getAReport } from '@/queries/reports';
 import { BookOpen } from 'lucide-react';
 import Image from 'next/image';
+import { CourseProgress } from '../CourseProgress/CourseProgress';
+import { getCourseProgress } from '@/lib/course';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 
 const EnrollCourseCard = async ({ enrollCourse }) => {
     const category = await getCategoryDetails(enrollCourse?.course_id?.category.toString());
@@ -12,6 +16,9 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
     const courseTitle = course?.title;
     const courseImg = course?.thumbnail?.url;
     const modules = course?.modules;
+
+    // Total Course Progress
+    const courseProgress = await getCourseProgress(course?._id);
 
     // Filter by Reports
     const filter = {
@@ -119,11 +126,14 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
                     </div>
                 </div>
 
-                {/* <CourseProgress
-						size="sm"
-						value={80}
-						variant={110 === 100 ? "success" : ""}
-					/> */}
+                <CourseProgress
+                    size="sm"
+                    value={courseProgress}
+                    variant={110 === 100 ? "success" : ""}
+                />
+                <Link href={`/course/${course?._id.toString()}/lesson`} className={cn(buttonVariants({ variant: "default" }), "mt-3")}>
+                    Access Now
+                </Link>
             </div>
         </div>
     );
