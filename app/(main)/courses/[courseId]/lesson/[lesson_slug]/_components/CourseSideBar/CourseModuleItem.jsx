@@ -7,7 +7,7 @@ const CourseModuleItem = ({ module, index, courseId, lessonSlug }) => {
     const formatModuleDuration = convertDuration(totalModuleDuration);
 
     return (
-        <AccordionItem className="border-0" value="item-1">
+        <AccordionItem className="border-0" value={`module-${index}`}>
             <AccordionTrigger className="px-3 text-black dark:text-[#94A3B8] dark:data-[state=open]:bg-[#0284C7] data-[state=open]:bg-[#6D28D9] dark:data-[state=open]:text-white data-[state=open]:text-white hover:bg-[#6D28D9] hover:text-white dark:hover:bg-[#0284C7] dark:hover:text-white dark:hover:[&[data-state=open]>svg]:text-white sm:px-6">
                 <span className="flex flex-col items-start">
                     <span className="block text-base font-semibold">
