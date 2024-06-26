@@ -16,7 +16,7 @@ export const getModuleById = async (moduleId) => {
     }
 };
 
-export const getModuleByLesson = async (moduleId) => {
+export const getModuleByLesson = async (moduleId, isLength) => {
     try {
         const getModule = await Module.findById(moduleId)
             .populate({
@@ -24,7 +24,7 @@ export const getModuleByLesson = async (moduleId) => {
                 model: Lesson
             })
             .lean();
-        return getModule?.lessonIds?.length;
+        return isLength ? getModule?.lessonIds?.length : getModule;
     } catch (error) {
         throw new Error(error);
     }

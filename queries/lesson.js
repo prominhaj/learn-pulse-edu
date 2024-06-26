@@ -9,3 +9,12 @@ export const getLesson = async (lessonId) => {
         throw new Error(error);
     }
 };
+
+export const getLessonByOrder = async (order) => {
+    try {
+        const lesson = await Lesson.findOne({ order: order }).lean();
+        return replaceMongoIdInObject(lesson);
+    } catch (error) {
+        throw new Error(error);
+    }
+};

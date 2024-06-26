@@ -154,7 +154,18 @@ export const getCoursesByInstructorId = async (instructorId) => {
 
 export const getCourseByCourseId = async (courseId) => {
     try {
-        const course = await Course.findById(courseId).lean();
+        const course = await Course.findById(courseId)
+            .populate({
+                path: 'modules',
+                model: Module,
+                match: { active: true },
+                populate: {
+                    path: 'lessonIds',
+                    model: Lesson,
+                    match: { active: true }
+                }
+            })
+            .lean();
         return replaceMongoIdInObject(course);
     } catch (error) {
         throw new Error(error);

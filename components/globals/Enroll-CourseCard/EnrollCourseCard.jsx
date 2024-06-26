@@ -4,9 +4,7 @@ import { BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import { CourseProgress } from '../CourseProgress/CourseProgress';
 import { getCourseProgress } from '@/lib/course';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import CourseAccessLink from '../CourseAccessLink/CourseAccessLink';
 
 const EnrollCourseCard = async ({ enrollCourse }) => {
     const category = await getCategoryDetails(enrollCourse?.course_id?.category.toString());
@@ -131,9 +129,7 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
                     value={courseProgress}
                     variant={110 === 100 ? "success" : ""}
                 />
-                <Link href={`/course/${course?._id.toString()}/lesson`} className={cn(buttonVariants({ variant: "default" }), "mt-3")}>
-                    Access Now
-                </Link>
+                <CourseAccessLink courseId={course?._id} />
             </div>
         </div>
     );
