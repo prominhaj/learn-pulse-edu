@@ -4,7 +4,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import CourseModuleItem from "./CourseModuleItem";
 
-const CourseModules = () => {
+const CourseModules = ({ modules, courseId, lessonSlug }) => {
 
     return (
         <ScrollArea className="h-[18rem] md:h-[25rem]">
@@ -14,9 +14,17 @@ const CourseModules = () => {
                 collapsible
                 className="w-full"
             >
-                {/* item */}
-                <CourseModuleItem />
-                {/* item ends */}
+                {
+                    modules?.map((module, index) => (
+                        <CourseModuleItem
+                            key={module?._id.toString()}
+                            module={module}
+                            index={index}
+                            courseId={courseId}
+                            lessonSlug={lessonSlug}
+                        />
+                    ))
+                }
             </Accordion>
         </ScrollArea>
     );

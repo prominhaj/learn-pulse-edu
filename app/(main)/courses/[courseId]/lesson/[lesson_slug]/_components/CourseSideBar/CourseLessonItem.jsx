@@ -1,22 +1,28 @@
+import { convertDuration } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { CheckCircle, CirclePlay } from "lucide-react";
 import Link from "next/link";
 
-const CourseLessonItem = () => {
-    const isActive = true;
+const CourseLessonItem = ({ lesson, courseId, lessonSlug }) => {
+    const isActive = lesson?.active;
+    const lessonSlugFormat = lesson?.slug.replace(/0/g, "-");
+    const isLessonAction = lessonSlug === lessonSlugFormat;
+    const formatLessonDuration = convertDuration(lesson?.duration)
     const isCompleted = true;
+
     return (
         <Link
-            href="#"
+            href={`/courses/${courseId}/lesson/${lessonSlugFormat}`}
             className={cn(
-                "text-black dark:text-slate-300 text-sm font-[500] transition-all hover:text-slate-600 hover:bg-[#F3F4F6] dark:hover:bg-[#1F2937] flex items-start w-full gap-3 px-3 sm:px-6 py-1.5"
+                isLessonAction && "bg-[#F3F4F6] dark:bg-[#1F2937]",
+                "text-black dark:text-slate-300 text-sm font-[500] transition-all hover:bg-[#F3F4F6] dark:hover:bg-[#1F2937] dark:hover:text-white flex items-start w-full gap-3 px-3 sm:px-6 py-1.5"
             )}
         >
             <CirclePlay className="dark:text-[#0284C7] text-[#6D28D9]" />
             <div className="flex flex-col items-start w-full gap-y-0.5">
                 <div className="flex items-center w-full gap-x-2">
                     <div className="flex items-center justify-between w-full">
-                        Introduction
+                        {lesson?.title}
                         <CheckCircle
                             size={16}
                             className={cn(
@@ -28,7 +34,7 @@ const CourseLessonItem = () => {
                     </div>
                 </div>
                 <span className="text-[0.70rem] font-normal">
-                    0.00 minutes
+                    {formatLessonDuration.duration} {formatLessonDuration.unit}
                 </span>
             </div>
         </Link>
