@@ -1,11 +1,13 @@
 import mongoose, { Schema } from 'mongoose';
 
 const reportSchema = new Schema({
-    total_completed_lesson: {
-        type: Number
+    totalCompletedLessons: {
+        required: true,
+        type: Array
     },
-    total_completed_modules: {
-        type: Number
+    totalCompletedModules: {
+        required: true,
+        type: Array
     },
     user_id: { type: Schema.ObjectId, ref: 'Course' },
     course_id: { type: Schema.ObjectId, ref: 'User' },

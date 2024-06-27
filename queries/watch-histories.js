@@ -13,3 +13,12 @@ export const getLessonWatchHistory = async (filter) => {
         throw new Error(error);
     }
 };
+
+export const isLessonWatchCompleted = async (filter) => {
+    try {
+        const watchHistory = await WatchHistories.findOne(filter).lean();
+        return watchHistory?.state === 'completed' ? true : false;
+    } catch (error) {
+        throw new Error(error);
+    }
+};

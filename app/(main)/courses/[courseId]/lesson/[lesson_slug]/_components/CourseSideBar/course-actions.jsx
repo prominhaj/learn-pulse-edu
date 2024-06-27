@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 import { ReviewModal } from "../review-modal";
 import { useState } from "react";
 
-const CourseActions = () => {
+const CourseActions = ({ courseProgress }) => {
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
     return (
         <>
-            <Button className="w-full">
+            <Button disabled={courseProgress === 100 ? false : true} className="w-full disabled:bg-opacity-50">
                 <>Download Certificate</>
-            </Button>
-
+            </Button >
             <Button
                 onClick={() => setIsReviewModalOpen(true)}
                 variant="outline"

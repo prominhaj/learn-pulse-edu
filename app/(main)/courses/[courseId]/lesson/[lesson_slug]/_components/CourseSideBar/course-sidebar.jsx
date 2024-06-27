@@ -23,7 +23,7 @@ export const CourseSidebar = async ({ course, lessonSlug }) => {
         <CourseModules modules={modules} courseId={course?.id} lessonSlug={lessonSlug} />
 
         <div className="px-3 py-3 space-y-3 sm:px-6">
-          <CourseActions />
+          <CourseActions courseProgress={courseProgress} />
         </div>
       </div>
 

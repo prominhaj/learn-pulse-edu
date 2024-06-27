@@ -12,8 +12,21 @@ const watchHistoriesSchema = new Schema(
             ref: 'Lesson',
             required: true
         },
-        state: { type: String, required: true },
-        last_time: { type: Number }
+        module_id: {
+            type: Schema.ObjectId,
+            ref: 'Module',
+            required: true
+        },
+        state: {
+            type: String,
+            required: true,
+            default: 'watching'
+        },
+        last_time: {
+            type: Number,
+            required: true,
+            default: 0
+        }
     },
     {
         collection: 'watch-histories',

@@ -1,14 +1,21 @@
 import { convertDuration } from "@/lib/date";
+import { getUserData } from "@/lib/getUserData";
 import { cn } from "@/lib/utils";
-import { CheckCircle, CirclePlay, Lock } from "lucide-react";
+import { isLessonWatchCompleted } from "@/queries/watch-histories";
+import { CircleCheck, CirclePlay, Lock } from "lucide-react";
 import Link from "next/link";
 
-const CourseLessonItem = ({ lesson, courseId, lessonSlug }) => {
-    const isActive = lesson?.active;
+const CourseLessonItem = async ({ lesson, courseId, lessonSlug }) => {
+    const user = await getUserData();
+    const isCompleted = await isLessonWatchCompleted({
+        lesson_id: lesson._id,
+        user_id: user?.id,
+    })
+    // converted data
     const lessonSlugFormat = lesson?.slug.replace(/0/g, "-");
     const isLessonAction = lessonSlug === lessonSlugFormat;
-    const formatLessonDuration = convertDuration(lesson?.duration)
-    const isCompleted = false;
+    const formatLessonDuration = convertDuration(lesson?.duration);
+    const isActive = lesson?.active;
 
     return (
         <Link
@@ -32,12 +39,10 @@ const CourseLessonItem = ({ lesson, courseId, lessonSlug }) => {
                     <div className="flex items-center justify-between w-full">
                         {lesson?.title}
                         {
-                            isCompleted && <CheckCircle
+                            isCompleted && <CircleCheck
                                 size={16}
                                 className={cn(
-                                    "text-slate-500 dark:text-slate-300",
-                                    isActive && "text-slate-700 dark:text-slate-200",
-                                    isCompleted && "text-emerald-700 dark:text-emerald-300"
+                                    "text-white w-5 h-5 bg-emerald-500 rounded-full"
                                 )}
                             />
                         }
