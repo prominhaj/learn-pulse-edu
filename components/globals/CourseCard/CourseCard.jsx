@@ -5,22 +5,25 @@ import Link from "next/link";
 import EnrollButton from "../EnrollButton/EnrollButton";
 import { Card } from "@/components/ui/card";
 import { getUserData } from "@/lib/getUserData";
-import { hasEnrollmentForCourse } from "@/queries/enrollments";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { hasEnrollmentForCourse, totalEnrollCourse } from "@/queries/enrollments";
 import { getImage } from "@/lib/getImage";
+import { getCourseProgress } from "@/lib/course";
+import CourseAccessLink from "../CourseAccessLink/CourseAccessLink";
+import { CourseProgress } from "../CourseProgress/CourseProgress";
 
 const CourseCard = async ({ course }) => {
     const { id, title, thumbnail: { url }, price, category, modules } = course;
     const user = await getUserData();
     const isEnroll = await hasEnrollmentForCourse(id, user?.id);
+    const courseProgress = await getCourseProgress(course?.id);
+    const totalEnrollment = await totalEnrollCourse(course?.id);
 
     // Image Placeholder
     const { base64, img } = await getImage(url);
 
     return (
         <>
-            <Card className='h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
+            <Card className='flex flex-col justify-between h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
                 <Link className="block" href={`/courses/${id}`}>
                     <div>
                         <div className='relative w-full overflow-hidden rounded-md aspect-video'>
@@ -38,7 +41,7 @@ const CourseCard = async ({ course }) => {
                                 {title}
                             </div>
                             <p className='text-xs text-muted-foreground'>{category?.title}</p>
-                            <div className='flex items-center my-3 text-sm gap-x-2 md:text-xs'>
+                            <div className='flex items-center mt-2 mb-1 text-sm gap-x-2 md:text-xs'>
                                 <div className='flex items-center gap-x-1 text-muted-foreground'>
                                     <div>
                                         <BookOpen className='w-4' />
@@ -46,29 +49,37 @@ const CourseCard = async ({ course }) => {
                                     <span>{modules.length} Chapters</span>
                                 </div>
                             </div>
-
-                            {/* <CourseProgress
-                        size='sm'
-                        value={80}
-                        variant={110 === 100 ? 'success' : ''}
-                    /> */}
                         </div>
                     </div>
                 </Link>
-                <div className='flex items-center justify-between'>
-                    <h4 className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
-                        {formatPrice(price)}
-                    </h4>
-
+                <div className="mb-2">
                     {isEnroll ? (
-                        <Link href="" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-                            Access Course
-                        </Link>
+                        <CourseProgress
+                            size='sm'
+                            value={courseProgress}
+                            variant={110 === 100 ? 'success' : ''}
+                        />
                     ) : (
-                        <EnrollButton asLink={true} courseId={id} />
+                        <p className='text-sm text-muted-foreground'>Total Enrollment: {totalEnrollment}</p>
                     )}
                 </div>
-            </Card>
+                <div>
+                    {
+                        isEnroll ? (
+                            <div>
+                                <CourseAccessLink className="rounded-2xl" courseId={course?.id} variant="primary" size="sm" />
+                            </div>
+                        ) : (
+                            <div className='flex items-center justify-between'>
+                                <h4 className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
+                                    {formatPrice(price)}
+                                </h4>
+                                <EnrollButton asLink={true} courseId={id} />
+                            </div >
+                        )
+                    }
+                </div>
+            </Card >
         </>
     );
 };

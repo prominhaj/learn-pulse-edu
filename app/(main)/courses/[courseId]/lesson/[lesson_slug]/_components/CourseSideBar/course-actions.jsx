@@ -9,7 +9,7 @@ const CourseActions = ({ courseProgress }) => {
     return (
         <>
             <Button disabled={courseProgress === 100 ? false : true} className="w-full disabled:bg-opacity-50">
-                <>Download Certificate</>
+                Download Certificate
             </Button >
             <Button
                 onClick={() => setIsReviewModalOpen(true)}

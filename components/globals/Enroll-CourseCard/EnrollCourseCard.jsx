@@ -129,7 +129,9 @@ const EnrollCourseCard = async ({ enrollCourse }) => {
                     value={courseProgress}
                     variant={110 === 100 ? "success" : ""}
                 />
-                <CourseAccessLink courseId={course?._id} />
+                <div className='w-full mt-3'>
+                    <CourseAccessLink variant="primary" courseId={course?._id} />
+                </div>
             </div>
         </div>
     );

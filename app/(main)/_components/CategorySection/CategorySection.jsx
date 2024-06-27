@@ -1,10 +1,12 @@
-
 import { SectionTitle } from '@/components/globals/SectionTitle/SectionTitle';
 import CategoryCard from '../CategoryCard/CategoryCard';
 import Link from 'next/link';
 import { ArrowRightIcon } from 'lucide-react';
+import { getCategories } from '@/queries/categories';
 
-const CategorySection = ({ categories }) => {
+const CategorySection = async () => {
+    const categories = await getCategories();
+
     return (
         <section id='categories' className='container py-8 space-y-6 md:py-12 lg:py-24'>
             <div className='flex items-center justify-between'>

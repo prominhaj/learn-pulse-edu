@@ -196,3 +196,14 @@ export const hasEnrollmentForCourse = async (courseId, studentId) => {
         throw new Error(error);
     }
 };
+
+export const totalEnrollCourse = async (courseId) => {
+    try {
+        const totalEnrollmentCourse = await Enrollment.countDocuments({
+            course_id: courseId
+        });
+        return totalEnrollmentCourse;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
