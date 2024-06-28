@@ -12,7 +12,7 @@ export const getLesson = async (lessonId) => {
 
 export const getLessonByOrder = async (order) => {
     try {
-        const lesson = await Lesson.findOne({ order: order }).lean();
+        const lesson = await Lesson.findOne({ order: order, active: true }).lean();
         return replaceMongoIdInObject(lesson);
     } catch (error) {
         throw new Error(error);

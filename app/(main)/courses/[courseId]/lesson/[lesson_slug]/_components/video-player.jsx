@@ -2,11 +2,12 @@
 import { watchUpdate } from '@/app/actions/watch-histories';
 import { useRouter } from 'next/navigation';
 import ReactPlayer from 'react-player';
+import { useCallback } from 'react';
 
 export const VideoPlayer = ({ url, courseId, lessonId, moduleId }) => {
   const router = useRouter();
 
-  const handleOnStart = async () => {
+  const handleOnStart = useCallback(async () => {
     const data = {
       courseId,
       lessonId,
@@ -19,9 +20,9 @@ export const VideoPlayer = ({ url, courseId, lessonId, moduleId }) => {
     } catch (error) {
       throw new Error(error);
     }
-  };
+  }, [courseId, lessonId, moduleId]);
 
-  const onEnded = async () => {
+  const onEnded = useCallback(async () => {
     const data = {
       courseId,
       lessonId,
@@ -35,7 +36,7 @@ export const VideoPlayer = ({ url, courseId, lessonId, moduleId }) => {
     } catch (error) {
       throw new Error(error);
     }
-  };
+  }, [courseId, lessonId, moduleId, router]);
 
   return (
     <div className="relative w-full aspect-video">
