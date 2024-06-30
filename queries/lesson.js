@@ -27,3 +27,12 @@ export const getLessonBySlug = async (slug) => {
         throw new Error(error);
     }
 };
+
+export const getLessonById = async (lessonId) => {
+    try {
+        const lesson = await Lesson.findById(lessonId).lean();
+        return replaceMongoIdInObject(lesson);
+    } catch (error) {
+        throw new Error(error);
+    }
+};

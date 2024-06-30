@@ -5,21 +5,20 @@ import { isLessonWatchCompleted } from "@/queries/watch-histories";
 import { CircleCheck, CirclePlay, Lock } from "lucide-react";
 import Link from "next/link";
 
-const CourseLessonItem = async ({ lesson, courseId, lessonSlug }) => {
+const CourseLessonItem = async ({ lesson, courseId, lessonId }) => {
     const user = await getUserData();
     const isCompleted = await isLessonWatchCompleted({
         lesson_id: lesson._id,
         user_id: user?.id,
     })
     // converted data
-    const lessonSlugFormat = lesson?.slug.replace(/0/g, "-");
-    const isLessonAction = lessonSlug === lessonSlugFormat;
+    const isLessonAction = lessonId === lesson?._id.toString();
     const formatLessonDuration = convertDuration(lesson?.duration);
     const isActive = lesson?.active;
 
     return (
         <Link
-            href={isActive ? `/courses/${courseId}/lesson/${lessonSlugFormat}` : "#"}
+            href={isActive ? `/courses/${courseId}/lesson/${lesson?._id.toString()}` : "#"}
             className={cn(
                 isLessonAction && "bg-[#F3F4F6] dark:bg-[#1F2937]",
                 !isActive && "opacity-70",

@@ -1,10 +1,11 @@
 "use client";
 import { watchUpdate } from '@/app/actions/watch-histories';
 import { useRouter } from 'next/navigation';
-import ReactPlayer from 'react-player';
 import { useCallback } from 'react';
+import Player from "next-video/player";
+import ReactPlayer from 'react-player/youtube';
 
-export const VideoPlayer = ({ url, courseId, lessonId, moduleId }) => {
+export const VideoPlayer = ({ video, courseId, lessonId, moduleId }) => {
   const router = useRouter();
 
   const handleOnStart = useCallback(async () => {
@@ -40,20 +41,29 @@ export const VideoPlayer = ({ url, courseId, lessonId, moduleId }) => {
 
   return (
     <div className="relative w-full aspect-video">
-      <ReactPlayer
-        className="w-full h-full"
-        width="100%"
-        height="100%"
-        volume={1}
-        playbackRate={1}
-        controls={true}
-        pip={false}
-        config={{ file: { attributes: { controlsList: 'nodownload' } } }}
-        onEnded={onEnded}
-        onStart={handleOnStart}
-        url={url}
-        progressInterval={3000}
-      />
+      {
+        video?.youtube ? (
+          <div className="w-full h-full">
+            <ReactPlayer
+              onPlay={handleOnStart}
+              onEnded={onEnded}
+              controls={true}
+              width="100%"
+              height="100%"
+              className="object-cover w-full h-full"
+              url={"https://youtu.be/sutdp-aD748"}
+            />
+          </div>
+        ) : (
+          <Player
+            onPlay={handleOnStart}
+            onEnded={onEnded}
+            className="object-cover w-full h-full"
+            src={video?.url}
+          />
+        )
+      }
+
     </div>
   );
 };

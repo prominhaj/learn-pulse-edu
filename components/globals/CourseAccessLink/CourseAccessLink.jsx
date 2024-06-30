@@ -5,7 +5,7 @@ import { getFindCourseFastLesson } from '@/lib/course';
 
 const CourseAccessLink = async ({ courseId, variant, size, className }) => {
     const fastLesson = await getFindCourseFastLesson(courseId);
-    const formatLesson = fastLesson?.slug.replace(/0/g, "-");
+    const formatLesson = fastLesson?._id.toString();
 
     return (
         <Link

@@ -2,7 +2,7 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/
 import CourseLessonItem from "./CourseLessonItem";
 import { convertDuration } from "@/lib/date";
 
-const CourseModuleItem = ({ module, courseId, lessonSlug }) => {
+const CourseModuleItem = ({ module, courseId, lessonId }) => {
     const totalModuleDuration = module?.lessonIds.reduce((a, { duration }) => a + duration, 0);
     const formatModuleDuration = convertDuration(totalModuleDuration);
 
@@ -26,7 +26,7 @@ const CourseModuleItem = ({ module, courseId, lessonSlug }) => {
                                 key={lesson._id.toString()}
                                 lesson={lesson}
                                 courseId={courseId}
-                                lessonSlug={lessonSlug}
+                                lessonId={lessonId}
                             />
                         ))
                     }

@@ -1,4 +1,4 @@
-import { ArrowLeft, BookOpenCheck, Eye, LayoutDashboard, Video } from 'lucide-react';
+import { ArrowLeft, BookOpenCheck, LayoutDashboard, Video } from 'lucide-react';
 import Link from 'next/link';
 import { ModuleTitleForm } from './_components/module-title-form';
 import { LessonForm } from './_components/lesson-form';
@@ -7,6 +7,7 @@ import AlertBanner from '@/components/globals/AlertBanner/AlertBanner';
 import { getModuleById } from '@/queries/module';
 import { replaceMongoIdInArray } from '@/lib/convertData';
 import { ModuleActions } from './_components/module-actions';
+import VideoUploader from './_components/VideoUploader';
 
 const Module = async ({ params: { courseId, moduleId } }) => {
     const getModule = await getModuleById(moduleId);
@@ -65,17 +66,15 @@ const Module = async ({ params: { courseId, moduleId } }) => {
                             />
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <div className='flex items-center gap-x-2'>
-                            {/* <IconBadge icon={Video} />
-                            <h2 className='text-xl'>Add a video</h2> */}
+                            <IconBadge icon={Video} />
+                            <h2 className='text-xl'>Add a video</h2>
                         </div>
-                        {/* <ChapterVideoForm
-              initialData={chapter}
-              courseId={params.courseId}
-              chapterId={params.chapterId}
-            /> */}
-                    </div>
+                        <div>
+                            <VideoUploader />
+                        </div>
+                    </div> */}
                 </div>
             </div>
         </>

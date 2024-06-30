@@ -3,7 +3,7 @@ import CourseModules from "./CourseModules";
 import CourseActions from "./course-actions";
 import { getCourseProgress } from "@/lib/course";
 
-export const CourseSidebar = async ({ course, lessonSlug }) => {
+export const CourseSidebar = async ({ course, lessonId }) => {
   const courseProgress = await getCourseProgress(course?.id);
   const modules = course?.modules?.sort((a, b) => a.order - b.order);
 
@@ -20,7 +20,7 @@ export const CourseSidebar = async ({ course, lessonSlug }) => {
           }
         </div>
 
-        <CourseModules modules={modules} courseId={course?.id} lessonSlug={lessonSlug} />
+        <CourseModules modules={modules} courseId={course?.id} lessonId={lessonId} />
 
         <div className="px-3 py-3 space-y-3 sm:px-6">
           <CourseActions courseProgress={courseProgress} />

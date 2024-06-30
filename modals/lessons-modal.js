@@ -20,6 +20,10 @@ const lessonSchema = new Schema(
             },
             public_id: {
                 type: String
+            },
+            youtube: {
+                type: Boolean,
+                default: false
             }
         },
         active: {

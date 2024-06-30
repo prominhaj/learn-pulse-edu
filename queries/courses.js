@@ -159,6 +159,7 @@ export const getCourseByCourseId = async (courseId) => {
                 path: 'modules',
                 model: Module,
                 match: { active: true },
+                options: { sort: { order: 1 } },
                 populate: {
                     path: 'lessonIds',
                     model: Lesson,
