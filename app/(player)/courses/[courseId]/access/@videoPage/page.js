@@ -1,16 +1,16 @@
 import { buttonVariants } from '@/components/ui/button';
-import VideoDescription from '../_components/video-description';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { getCourseByCourseId } from '@/queries/courses';
-import VideoPlayerComponent from '../_components/VideoPage/VideoPlayerComponent';
 import { Suspense } from 'react';
 import { getLessonById } from '@/queries/lesson';
+import VideoPlayerComponent from '../_components/VideoPage/VideoPlayerComponent';
+import VideoDescription from '../_components/video-description';
 
-const Course = async ({ params: { courseId, lessonId } }) => {
-    const lesson = await getLessonById(lessonId);
+const Course = async ({ params: { courseId }, searchParams: { lesson } }) => {
+    const getLesson = await getLessonById(lesson);
 
-    if (!lesson) {
+    if (!getLesson) {
         return <div>Lesson not found</div>;
     }
 
@@ -25,7 +25,7 @@ const Course = async ({ params: { courseId, lessonId } }) => {
         []
     );
     const currentLessonIndex = allLessons?.findIndex(
-        (lesson) => lesson?._id?.toString() === lessonId
+        (lessons) => lessons?._id?.toString() === lesson
     );
 
     const prevLesson = currentLessonIndex > 0 ? allLessons[currentLessonIndex - 1] : null;
@@ -39,16 +39,18 @@ const Course = async ({ params: { courseId, lessonId } }) => {
         <div className='flex flex-col'>
             <div className='w-full'>
                 <Suspense fallback={<div className='text-center'>Video Loading...</div>}>
-                    <VideoPlayerComponent courseId={courseId} lessonId={lessonId} />
+                    <VideoPlayerComponent courseId={courseId} lessonId={lesson} />
                 </Suspense>
             </div>
             <div>
                 <div className='flex flex-col items-center justify-between py-3 md:py-4 md:flex-row'>
-                    <h2 className='mb-2 text-xl font-semibold md:text-2xl'>{lesson.title}</h2>
+                    <h2 className='mb-2 text-xl font-semibold md:text-2xl'>{getLesson.title}</h2>
                     <div className='flex items-center gap-3'>
                         <Link
                             href={
-                                prevLessonId ? `/courses/${courseId}/lesson/${prevLessonId}` : '#'
+                                prevLessonId
+                                    ? `/courses/${courseId}/access?lesson=${prevLessonId}`
+                                    : '#'
                             }
                             className={cn(
                                 buttonVariants({ variant: 'secondary' }),
@@ -60,7 +62,9 @@ const Course = async ({ params: { courseId, lessonId } }) => {
                         </Link>
                         <Link
                             href={
-                                nextLessonId ? `/courses/${courseId}/lesson/${nextLessonId}` : '#'
+                                nextLessonId
+                                    ? `/courses/${courseId}/access?lesson=${nextLessonId}`
+                                    : '#'
                             }
                             className={cn(
                                 buttonVariants({ variant: 'primary' }),
@@ -72,7 +76,7 @@ const Course = async ({ params: { courseId, lessonId } }) => {
                         </Link>
                     </div>
                 </div>
-                <VideoDescription description={lesson.description} />
+                <VideoDescription description={getLesson.description} />
             </div>
         </div>
     );

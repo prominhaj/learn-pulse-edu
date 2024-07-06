@@ -1,3 +1,4 @@
+import CourseAccessLink from '@/components/globals/CourseAccessLink/CourseAccessLink';
 import { Button } from '@/components/ui/button';
 import { sendEmails } from '@/lib/emails';
 import { stripe } from '@/lib/stripe';
@@ -62,7 +63,8 @@ const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) =>
                     }
                 ];
 
-                const emailSentResponse = await sendEmails(emailsToSend);
+                // Sent Email By Student
+                await sendEmails(emailsToSend);
             }
         } catch (error) {
             throw new Error(error);
@@ -83,11 +85,11 @@ const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) =>
                 )}
                 <div className='flex items-center gap-3'>
                     <Button asChild size='sm'>
-                        <Link href='/courses'>Browse Courses</Link>
+                        <Link href='/account/enrolled-courses'>Browse Courses</Link>
                     </Button>
-                    <Button asChild variant='outline' size='sm'>
-                        <Link href='/think-in-a-redux-way/introduction'>Play Course</Link>
-                    </Button>
+                    <CourseAccessLink courseId={courseId} variant='outline' size='sm'>
+                        Play Course
+                    </CourseAccessLink>
                 </div>
             </div>
         </div>

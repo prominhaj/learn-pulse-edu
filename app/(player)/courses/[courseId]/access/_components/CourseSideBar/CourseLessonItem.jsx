@@ -18,7 +18,7 @@ const CourseLessonItem = async ({ lesson, courseId, lessonId }) => {
 
     return (
         <Link
-            href={isActive ? `/courses/${courseId}/lesson/${lesson?._id.toString()}` : "#"}
+            href={isActive ? `/courses/${courseId}/access?lesson=${lesson?._id.toString()}` : "#"}
             className={cn(
                 isLessonAction && "bg-[#F3F4F6] dark:bg-[#1F2937]",
                 !isActive && "opacity-70",

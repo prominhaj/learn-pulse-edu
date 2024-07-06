@@ -1,11 +1,11 @@
 import { getCourseByCourseId } from '@/queries/courses';
 import { CourseSidebar } from '../_components/CourseSideBar/course-sidebar';
 
-const CourseSideBar = async ({ params: { courseId, lessonId } }) => {
+const CourseSideBar = async ({ params: { courseId }, searchParams: { lesson } }) => {
     const course = await getCourseByCourseId(courseId);
     return (
         <div>
-            <CourseSidebar course={course} lessonId={lessonId} />
+            <CourseSidebar course={course} lessonId={lesson} />
         </div>
     );
 };

@@ -8,7 +8,7 @@ const CourseModules = ({ modules, courseId, lessonId }) => {
     return (
         <ScrollArea className="h-[18rem] md:h-[25rem]">
             <Accordion
-                defaultValue={`module-${moduleLessonOrder?.order}`}
+                defaultValue={`module-${moduleLessonOrder?.order || 0}`}
                 type="single"
                 collapsible
                 className="w-full"
