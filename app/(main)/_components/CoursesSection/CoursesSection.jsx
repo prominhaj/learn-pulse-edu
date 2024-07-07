@@ -2,7 +2,6 @@ import CourseCard from '@/components/globals/CourseCard/CourseCard';
 import { SectionTitle } from '@/components/globals/SectionTitle/SectionTitle';
 import { getCourses } from '@/queries/courses';
 import { ArrowRightIcon } from 'lucide-react';
-// import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 
 const CoursesSection = async () => {
