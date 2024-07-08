@@ -15,7 +15,7 @@ const CourseAccessButton = ({ variant, size, className }) => {
                 type='submit'
                 className={cn(buttonVariants({ variant: variant ?? "default", size: size }), "w-full disabled:opacity-70 disabled:bg-opacity-70 disabled:cursor-progress", className)}
             >
-                {pending && <Spinner />} Access Now
+                {pending && <Spinner className="dark:!text-gray-200" />} Access Now
             </Button>
         </>
     );

@@ -164,7 +164,7 @@ export const getRecentEnrollments = async (instructorId) => {
                 model: User
             })
             .sort({ enrollment_date: -1 })
-            .limit(5)
+            .limit(8)
             .lean();
 
         const filterInstructorEnrollCourses = enrollments.filter(

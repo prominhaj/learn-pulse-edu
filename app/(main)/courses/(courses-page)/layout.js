@@ -30,11 +30,11 @@ const CoursesLayout = async ({ courses }) => {
                     <h2 className='text-xl font-medium md:text-2xl'>All Courses</h2>
 
                     <div className='grid items-center justify-between grid-cols-1 gap-3 lg:grid-cols-3'>
-                        <Suspense fallback={<>placeholder</>}>
+                        <Suspense fallback={<>loading...</>}>
                             <SearchBox />
                         </Suspense>
                         <div className='flex items-center justify-end gap-3 max-lg:w-full lg:col-span-2'>
-                            <Suspense fallback={<>placeholder</>}>
+                            <Suspense fallback={<>loading...</>}>
                                 <SortPrice />
                             </Suspense>
                             {/* Filter Menus For Mobile */}
@@ -48,7 +48,7 @@ const CoursesLayout = async ({ courses }) => {
                                             <SheetTitle className='text-left'>
                                                 Filter Courses
                                             </SheetTitle>
-                                            <Suspense fallback={<>placeholder</>}>
+                                            <Suspense fallback={<>loading...</>}>
                                                 <FilterSection categoryOptions={formatCategories} />
                                             </Suspense>
                                         </SheetHeader>
@@ -65,7 +65,7 @@ const CoursesLayout = async ({ courses }) => {
                         <div className='flex items-start gap-8'>
                             {/* Filters */}
                             <div className='hidden w-60 lg:block'>
-                                <Suspense fallback={<>placeholder</>}>
+                                <Suspense fallback={<>loading...</>}>
                                     <FilterSection categoryOptions={formatCategories} />
                                 </Suspense>
                             </div>

@@ -1,17 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const TotalCard = ({ title, count }) => {
+const TotalCard = ({ title, count, icon }) => {
     return (
-        <Card className="bg-background/50">
-            <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
-                <CardTitle className='text-lg font-medium tracking-wide'>
-                    {title ?? ""}
+        <Card x-chunk="dashboard-01-chunk-0">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                <CardTitle className="text-sm font-medium">
+                    {title}
                 </CardTitle>
+                {icon}
             </CardHeader>
             <CardContent>
-                <div className='text-2xl font-bold'>
-                    {count ?? 0}
-                </div>
+                <div className="text-2xl font-bold">{count}</div>
             </CardContent>
         </Card>
     );

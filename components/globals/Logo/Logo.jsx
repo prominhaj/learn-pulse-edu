@@ -16,7 +16,7 @@ const Logo = () => {
 
     if (!mounted) {
         return (
-            <div className="w-12 h-[2.9rem] bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse" />
+            <div className="w-12 h-[2.8rem] bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse" />
         );
     }
 
@@ -24,7 +24,7 @@ const Logo = () => {
     const logoSrc = currentTheme === "dark" ? logoDark : logoLight;
 
     return (
-        <Link className="block max-w-12 max-h-[2.9rem]" href="/">
+        <Link className="block max-w-12 max-h-[2.8rem]" href="/">
             <Image className="w-full h-full" width={50} height={50} src={logoSrc} priority alt="Logo" />
         </Link>
     );

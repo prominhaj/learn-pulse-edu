@@ -5,7 +5,7 @@ import Link from "next/link";
 const HeroSection = () => {
     return (
         <>
-            <section className="pt-6 pb-8 space-y-6 md:pb-12 md:pt-10 lg:py-32">
+            <section className="pt-6 pb-8 space-y-6 md:pb-12 md:pt-10 lg:py-28">
                 <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center relative isolate">
                     <div
                         aria-hidden="true"

@@ -5,23 +5,23 @@ const RecentEnrollCard = ({ enroll }) => {
     const { user_id, course_id } = enroll;
 
     return (
-        <div className="flex flex-wrap items-center justify-between gap-3 ">
-            <div className="flex items-center justify-between gap-3">
-                <Avatar>
-                    <AvatarImage src={user_id?.profilePicture.url} alt={user_id?.firstName + user_id?.lastName} />
-                    <AvatarFallback>{user_id?.firstName.slice(0, 2)}</AvatarFallback>
+        <>
+            <div className='flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4'>
+                <Avatar className='h-9 w-9'>
+                    <AvatarImage src={user_id?.profilePicture?.url} alt={user_id?.firstName + user_id?.lastName} />
+                    <AvatarFallback>{user_id?.firstName?.slice(0, 2)}</AvatarFallback>
                 </Avatar>
-                <div className="text-sm">
-                    <h4 className="font-medium">
+                <div className='grid gap-1'>
+                    <p className='text-sm font-medium leading-none'>
                         {user_id?.firstName + " " + user_id?.lastName}
-                    </h4>
-                    <p className="text-ellipsis overflow-hidden whitespace-nowrap w-[120px]  sm:w-auto  text-gray-400">
+                    </p>
+                    <p className='text-sm text-muted-foreground'>
                         {user_id?.email}
                     </p>
                 </div>
+                <div className='ml-auto font-medium'>{formatPrice(course_id?.price)}</div>
             </div>
-            <h4 className="mr-3 font-medium">{formatPrice(course_id?.price)}</h4>
-        </div>
+        </>
     );
 };
 

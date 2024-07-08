@@ -30,7 +30,7 @@ export const Combobox = ({ options, value, onChange }) => {
           aria-expanded={open}
           className="justify-between w-full"
         >
-          {value ? options.find((option) => option.id === value)?.title
+          {value ? options.find((option) => option.id === value)?.label
             : "Select options..."}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
@@ -41,7 +41,7 @@ export const Combobox = ({ options, value, onChange }) => {
           <CommandList>
             <CommandEmpty>No options found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {options?.map((option) => (
                 <CommandItem
                   key={option.id}
                   onSelect={() => {
@@ -56,7 +56,7 @@ export const Combobox = ({ options, value, onChange }) => {
                       value === option.id ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option.title}
+                  {option.label}
                 </CommandItem>
               ))}
             </CommandGroup>

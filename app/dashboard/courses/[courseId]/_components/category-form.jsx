@@ -42,7 +42,7 @@ export const CategoryForm = ({
 
   const onSubmit = useCallback(async (values) => {
     try {
-      const selectedCategory = options.find((option) => option.value === values.category);
+      const selectedCategory = options.find((option) => option.id === values.category);
       await updateCourse(courseId, { category: selectedCategory?.id });
       router.refresh();
       toast.success("Category has been updated");
