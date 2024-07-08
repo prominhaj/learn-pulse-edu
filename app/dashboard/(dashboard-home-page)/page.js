@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatPrice } from '@/lib/formatPrice';
-import RecentEnrollCard from './_components/RecentEnrollCard';
-import TotalCard from './_components/TotalCard';
+import RecentEnrollCard from '../_components/RecentEnrollCard/RecentEnrollCard';
+import TotalCard from '../_components/TotalCard/TotalCard';
 import { getUserData } from '@/lib/getUserData';
 import { fetchDashboardData } from '@/lib/dashboard-helper';
 import NoAccess from '@/components/globals/NoAccess/NoAccess';
 import { Activity, DollarSign, Users } from 'lucide-react';
-import DashboardBarChart from './_components/BarChart';
+import DashboardBarChart from '../_components/BarChart/BarChart';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,9 +47,7 @@ const DashboardPage = async () => {
                     <div className='grid grid-cols-1 gap-4 md:gap-8 xl:grid-cols-3'>
                         <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
                             <CardHeader className='flex flex-row items-center'>
-                                <div className='grid gap-2'>
-                                    <CardTitle>Transactions Charts</CardTitle>
-                                </div>
+                                <CardTitle>Transactions Charts</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <DashboardBarChart chartData={enrollByInstructorReports} />

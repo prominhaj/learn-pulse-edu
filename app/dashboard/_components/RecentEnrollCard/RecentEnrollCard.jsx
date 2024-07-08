@@ -6,6 +6,7 @@ const RecentEnrollCard = ({ enroll }) => {
 
     return (
         <>
+
             <div className='flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4'>
                 <Avatar className='h-9 w-9'>
                     <AvatarImage src={user_id?.profilePicture?.url} alt={user_id?.firstName + user_id?.lastName} />
