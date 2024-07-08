@@ -3,17 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useContext, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterContext } from "./FilterProvider";
 
 const ShowFilterAction = () => {
+    const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
     const [selectCategories, setSelectCategories, selectPrice, setSelectPrice] = useContext(FilterContext);
 
     // Update URL params when selectCategories or selectPrice change
     useEffect(() => {
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(searchParams.toString());
 
         if (selectCategories.length > 0) {
             params.set('categories', selectCategories.join(','));
@@ -28,7 +29,7 @@ const ShowFilterAction = () => {
         }
 
         router.replace(`${pathname}?${params.toString()}`);
-    }, [selectCategories, selectPrice, pathname, router]);
+    }, [selectCategories, selectPrice, pathname, router, searchParams]);
 
     // Handler for updating selected categories
     const handleCategoryClick = (category) => {

@@ -17,7 +17,7 @@ const CoursesLayout = async ({ courses }) => {
     const categories = await getCategories();
     const formatCategories = categories?.map((category) => {
         return {
-            value: category?.title?.toLowerCase(),
+            value: category?.title,
             label: category?.title
         };
     });

@@ -3,7 +3,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useContext } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterContext } from "./FilterProvider";
 
 const PRICE_OPTIONS = [
@@ -12,13 +12,14 @@ const PRICE_OPTIONS = [
 ];
 
 const FilterSection = ({ categoryOptions }) => {
+    const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
     const [selectCategories, setSelectCategories, selectPrice, setSelectPrice] = useContext(FilterContext);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            const params = new URLSearchParams();
+            const params = new URLSearchParams(searchParams.toString());
             if (selectCategories.length > 0) {
                 params.set('categories', selectCategories.join(','));
             } else {
@@ -33,7 +34,7 @@ const FilterSection = ({ categoryOptions }) => {
         }, 300);
 
         return () => clearTimeout(timer);
-    }, [selectCategories, selectPrice, pathname, router]);
+    }, [selectCategories, selectPrice, pathname, router, searchParams]);
 
     const handleChangeCategory = (value) => {
         const updatedCategories = [...selectCategories];

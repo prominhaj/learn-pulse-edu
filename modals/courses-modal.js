@@ -63,6 +63,9 @@ const courseSchema = new Schema(
     { timestamps: true }
 );
 
+// Ensure text index is created correctly
+courseSchema.index({ title: 'text', sub_title: 'text' });
+
 const Course = mongoose.models?.Course ?? mongoose.model('Course', courseSchema);
 
 export default Course;

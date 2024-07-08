@@ -173,21 +173,58 @@ export const getCourseByCourseId = async (courseId) => {
     }
 };
 
-export const coursesByFilter = async () => {
+export const coursesByFilter = async ({ search, categories, price, sort }) => {
     try {
-        const courses = await Course.find({
-            active: true
-        })
-            .select(['title', 'subtitle', 'thumbnail', 'modules', 'price', 'category'])
+        let filter = { active: true };
+
+        // Handle search query
+        if (search) {
+            const regex = new RegExp(search, 'i');
+            filter.$or = [{ title: { $regex: regex } }, { sub_title: { $regex: regex } }];
+        }
+
+        // Handle categories filter
+        if (categories && categories.length > 0) {
+            const categoryNames = categories;
+            const categoryIds = await Category.find({ title: { $in: categoryNames } }).distinct(
+                '_id'
+            );
+            filter.category = { $in: categoryIds };
+        }
+
+        // Handle price filter
+        if (price) {
+            if (price === 'free') {
+                filter.price = { $eq: 0 };
+            } else if (price === 'paid') {
+                filter.price = { $gt: 0 };
+            }
+        }
+
+        // Determine sort order based on price
+        let sortCriteria = {};
+        if (sort === 'asc') {
+            sortCriteria = { price: 1 };
+        } else if (sort === 'desc') {
+            sortCriteria = { price: -1 };
+        }
+
+        // Query courses based on filter and sort criteria
+        const courses = await Course.find(filter)
+            .select(['title', 'sub_title', 'thumbnail', 'modules', 'price', 'category'])
             .populate({
                 path: 'category',
-                model: Category
+                model: Category,
+                select: 'title'
             })
             .populate({
                 path: 'modules',
-                model: Module
+                model: Module,
+                select: 'title'
             })
+            .sort(sortCriteria)
             .lean();
+
         return replaceMongoIdInArray(courses);
     } catch (error) {
         throw new Error(error);
