@@ -28,11 +28,11 @@ const CoursesLayout = async ({ courses }) => {
                 <section id='courses' className='container py-6 space-y-6 dark:bg-transparent'>
                     <h2 className='text-xl font-medium md:text-2xl'>All Courses</h2>
 
-                    <div className='grid items-center justify-between grid-cols-1 gap-3 lg:grid-cols-2'>
+                    <div className='grid items-center justify-between grid-cols-1 gap-3 lg:grid-cols-3'>
                         <div className=''>
                             <SearchBox />
                         </div>
-                        <div className='flex items-center justify-end gap-3 max-lg:w-full'>
+                        <div className='flex items-center justify-end gap-3 max-lg:w-full lg:col-span-2'>
                             <SortPrice />
                             {/* Filter Menus For Mobile */}
                             <div className='lg:hidden'>
