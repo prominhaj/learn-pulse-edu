@@ -6,6 +6,7 @@ import SortPrice from '../_components/SortPrice';
 import SearchBox from '../_components/SearchBox';
 import { getCategories } from '@/queries/categories';
 import FilterProvider from '../_components/CourseFilterSecton/FilterProvider';
+import { Suspense } from 'react';
 
 // Metadata
 export const metadata = {
@@ -29,11 +30,13 @@ const CoursesLayout = async ({ courses }) => {
                     <h2 className='text-xl font-medium md:text-2xl'>All Courses</h2>
 
                     <div className='grid items-center justify-between grid-cols-1 gap-3 lg:grid-cols-3'>
-                        <div className=''>
+                        <Suspense fallback={<>placeholder</>}>
                             <SearchBox />
-                        </div>
+                        </Suspense>
                         <div className='flex items-center justify-end gap-3 max-lg:w-full lg:col-span-2'>
-                            <SortPrice />
+                            <Suspense fallback={<>placeholder</>}>
+                                <SortPrice />
+                            </Suspense>
                             {/* Filter Menus For Mobile */}
                             <div className='lg:hidden'>
                                 <Sheet>
@@ -45,7 +48,9 @@ const CoursesLayout = async ({ courses }) => {
                                             <SheetTitle className='text-left'>
                                                 Filter Courses
                                             </SheetTitle>
-                                            <FilterSection categoryOptions={formatCategories} />
+                                            <Suspense fallback={<>placeholder</>}>
+                                                <FilterSection categoryOptions={formatCategories} />
+                                            </Suspense>
                                         </SheetHeader>
                                     </SheetContent>
                                 </Sheet>
@@ -60,7 +65,9 @@ const CoursesLayout = async ({ courses }) => {
                         <div className='flex items-start gap-8'>
                             {/* Filters */}
                             <div className='hidden w-60 lg:block'>
-                                <FilterSection categoryOptions={formatCategories} />
+                                <Suspense fallback={<>placeholder</>}>
+                                    <FilterSection categoryOptions={formatCategories} />
+                                </Suspense>
                             </div>
                             {/* Course */}
                             <div className='flex-1'>{courses}</div>
