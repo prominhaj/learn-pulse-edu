@@ -12,14 +12,14 @@ import CourseAccessLink from "../CourseAccessLink/CourseAccessLink";
 import { CourseProgress } from "../CourseProgress/CourseProgress";
 
 const CourseCard = async ({ course }) => {
-    const { id, title, thumbnail: { url }, price, category, modules } = course;
+    const { id, title, thumbnail, price, category, modules } = course;
     const user = await getUserData();
     const isEnroll = await hasEnrollmentForCourse(id, user?.id);
     const courseProgress = await getCourseProgress(course?.id);
     const totalEnrollment = await totalEnrollCourse(course?.id);
 
     // Image Placeholder
-    const { base64, img } = await getImage(url);
+    const { base64, img } = await getImage(thumbnail?.url) || {};
 
     return (
         <>

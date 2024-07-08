@@ -1,3 +1,4 @@
+import CourseAccessLink from "@/components/globals/CourseAccessLink/CourseAccessLink";
 import EnrollButton from "@/components/globals/EnrollButton/EnrollButton";
 import { buttonVariants } from "@/components/ui/button";
 import { getImage } from "@/lib/getImage";
@@ -27,7 +28,6 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                             </h1>
                             <p className='mt-5 text-4xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:leading-tight sm:text-5xl lg:text-6xl lg:leading-tight font-poppins'>
                                 <span className='relative inline-flex sm:inline'>
-                                    {/* <span className='bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0'></span> */}
                                     <span className='relative'>{title}</span>
                                 </span>
                             </p>
@@ -69,12 +69,15 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex flex-wrap items-center justify-center gap-3 mt-6'>
+                    <div className='flex items-center justify-center gap-3 mt-6'>
                         {/* Enroll Course */}
                         {alreadyEnrolledCourse ? (
-                            <Link href="" className={cn(buttonVariants({ size: "lg" }))}>
-                                Access Course
-                            </Link>
+                            <CourseAccessLink
+                                courseId={id}
+                                variant="primary"
+                                size="lg"
+                                className="w-32"
+                            />
                         ) : (
                             <EnrollButton courseId={id} />
                         )}

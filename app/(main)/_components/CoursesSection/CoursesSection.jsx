@@ -12,7 +12,7 @@ const CoursesSection = async () => {
             <div className='flex items-center justify-between'>
                 <SectionTitle>Courses</SectionTitle>
                 <Link
-                    href={''}
+                    href='/courses'
                     className='flex items-center gap-1 text-sm font-medium hover:opacity-80'
                 >
                     Browse All <ArrowRightIcon className='w-4 h-4' />

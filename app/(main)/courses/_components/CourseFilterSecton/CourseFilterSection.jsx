@@ -14,7 +14,8 @@ import {
 } from '@/components/ui/select';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Filter, Search, X } from 'lucide-react';
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 // PRICE INFO
 const PRICE_OPTIONS = [
@@ -73,6 +74,11 @@ const CATEGORY_OPTIONS = [
 
 
 const CourseFilterSection = ({ children }) => {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
+    const search = searchParams.get('s');
+
     // Filter by course
     const [filter, setFilter] = useState({
         categories: ['development'],
@@ -97,6 +103,26 @@ const CourseFilterSection = ({ children }) => {
         }
     };
 
+    useEffect(() => {
+        if (!search) {
+            router.replace(pathname)
+        }
+    }, [search, pathname, router])
+
+
+    // Handle Search On Change
+    const handleSearchChange = useCallback(
+        (e) => {
+
+            const text = e.target.value;
+            const params = new URLSearchParams(searchParams.toString())
+            params.set("s", text)
+
+            router.replace(pathname + '?' + params.toString())
+        },
+        [searchParams, pathname, router]
+    )
+
     return (
         <>
             {/* header */}
@@ -104,6 +130,7 @@ const CourseFilterSection = ({ children }) => {
                 <div className='relative h-10 max-lg:w-full'>
                     <Search className='absolute z-10 w-4 h-4 text-gray-500 transform -translate-y-1/2 left-3 top-1/2' />
                     <Input
+                        onChange={handleSearchChange}
                         type='text'
                         placeholder='Search courses...'
                         className='py-2 pl-8 pr-3 text-sm'

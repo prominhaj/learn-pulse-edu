@@ -172,3 +172,24 @@ export const getCourseByCourseId = async (courseId) => {
         throw new Error(error);
     }
 };
+
+export const coursesByFilter = async () => {
+    try {
+        const courses = await Course.find({
+            active: true
+        })
+            .select(['title', 'subtitle', 'thumbnail', 'modules', 'price', 'category'])
+            .populate({
+                path: 'category',
+                model: Category
+            })
+            .populate({
+                path: 'modules',
+                model: Module
+            })
+            .lean();
+        return replaceMongoIdInArray(courses);
+    } catch (error) {
+        throw new Error(error);
+    }
+};
