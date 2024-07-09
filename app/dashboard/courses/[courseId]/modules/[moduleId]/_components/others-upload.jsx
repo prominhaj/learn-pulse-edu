@@ -16,7 +16,6 @@ const OthersUploader = ({ lessonId, toggleOthers }) => {
                 duration,
                 video: {
                     url,
-                    youtube: true
                 }
             });
             refresh();
@@ -33,7 +32,7 @@ const OthersUploader = ({ lessonId, toggleOthers }) => {
                 <FormControl
                     id="url"
                     name="url"
-                    type="url"
+                    type="text"
                     label="Video URL"
                     placeholder="Enter Your Video URL..."
                 />

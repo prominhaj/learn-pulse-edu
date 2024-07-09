@@ -87,7 +87,12 @@ const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) =>
                     <Button asChild size='sm'>
                         <Link href='/account/enrolled-courses'>Browse Courses</Link>
                     </Button>
-                    <CourseAccessLink courseId={courseId} variant='outline' size='sm'>
+                    <CourseAccessLink
+                        className='text-black dark:text-white'
+                        courseId={courseId}
+                        variant='outline'
+                        size='sm'
+                    >
                         Play Course
                     </CourseAccessLink>
                 </div>

@@ -5,6 +5,8 @@ import { getUserData } from '@/lib/getUserData';
 import { getCourseDetails } from '@/queries/courses';
 import { getAReport } from '@/queries/reports';
 import { formatMyDate } from '@/lib/date';
+import { getCourseProgress } from '@/lib/course';
+import { NextResponse } from 'next/server';
 
 // Fetch custom fonts
 const kalamFontUrl = `${process.env.NEXT_PUBLIC_API_URL}/fonts/kalam/Kalam-Regular.ttf`;
@@ -29,6 +31,18 @@ export const GET = async (request) => {
         const courseId = searchParams.get('courseId');
         const { course } = await getCourseDetails(courseId);
         const loggedInUser = await getUserData();
+        const courseProgress = await getCourseProgress(course?.id);
+
+        if (!loggedInUser || !course) {
+            throw new Error('Unauthorized access');
+        }
+
+        if (courseProgress !== 100) {
+            return {
+                success: false,
+                message: 'Course progress must be 100% to generate a certificate'
+            };
+        }
 
         const report = await getAReport({
             course_id: courseId,
@@ -220,6 +234,10 @@ export const GET = async (request) => {
             headers: { 'content-type': 'application/pdf' }
         });
     } catch (error) {
-        console.log(error);
+        return {
+            status: 500,
+            success: false,
+            message: error.message
+        };
     }
 };
