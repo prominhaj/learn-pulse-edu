@@ -11,7 +11,11 @@ const reportSchema = new Schema({
     },
     user_id: { type: Schema.ObjectId, ref: 'Course' },
     course_id: { type: Schema.ObjectId, ref: 'User' },
-    quizAssessment: { type: Schema.ObjectId, ref: 'Assessment' }
+    quizAssessment: { type: Schema.ObjectId, ref: 'Assessment' },
+    completion_date: {
+        type: Date,
+        required: false
+    }
 });
 
 const Report = mongoose.models.Report ?? mongoose.model('Report', reportSchema);

@@ -5,7 +5,7 @@ const CourseSideBar = async ({ params: { courseId }, searchParams: { lesson } })
     const course = await getCourseByCourseId(courseId);
     return (
         <div>
-            <CourseSidebar course={course} lessonId={lesson} />
+            <CourseSidebar course={course} courseId={courseId} lessonId={lesson} />
         </div>
     );
 };

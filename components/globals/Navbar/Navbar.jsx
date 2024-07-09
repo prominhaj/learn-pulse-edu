@@ -60,7 +60,7 @@ const Navbar = ({ children }) => {
                     <MobileNav items={navLinks}>{children}</MobileNav>
                 )}
             </div>
-            <nav className="flex items-center gap-3">
+            <nav className="flex items-center gap-3 md:gap-5">
                 <ThemeSwitch />
                 {
                     status === "loading" ? <Spinner className="!w-6 !h-6" /> : user ? (
@@ -69,7 +69,7 @@ const Navbar = ({ children }) => {
                                 <div className="cursor-pointer">
                                     {
                                         status === "loading" ? <Skeleton className="w-10 h-10 rounded-full" /> : (
-                                            <Avatar>
+                                            <Avatar className="rounded-full w-9 h-9 bg-slate-300 text-white ring-2 ring-violet-600 focus:outline-none focus:ring-2 dark:bg-gray-700 dark:ring-[#00d991]">
                                                 <AvatarImage
                                                     src={user?.profilePicture && user?.profilePicture?.url}
                                                     alt={user?.firstName}

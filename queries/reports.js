@@ -3,7 +3,7 @@ import Assessment from '@/modals/assessment-model';
 import Module from '@/modals/modules-modal';
 import Report from '@/modals/report-model';
 import mongoose from 'mongoose';
-import { getCourseDetails } from './courses';
+import { getCourseByCourseId } from './courses';
 
 export const getAReport = async (filter) => {
     try {
@@ -57,15 +57,15 @@ export const createWatchReport = async ({ courseId, userId, moduleId, lessonId }
         }
 
         // If so, add the completion time.
-        const course = await getCourseDetails(courseId);
+        const course = await getCourseByCourseId(courseId);
         const modulesInCourse = course?.modules;
         const moduleCount = modulesInCourse?.length ?? 0;
 
-        const completedModule = report.totalCompletedModules;
+        const completedModule = report?.totalCompletedModules;
         const completedModuleCount = completedModule?.length ?? 0;
 
         if (completedModuleCount >= 1 && completedModuleCount === moduleCount) {
-            console.log('Course completed');
+            report.completion_date = Date.now();
         }
 
         report.save();
