@@ -9,6 +9,7 @@ const CourseAccessLink = async ({ courseId, variant, size, className }) => {
     const handleAccessCourse = async () => {
         "use server"
         await formAccessCourse(courseId, formatLessonId)
+
     };
 
     return (

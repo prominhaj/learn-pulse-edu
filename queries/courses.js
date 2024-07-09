@@ -167,6 +167,14 @@ export const getCourseByCourseId = async (courseId) => {
                 }
             })
             .lean();
+
+        if (!course) {
+            return {
+                success: false,
+                message: 'Course not found'
+            };
+        }
+
         return replaceMongoIdInObject(course);
     } catch (error) {
         throw new Error(error);

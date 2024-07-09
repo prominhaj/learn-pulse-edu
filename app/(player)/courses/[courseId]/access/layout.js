@@ -1,10 +1,16 @@
 import { hasEnrollmentForCourse } from '@/queries/enrollments';
 import { getUserData } from '@/lib/getUserData';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { getCourseByCourseId } from '@/queries/courses';
 
 const CourseLayout = async ({ courseSideBar, videoPage, params: { courseId } }) => {
     const user = await getUserData();
     const isEnrollmentForCourse = await hasEnrollmentForCourse(courseId, user?.id);
+    const course = await getCourseByCourseId(courseId);
+
+    if (course?.success === false) {
+        return notFound();
+    }
 
     if (!user) {
         return redirect('/login');
