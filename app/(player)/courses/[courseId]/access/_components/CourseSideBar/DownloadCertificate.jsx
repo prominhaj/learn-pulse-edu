@@ -11,7 +11,7 @@ const DownloadCertificate = ({ courseProgress, courseId }) => {
     async function handleCertificateDownload() {
         setIsCertificateDownloading(true);
         try {
-            const response = await fetch(`/api/certificate?courseId=${courseId}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/certificate?courseId=${courseId}`);
             if (!response.ok) {
                 throw new Error('Failed to download certificate');
             }
