@@ -33,7 +33,7 @@ const VideoUploader = ({ handleSubmit, isUploading, setFile, file, uploadProgres
                 className="relative flex items-center justify-center h-32 transition-colors border border-dashed rounded-lg border-muted-foreground hover:border-primary"
             >
                 {isUploading ? (
-                    <Spinner className="w-10 h-10" />
+                    <Spinner className="!w-10 !h-10" />
                 ) : file ? (
                     <div className="text-center">
                         <Button onClick={() => setFile(null)} className="absolute z-20 top-1 right-1" size="sm">
@@ -60,7 +60,7 @@ const VideoUploader = ({ handleSubmit, isUploading, setFile, file, uploadProgres
             <div className="grid gap-2">
                 <Progress value={uploadProgress} />
                 <Button type="submit" disabled={!file || isUploading}>
-                    Upload Video
+                    {isUploading ? <><Spinner /> Uploading...</> : "Upload Video"}
                 </Button>
             </div>
         </form>

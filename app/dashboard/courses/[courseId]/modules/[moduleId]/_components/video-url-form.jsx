@@ -99,7 +99,12 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
                 {
                   initialData?.youtube ? (
                     <div className="w-full h-full">
-                      <ReactPlayer width="100%" height="100%" className="object-cover w-full h-full" url={initialData?.url} />
+                      <ReactPlayer
+                        width="100%"
+                        height="100%"
+                        className="object-cover w-full h-full"
+                        url={initialData?.url}
+                      />
                     </div>
                   ) : (
                     <Player className="object-cover w-full h-full" src={videoUrl} />

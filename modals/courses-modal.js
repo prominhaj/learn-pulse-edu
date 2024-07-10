@@ -32,6 +32,9 @@ const courseSchema = new Schema(
             default: 0,
             required: true
         },
+        introductionVideo: {
+            type: Object
+        },
         active: {
             type: Boolean,
             required: true,

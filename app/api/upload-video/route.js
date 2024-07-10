@@ -1,3 +1,4 @@
+import { updateCourse } from '@/app/actions/course';
 import { fileUploader } from '@/app/actions/fileUploader';
 import Lesson from '@/modals/lessons-modal';
 import { NextResponse } from 'next/server';
@@ -7,6 +8,8 @@ export const POST = async (request) => {
         const formData = await request.formData();
         const lessonId = formData.get('lessonId');
         const public_id = formData.get('public_id');
+        const updateDatabaseName = formData.get('updateDatabaseName');
+        const courseId = formData.get('courseId');
 
         // Video upload
         const videoUpload = await fileUploader(
@@ -25,8 +28,18 @@ export const POST = async (request) => {
             }
         };
 
-        // Update in Database
-        await Lesson.findByIdAndUpdate(lessonId, videoUrl);
+        // Update database name if provided
+        if (updateDatabaseName === 'course' && courseId) {
+            await updateCourse(courseId, {
+                introductionVideo: {
+                    url: videoUpload?.url,
+                    public_id: videoUpload?.public_id
+                }
+            });
+        } else {
+            // Update in Database
+            await Lesson.findByIdAndUpdate(lessonId, videoUrl);
+        }
 
         // Response
         return NextResponse.json({

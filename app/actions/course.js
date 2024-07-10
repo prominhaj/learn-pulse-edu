@@ -133,3 +133,16 @@ export const deleteLearning = async (deleteItem, courseId) => {
         throw new Error(error);
     }
 };
+
+export const deleteIntroductionVideo = async (courseId, public_id) => {
+    try {
+        const file = await deleteFile(public_id);
+        if (file) {
+            await Course.findByIdAndUpdate(courseId, { introductionVideo: null });
+        }
+
+        revalidatePath(`/dashboard/courses/${courseId}`);
+    } catch (error) {
+        throw new Error(error);
+    }
+};

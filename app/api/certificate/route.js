@@ -51,13 +51,13 @@ export const GET = async (request) => {
         };
 
         const kalamFontBytes = await fetchFont(
-            `${process.env.NEXT_PUBLIC_API_URL}/fonts/kalam/Kalam-Regular.ttf`
+            `${process.env.BASE_URL}/fonts/kalam/Kalam-Regular.ttf`
         );
         const montserratItalicFontBytes = await fetchFont(
-            `${process.env.NEXT_PUBLIC_API_URL}/fonts/montserrat/Montserrat-Italic.ttf`
+            `${process.env.BASE_URL}/fonts/montserrat/Montserrat-Italic.ttf`
         );
         const montserratFontBytes = await fetchFont(
-            `${process.env.NEXT_PUBLIC_API_URL}/fonts/montserrat/Montserrat-Medium.ttf`
+            `${process.env.BASE_URL}/fonts/montserrat/Montserrat-Medium.ttf`
         );
 
         const pdfDoc = await PDFDocument.create();
@@ -82,7 +82,7 @@ export const GET = async (request) => {
             });
         };
 
-        const logoBytes = await fetchFont(`${process.env.NEXT_PUBLIC_API_URL}/logo.png`);
+        const logoBytes = await fetchFont(`${process.env.BASE_URL}/logo.png`);
         const logo = await pdfDoc.embedPng(logoBytes);
         const logoDimns = logo.scale(0.5);
         page.drawImage(logo, {
@@ -148,9 +148,7 @@ export const GET = async (request) => {
             color: rgb(0, 0, 0)
         });
 
-        const signBytes = await fetchFont(
-            `${process.env.NEXT_PUBLIC_API_URL}${completionInfo.sign}`
-        );
+        const signBytes = await fetchFont(`${process.env.BASE_URL}${completionInfo.sign}`);
         const sign = await pdfDoc.embedPng(signBytes);
         page.drawImage(sign, {
             x: width - signatureBoxWidth,
@@ -159,7 +157,7 @@ export const GET = async (request) => {
             height: 54
         });
 
-        const patternBytes = await fetchFont(`${process.env.NEXT_PUBLIC_API_URL}/pattern.jpg`);
+        const patternBytes = await fetchFont(`${process.env.BASE_URL}/pattern.jpg`);
         const pattern = await pdfDoc.embedJpg(patternBytes);
         page.drawImage(pattern, {
             x: 0,
