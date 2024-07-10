@@ -67,14 +67,19 @@ const CourseCard = async ({ course }) => {
                     {
                         isEnroll ? (
                             <div>
-                                <CourseAccessLink className="rounded-2xl" courseId={course?.id} variant="primary" size="sm" />
+                                <CourseAccessLink
+                                    className="rounded-2xl"
+                                    courseId={course?.id}
+                                    variant="primary"
+                                    size="sm"
+                                />
                             </div>
                         ) : (
                             <div className='flex items-center justify-between'>
                                 <h4 className='font-medium text-md md:text-sm text-slate-700 dark:text-slate-300'>
-                                    {formatPrice(price)}
+                                    {course?.price === 0 ? "Free" : formatPrice(price)}
                                 </h4>
-                                <EnrollButton asLink={true} courseId={id} />
+                                <EnrollButton price={course?.price} asLink={true} courseId={id} />
                             </div >
                         )
                     }

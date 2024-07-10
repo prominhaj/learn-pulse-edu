@@ -40,6 +40,7 @@ export const reOrderLesson = async (data) => {
 export const updateLesson = async (lessonId, updateLesson) => {
     try {
         await Lesson.findByIdAndUpdate(lessonId, updateLesson);
+        revalidatePath(`/dashboard/courses`);
     } catch (error) {
         throw new Error(error);
     }

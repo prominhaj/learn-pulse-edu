@@ -11,8 +11,6 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 const PaymentSuccessPage = async ({ searchParams: { session_id, courseId } }) => {
-    if (!session_id) throw new Error('Please provide a valid session id that starts with cs_');
-
     const { user } = await getServerSession();
     if (!user.email) {
         redirect('/login');

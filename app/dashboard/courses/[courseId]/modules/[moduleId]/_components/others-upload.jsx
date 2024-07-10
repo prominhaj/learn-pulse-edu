@@ -11,9 +11,14 @@ const OthersUploader = ({ lessonId, toggleOthers }) => {
     const handleUpload = async (formData) => {
         const url = formData.get('url');
         const duration = formData.get('duration');
+        if (!url || !duration) {
+            toast.error("Please fill all fields")
+            return;
+        }
+        const formatDuration = parseFloat(duration) * 60;
         try {
             await updateLesson(lessonId, {
-                duration,
+                duration: formatDuration.toFixed(2),
                 video: {
                     url,
                 }
@@ -39,7 +44,7 @@ const OthersUploader = ({ lessonId, toggleOthers }) => {
                 <FormControl
                     id="duration"
                     name="duration"
-                    type="number"
+                    type="text"
                     label="Video Duration"
                     placeholder="Enter Your Video duration..."
                 />

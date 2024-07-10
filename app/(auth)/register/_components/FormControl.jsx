@@ -6,7 +6,7 @@ const FormControl = ({ id, name, label, type = 'text', placeholder, errors, soci
     <div className="grid gap-2">
         <Label className={cn(socialClass && socialClass)} htmlFor={id}>{label} {social && social}</Label>
         <div>
-            <Input className={cn(errors && 'border-red-500')} name={name} id={id} type={type} placeholder={placeholder} />
+            <Input step="1" className={cn(errors && 'border-red-500')} name={name} id={id} type={type} placeholder={placeholder} />
             {errors && errors.map((error, index) => (
                 <p className="text-red-500" key={index}>
                     <small>{error}</small>

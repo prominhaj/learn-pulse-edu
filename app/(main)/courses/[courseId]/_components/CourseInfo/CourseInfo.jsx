@@ -1,11 +1,12 @@
 import CourseAccessLink from "@/components/globals/CourseAccessLink/CourseAccessLink";
 import EnrollButton from "@/components/globals/EnrollButton/EnrollButton";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { getImage } from "@/lib/getImage";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import Player from "next-video/player";
+import { formatPrice } from "@/lib/formatPrice";
 
 const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
     const {
@@ -17,8 +18,6 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
 
     // Image Placeholder
     const { base64, img } = await getImage(url);
-
-    console.log(course);
 
     return (
         <div className='overflow-x-hidden'>
@@ -81,12 +80,16 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                                                 />
                                             )
                                     }
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className='flex items-center justify-center gap-3 mt-6'>
+                    <div className='flex items-center justify-center gap-3 mt-6 md:gap-5'>
+                        <div
+                            className="text-2xl font-semibold tracking-wide"
+                        >
+                            {course?.price === 0 ? "Free" : formatPrice(course.price)}
+                        </div>
                         {/* Enroll Course */}
                         {alreadyEnrolledCourse ? (
                             <CourseAccessLink
@@ -96,14 +99,8 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                                 className="w-32"
                             />
                         ) : (
-                            <EnrollButton courseId={id} />
+                            <EnrollButton courseId={id} price={course?.price} />
                         )}
-                        <Link
-                            href=''
-                            className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
-                        >
-                            See Intro
-                        </Link>
                     </div>
                 </div>
             </section>

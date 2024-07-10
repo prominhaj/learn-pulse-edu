@@ -17,6 +17,14 @@ export const createCheckoutSession = async (courseId) => {
         const courseName = course?.title;
         const coursePrice = course?.price;
 
+        // If the course is free, skip creating a Stripe checkout session
+        if (coursePrice === 0) {
+            return {
+                message: 'This course is free. You have been enrolled successfully.',
+                success_url: `${origin}/enroll-success?courseId=${courseId}`
+            };
+        }
+
         const checkoutSession = await stripe.checkout.sessions.create({
             mode: 'payment',
             submit_type: 'auto',
