@@ -4,7 +4,6 @@ import withPlaiceholder from '@plaiceholder/next';
 const nextConfig = {
     output: "export",
     images: {
-        domains: ['res.cloudinary.com'],
         remotePatterns: [
             {
                 protocol: 'https',
