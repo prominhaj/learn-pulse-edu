@@ -84,4 +84,4 @@ To get a local copy up and running, follow these steps:
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/learn-pulse-edu.git
+   https://github.com/pro-minhaj/learn-pulse-edu.git
