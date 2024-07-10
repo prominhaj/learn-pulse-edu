@@ -5,7 +5,7 @@ import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const OthersUploader = ({ lessonId, toggleOthers }) => {
+const OthersUploader = ({ lessonId, toggleOthers, duration, videoUrl }) => {
     const { refresh } = useRouter();
 
     const handleUpload = async (formData) => {
@@ -35,6 +35,7 @@ const OthersUploader = ({ lessonId, toggleOthers }) => {
         <form action={handleUpload} className="w-full">
             <div className="space-y-3">
                 <FormControl
+                    defaultValue={videoUrl}
                     id="url"
                     name="url"
                     type="text"
@@ -42,6 +43,7 @@ const OthersUploader = ({ lessonId, toggleOthers }) => {
                     placeholder="Enter Your Video URL..."
                 />
                 <FormControl
+                    defaultValue={duration}
                     id="duration"
                     name="duration"
                     type="text"

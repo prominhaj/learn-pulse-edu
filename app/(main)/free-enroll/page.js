@@ -10,7 +10,7 @@ import { CircleCheck } from 'lucide-react';
 import CourseAccessLink from '@/components/globals/CourseAccessLink/CourseAccessLink';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 const FreeEnrollPage = async ({ searchParams: { courseId } }) => {
     // Check Search params Course id
@@ -20,6 +20,11 @@ const FreeEnrollPage = async ({ searchParams: { courseId } }) => {
 
     const { course } = await getCourseDetails(courseId);
     const user = await getUserData();
+
+    if (!user) {
+        redirect(`/login?redirectUrl=/free-enroll?courseId=${courseId}`);
+    }
+
     const isEnroll = await hasEnrollmentForCourse(course?.id, user?.id);
 
     const customerName = user?.firstName + ' ' + user?.lastName;

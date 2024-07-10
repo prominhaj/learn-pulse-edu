@@ -14,7 +14,7 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [isOthers, setIsOthers] = useState(false);
-  const [videoUrl, setVideoUrl] = useState(initialData?.url);
+  const [videoUrl, setVideoUrl] = useState(initialData?.video?.url);
   const [isUploading, setIsUploading] = useState(false);
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -79,7 +79,12 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
       {/* Render logic based on state */}
       {isOthers ? (
         <div className="mt-4">
-          <OthersUploader lessonId={lessonId} toggleOthers={toggleOthers} />
+          <OthersUploader
+            duration={initialData?.duration}
+            videoUrl={initialData?.video?.url}
+            lessonId={lessonId}
+            toggleOthers={toggleOthers}
+          />
         </div>
       ) : (
         <>

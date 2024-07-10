@@ -64,7 +64,7 @@ const LessonModalContent = ({ courseId, lesson, moduleId, modalClose }) => {
                         <h2 className='text-xl'>Add a video</h2>
                     </div>
                     <VideoUrlForm
-                        initialData={lesson?.video || ""}
+                        initialData={lesson || ""}
                         lessonId={lesson?.id}
                     />
                 </div>

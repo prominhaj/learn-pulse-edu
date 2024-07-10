@@ -40,30 +40,28 @@ const Module = async ({ params: { courseId, moduleId } }) => {
                         </div>
                     </div>
                 </div>
-                <div className='grid grid-cols-1 gap-6 mt-16 md:grid-cols-2'>
-                    <div className='space-y-4'>
-                        <div>
-                            <div className='flex items-center gap-x-2'>
-                                <IconBadge icon={LayoutDashboard} />
-                                <h2 className='text-xl'>Customize Your module</h2>
-                            </div>
-                            <ModuleTitleForm
-                                initialData={{ title: getModule?.title }}
-                                courseId={courseId}
-                                chapterId={moduleId}
-                            />
+                <div className='grid grid-cols-1 gap-6 mt-5 md:mt-8 lg:mt-16 md:grid-cols-2'>
+                    <div>
+                        <div className='flex items-center gap-x-2'>
+                            <IconBadge icon={LayoutDashboard} />
+                            <h2 className='text-xl'>Customize Your module</h2>
                         </div>
-                        <div>
-                            <div className='flex items-center gap-x-2'>
-                                <IconBadge icon={BookOpenCheck} />
-                                <h2 className='text-xl'>Module Lessons</h2>
-                            </div>
-                            <LessonForm
-                                initialData={lessons || []}
-                                moduleId={moduleId}
-                                courseId={courseId}
-                            />
+                        <ModuleTitleForm
+                            initialData={{ title: getModule?.title }}
+                            courseId={courseId}
+                            chapterId={moduleId}
+                        />
+                    </div>
+                    <div className='md:col-span-2'>
+                        <div className='flex items-center gap-x-2'>
+                            <IconBadge icon={BookOpenCheck} />
+                            <h2 className='text-xl'>Module Lessons</h2>
                         </div>
+                        <LessonForm
+                            initialData={lessons || []}
+                            moduleId={moduleId}
+                            courseId={courseId}
+                        />
                     </div>
                 </div>
             </div>

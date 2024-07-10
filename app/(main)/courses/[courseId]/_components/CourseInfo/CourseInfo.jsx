@@ -85,21 +85,23 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                         </div>
                     </div>
                     <div className='flex items-center justify-center gap-3 mt-6 md:gap-5'>
-                        <div
-                            className="text-2xl font-semibold tracking-wide"
-                        >
-                            {course?.price === 0 ? "Free" : formatPrice(course.price)}
-                        </div>
                         {/* Enroll Course */}
                         {alreadyEnrolledCourse ? (
                             <CourseAccessLink
                                 courseId={id}
                                 variant="primary"
                                 size="lg"
-                                className="w-32"
+                                className="w-40 tracking-wide rounded-3xl"
                             />
                         ) : (
-                            <EnrollButton courseId={id} price={course?.price} />
+                            <>
+                                <div
+                                    className="text-2xl font-semibold tracking-wide"
+                                >
+                                    {course?.price === 0 ? "Free" : formatPrice(course.price)}
+                                </div>
+                                <EnrollButton courseId={id} price={course?.price} />
+                            </>
                         )}
                     </div>
                 </div>

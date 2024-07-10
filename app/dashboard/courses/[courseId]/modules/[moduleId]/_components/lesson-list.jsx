@@ -56,13 +56,13 @@ export const LessonList = ({ items, onReorder, courseId, moduleId }) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="lessons">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div className="grid gap-5 md:grid-cols-2" {...provided.droppableProps} ref={provided.innerRef}>
             {lessons?.map((lesson, index) => (
               <Draggable key={lesson?.id} draggableId={lesson.id} index={index}>
                 {(provided) => (
                   <div
                     className={cn(
-                      "flex items-center gap-x-2 rounded-md mb-4 text-sm dark:text-slate-300 bg-slate-200 dark:bg-gray-700/80 border-slate-200 dark:border-gray-600 border text-slate-700",
+                      "flex items-center gap-x-2 rounded-md text-sm dark:text-slate-300 bg-slate-200 dark:bg-gray-700/80 border-slate-200 dark:border-gray-600 border text-slate-700",
                       lesson.active &&
                       "bg-sky-100 dark:bg-sky-900 border-sky-200 dark:border-sky-700 text-sky-700 dark:text-sky-400"
                     )}
@@ -102,6 +102,7 @@ export const LessonList = ({ items, onReorder, courseId, moduleId }) => {
                 )}
               </Draggable>
             ))}
+
             {provided.placeholder}
           </div>
         )}
