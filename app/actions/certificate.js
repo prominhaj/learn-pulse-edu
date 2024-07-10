@@ -1,3 +1,5 @@
+'use server';
+
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 
@@ -6,7 +8,6 @@ import { getCourseDetails } from '@/queries/courses';
 import { getAReport } from '@/queries/reports';
 import { formatMyDate } from '@/lib/date';
 import { getCourseProgress } from '@/lib/course';
-import { NextResponse } from 'next/server';
 
 // Fetch custom fonts
 const fetchFont = async (url) => {
@@ -17,23 +18,21 @@ const fetchFont = async (url) => {
     return response.arrayBuffer();
 };
 
-export const GET = async (request) => {
+export const generateCertificate = async (courseId) => {
     try {
-        const searchParams = request.nextUrl.searchParams;
-        const courseId = searchParams.get('courseId');
         const { course } = await getCourseDetails(courseId);
         const loggedInUser = await getUserData();
         const courseProgress = await getCourseProgress(course?.id);
 
         if (!loggedInUser || !course) {
-            return NextResponse.json({ success: false, message: 'Unauthorized access' });
+            return { success: false, message: 'Unauthorized access' };
         }
 
         if (courseProgress !== 100) {
-            return NextResponse.json({
+            return {
                 success: false,
                 message: 'Course progress must be 100% to generate a certificate'
-            });
+            };
         }
 
         const report = await getAReport({ course_id: courseId, user_id: loggedInUser.id });
@@ -170,10 +169,8 @@ export const GET = async (request) => {
         });
 
         const pdfBytes = await pdfDoc.save();
-        return new NextResponse(pdfBytes, {
-            headers: { 'Content-Type': 'application/pdf' }
-        });
+        return pdfBytes;
     } catch (error) {
-        return NextResponse.json({ status: 500, success: false, message: error.message });
+        throw new Error(error);
     }
 };

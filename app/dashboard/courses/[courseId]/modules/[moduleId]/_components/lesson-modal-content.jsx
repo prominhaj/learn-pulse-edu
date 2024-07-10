@@ -38,7 +38,10 @@ const LessonModalContent = ({ courseId, lesson, moduleId, modalClose }) => {
                             <IconBadge icon={LayoutDashboard} />
                             <h2 className='text-xl'>Customize Your chapter</h2>
                         </div>
-                        <LessonTitleForm initialData={{ title: lesson?.title }} lessonId={lesson?.id} />
+                        <LessonTitleForm
+                            initialData={{ title: lesson?.title }}
+                            lessonId={lesson?.id}
+                        />
                         <LessonDescriptionForm
                             initialData={lesson?.description}
                             lessonId={lesson?.id}
@@ -49,7 +52,10 @@ const LessonModalContent = ({ courseId, lesson, moduleId, modalClose }) => {
                             <IconBadge icon={Eye} />
                             <h2 className='text-xl'>Access Settings</h2>
                         </div>
-                        <LessonAccessForm initialData={{ isFree: lesson?.access !== 'private' }} lessonId={lesson?.id} />
+                        <LessonAccessForm
+                            initialData={{ isFree: lesson?.access !== 'private' }}
+                            lessonId={lesson?.id}
+                        />
                     </div>
                 </div>
                 <div>
