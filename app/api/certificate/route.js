@@ -230,7 +230,7 @@ export const GET = async (request) => {
          *
          *-------------------*/
         const pdfBytes = await pdfDoc.save();
-        return new Response(pdfBytes, {
+        return NextResponse(pdfBytes, {
             headers: { 'content-type': 'application/pdf' }
         });
     } catch (error) {

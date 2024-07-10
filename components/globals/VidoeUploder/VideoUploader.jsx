@@ -1,18 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
-import { toast } from "sonner";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import Spinner from "../Loading/Spinner";
+import Spinner from "../Spinner/Spinner";
 
-const VideoUploader = ({ lessonId, onVideoUrl, initialData, toggleEdit, setIsUploading, isUploading }) => {
-    const router = useRouter();
-    const [file, setFile] = useState(null);
-    const [uploadProgress, setUploadProgress] = useState(0);
+const VideoUploader = ({ handleSubmit, isUploading, setFile, file, uploadProgress }) => {
 
     const handleDragOver = useCallback((e) => {
         e.preventDefault();
@@ -23,52 +17,52 @@ const VideoUploader = ({ lessonId, onVideoUrl, initialData, toggleEdit, setIsUpl
         if (e.dataTransfer.files.length) {
             setFile(e.dataTransfer.files[0]);
         }
-    }, []);
+    }, [setFile]);
 
     const handleFileChange = useCallback((e) => {
         if (e.target.files.length) {
             setFile(e.target.files[0]);
         }
-    }, []);
+    }, [setFile]);
 
-    const handleSubmit = useCallback(async (e) => {
-        e.preventDefault();
-        if (!file) return;
+    // const handleSubmit = useCallback(async (e) => {
+    //     e.preventDefault();
+    //     if (!file) return;
 
-        setIsUploading(true);
+    //     setIsUploading(true);
 
-        const formData = new FormData();
-        formData.append("video_file", file);
-        formData.append("lessonId", lessonId);
-        formData.append("public_id", initialData?.public_id);
+    //     const formData = new FormData();
+    //     formData.append("video_file", file);
+    //     formData.append("lessonId", lessonId);
+    //     formData.append("public_id", initialData?.public_id);
 
-        try {
-            const response = await axios.post("/api/upload-video", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-                onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    setUploadProgress(percentCompleted);
-                },
-            });
+    //     try {
+    //         const response = await axios.post("/api/upload-video", formData, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data",
+    //             },
+    //             onUploadProgress: (progressEvent) => {
+    //                 const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+    //                 setUploadProgress(percentCompleted);
+    //             },
+    //         });
 
-            if (response.data.success) {
-                onVideoUrl(response.data.video.url);
-                toast.success(response.data.message);
-                setFile(null);
-                setUploadProgress(0);
-                router.refresh();
-                if (initialData?.public_id) {
-                    toggleEdit();
-                }
-            }
-        } catch (error) {
-            toast.error(error.message);
-        } finally {
-            setIsUploading(false);
-        }
-    }, [file, lessonId, initialData, onVideoUrl, router, toggleEdit, setIsUploading]);
+    //         if (response.data.success) {
+    //             onVideoUrl(response.data.video.url);
+    //             toast.success(response.data.message);
+    //             setFile(null);
+    //             setUploadProgress(0);
+    //             router.refresh();
+    //             if (initialData?.public_id) {
+    //                 toggleEdit();
+    //             }
+    //         }
+    //     } catch (error) {
+    //         toast.error(error.message);
+    //     } finally {
+    //         setIsUploading(false);
+    //     }
+    // }, [file, lessonId, initialData, onVideoUrl, router, toggleEdit, setIsUploading]);
 
     return (
         <form onSubmit={handleSubmit} className="grid gap-4">
@@ -78,7 +72,7 @@ const VideoUploader = ({ lessonId, onVideoUrl, initialData, toggleEdit, setIsUpl
                 className="relative flex items-center justify-center h-32 transition-colors border border-dashed rounded-lg border-muted-foreground hover:border-primary"
             >
                 {isUploading ? (
-                    <Spinner />
+                    <Spinner className="w-10 h-10" />
                 ) : file ? (
                     <div className="text-center">
                         <Button onClick={() => setFile(null)} className="absolute z-20 top-1 right-1" size="sm">
