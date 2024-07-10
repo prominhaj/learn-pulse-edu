@@ -6,7 +6,7 @@ import { getCourseDetails } from '@/queries/courses';
 
 const FreeEnrollPage = async ({ searchParams: { courseId } }) => {
     const { course } = await getCourseDetails(courseId);
-    console.log(course);
+
     return (
         <div className='container py-8 mx-auto md:py-16'>
             <Card className='grid max-w-4xl gap-3 p-4 mx-auto md:gap-8 md:grid-cols-2 md:p-8'>
