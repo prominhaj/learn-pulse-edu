@@ -5,6 +5,7 @@ import { getImage } from "@/lib/getImage";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import Player from "next-video/player";
 
 const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
     const {
@@ -16,6 +17,8 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
 
     // Image Placeholder
     const { base64, img } = await getImage(url);
+
+    console.log(course);
 
     return (
         <div className='overflow-x-hidden'>
@@ -55,16 +58,30 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                             <div className='absolute inset-0 h-2/3'></div>
                             <div className='relative mx-auto'>
                                 <div className='lg:max-w-3xl lg:mx-auto'>
-                                    <Image
-                                        {...img}
-                                        alt={title}
-                                        className="w-full h-full rounded-lg"
-                                        placeholder='blur'
-                                        quality={100}
-                                        blurDataURL={base64}
-                                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                                        priority
-                                    />
+                                    {
+                                        course?.introductionVideo ?
+                                            (
+                                                <div className="w-full">
+                                                    <Player
+                                                        className="object-cover w-full h-full overflow-hidden rounded-lg"
+                                                        src={course?.introductionVideo?.url}
+                                                    />
+                                                </div>
+                                            )
+                                            : (
+                                                <Image
+                                                    {...img}
+                                                    alt={title}
+                                                    className="w-full h-full rounded-lg"
+                                                    placeholder='blur'
+                                                    quality={100}
+                                                    blurDataURL={base64}
+                                                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                                                    priority
+                                                />
+                                            )
+                                    }
+
                                 </div>
                             </div>
                         </div>
