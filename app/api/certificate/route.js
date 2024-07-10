@@ -9,24 +9,23 @@ import { getCourseProgress } from '@/lib/course';
 import { NextResponse } from 'next/server';
 
 // Fetch custom fonts
-const kalamFontUrl = `${process.env.NEXT_PUBLIC_API_URL}/fonts/kalam/Kalam-Regular.ttf`;
-const kalamFontBytes = await fetch(kalamFontUrl).then((res) => res.arrayBuffer());
+const fetchFont = async (url) => {
+    const response = await fetch(url);
+    return response.arrayBuffer();
+};
 
-const montserratItalicFontUrl = `${process.env.NEXT_PUBLIC_API_URL}/fonts/montserrat/Montserrat-Italic.ttf`;
-const montserratItalicFontBytes = await fetch(montserratItalicFontUrl).then((res) =>
-    res.arrayBuffer()
+const kalamFontBytes = await fetchFont(
+    `${process.env.NEXT_PUBLIC_API_URL}/fonts/kalam/Kalam-Regular.ttf`
 );
-
-const montserratFontUrl = `${process.env.NEXT_PUBLIC_API_URL}/fonts/montserrat/Montserrat-Medium.ttf`;
-const montserratFontBytes = await fetch(montserratFontUrl).then((res) => res.arrayBuffer());
+const montserratItalicFontBytes = await fetchFont(
+    `${process.env.NEXT_PUBLIC_API_URL}/fonts/montserrat/Montserrat-Italic.ttf`
+);
+const montserratFontBytes = await fetchFont(
+    `${process.env.NEXT_PUBLIC_API_URL}/fonts/montserrat/Montserrat-Medium.ttf`
+);
 
 export const GET = async (request) => {
     try {
-        /* -----------------
-         *
-         * Configuratios
-         *
-         *-------------------*/
         const searchParams = request.nextUrl.searchParams;
         const courseId = searchParams.get('courseId');
         const { course } = await getCourseDetails(courseId);
@@ -34,28 +33,24 @@ export const GET = async (request) => {
         const courseProgress = await getCourseProgress(course?.id);
 
         if (!loggedInUser || !course) {
-            throw new Error('Unauthorized access');
+            return NextResponse.json({ success: false, message: 'Unauthorized access' });
         }
 
         if (courseProgress !== 100) {
-            return {
+            return NextResponse.json({
                 success: false,
                 message: 'Course progress must be 100% to generate a certificate'
-            };
+            });
         }
 
-        const report = await getAReport({
-            course_id: courseId,
-            user_id: loggedInUser.id
-        });
-
+        const report = await getAReport({ course_id: courseId, user_id: loggedInUser.id });
         const completionDate = report?.completion_date
             ? formatMyDate(report?.completion_date)
             : formatMyDate(Date.now());
 
         const completionInfo = {
             name: `${loggedInUser?.firstName} ${loggedInUser?.lastName}`,
-            completionDate: completionDate,
+            completionDate,
             courseName: course.title,
             instructor: `${course?.instructor?.firstName} ${course?.instructor?.lastName}`,
             instructorDesignation: `${course?.instructor?.designation}`,
@@ -67,20 +62,24 @@ export const GET = async (request) => {
 
         const kalamFont = await pdfDoc.embedFont(kalamFontBytes);
         const montserratItalic = await pdfDoc.embedFont(montserratItalicFontBytes);
-
         const montserrat = await pdfDoc.embedFont(montserratFontBytes);
 
         const page = pdfDoc.addPage([841.89, 595.28]);
         const { width, height } = page.getSize();
         const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
 
-        /* -----------------
-         *
-         * Logo
-         *
-         *-------------------*/
-        const logoUrl = `${process.env.NEXT_PUBLIC_API_URL}/logo.png`;
-        const logoBytes = await fetch(logoUrl).then((res) => res.arrayBuffer());
+        const drawCenteredText = (text, y, font, size, color) => {
+            const textWidth = font.widthOfTextAtSize(text, size);
+            page.drawText(text, {
+                x: width / 2 - textWidth / 2,
+                y,
+                size,
+                font,
+                color
+            });
+        };
+
+        const logoBytes = await fetchFont(`${process.env.NEXT_PUBLIC_API_URL}/logo.png`);
         const logo = await pdfDoc.embedPng(logoBytes);
         const logoDimns = logo.scale(0.5);
         page.drawImage(logo, {
@@ -90,97 +89,44 @@ export const GET = async (request) => {
             height: logoDimns.height
         });
 
-        /* -----------------
-         *
-         * Title
-         *
-         *-------------------*/
-
-        const titleFontSize = 30;
-        const titleText = 'Certificate Of Completion';
-        // title text width
-        const titleTextWidth = montserrat.widthOfTextAtSize(titleText, titleFontSize);
-
-        page.drawText('Certificate Of Completion', {
-            x: width / 2 - titleTextWidth / 2,
-            y: height - (logoDimns.height + 125),
-            size: titleFontSize,
-            font: montserrat,
-            color: rgb(0, 0.53, 0.71)
-        });
-
-        /* -----------------
-         *
-         * Name Label
-         *
-         *-------------------*/
-        const nameLabelText = 'This certificate is hereby bestowed upon';
-
-        const nameLabelFontSize = 20;
-        // title text width
-        const nameLabelTextWidth = montserratItalic.widthOfTextAtSize(
-            nameLabelText,
-            nameLabelFontSize
+        drawCenteredText(
+            'Certificate Of Completion',
+            height - (logoDimns.height + 125),
+            montserrat,
+            30,
+            rgb(0, 0.53, 0.71)
+        );
+        drawCenteredText(
+            'This certificate is hereby bestowed upon',
+            height - (logoDimns.height + 170),
+            montserratItalic,
+            20,
+            rgb(0, 0, 0)
+        );
+        drawCenteredText(
+            completionInfo.name,
+            height - (logoDimns.height + 230),
+            kalamFont,
+            40,
+            rgb(0, 0, 0)
         );
 
-        page.drawText(nameLabelText, {
-            x: width / 2 - nameLabelTextWidth / 2,
-            y: height - (logoDimns.height + 170),
-            size: nameLabelFontSize,
-            font: montserratItalic,
-            color: rgb(0, 0, 0)
-        });
-
-        /* -----------------
-         *
-         * Name
-         *
-         *-------------------*/
-        const nameText = completionInfo.name;
-
-        const nameFontSize = 40;
-        // title text width
-        const nameTextWidth = timesRomanFont.widthOfTextAtSize(nameText, nameFontSize);
-
-        page.drawText(nameText, {
-            x: width / 2 - nameTextWidth / 2,
-            y: height - (logoDimns.height + 230),
-            size: nameFontSize,
-            font: kalamFont,
-            color: rgb(0, 0, 0)
-        });
-
-        /* -----------------
-         *
-         * Details Info
-         *
-         *-------------------*/
         const detailsText = `This is to certify that ${completionInfo.name} successfully completed the ${completionInfo.courseName} course on ${completionInfo.completionDate} by ${completionInfo.instructor}`;
-
-        const detailsFontSize = 16;
-        // title text width
-        const detailsTextWidth = montserrat.widthOfTextAtSize(titleText, titleFontSize);
-
         page.drawText(detailsText, {
             x: width / 2 - 700 / 2,
             y: height - 330,
-            size: detailsFontSize,
+            size: 16,
             font: montserrat,
             color: rgb(0, 0, 0),
             maxWidth: 700,
             wordBreaks: [' ']
         });
 
-        /* -----------------
-         *
-         * Signatures
-         *
-         *-------------------*/
         const signatureBoxWidth = 300;
         page.drawText(completionInfo.instructor, {
             x: width - signatureBoxWidth,
             y: 90,
-            size: detailsFontSize,
+            size: 16,
             font: timesRomanFont,
             color: rgb(0, 0, 0)
         });
@@ -199,11 +145,10 @@ export const GET = async (request) => {
             color: rgb(0, 0, 0)
         });
 
-        const signUrl = `${process.env.NEXT_PUBLIC_API_URL}${completionInfo.sign}`;
-
-        const signBytes = await fetch(signUrl).then((res) => res.arrayBuffer());
+        const signBytes = await fetchFont(
+            `${process.env.NEXT_PUBLIC_API_URL}${completionInfo.sign}`
+        );
         const sign = await pdfDoc.embedPng(signBytes);
-
         page.drawImage(sign, {
             x: width - signatureBoxWidth,
             y: 100,
@@ -211,12 +156,8 @@ export const GET = async (request) => {
             height: 54
         });
 
-        // pattern
-        const patternUrl = `${process.env.NEXT_PUBLIC_API_URL}/pattern.jpg`;
-
-        const patternBytes = await fetch(patternUrl).then((res) => res.arrayBuffer());
+        const patternBytes = await fetchFont(`${process.env.NEXT_PUBLIC_API_URL}/pattern.jpg`);
         const pattern = await pdfDoc.embedJpg(patternBytes);
-
         page.drawImage(pattern, {
             x: 0,
             y: 0,
@@ -224,20 +165,12 @@ export const GET = async (request) => {
             height: height,
             opacity: 0.2
         });
-        /* -----------------
-         *
-         * Generate and send Response
-         *
-         *-------------------*/
+
         const pdfBytes = await pdfDoc.save();
-        return NextResponse(pdfBytes, {
-            headers: { 'content-type': 'application/pdf' }
+        return new NextResponse(pdfBytes, {
+            headers: { 'Content-Type': 'application/pdf' }
         });
     } catch (error) {
-        return {
-            status: 500,
-            success: false,
-            message: error.message
-        };
+        return NextResponse.json({ status: 500, success: false, message: error.message });
     }
 };
