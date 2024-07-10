@@ -4,6 +4,7 @@ import WatchHistories from '@/modals/watch-histories-modal';
 import { getUserData } from '@/lib/getUserData';
 import { getLesson } from '@/queries/lesson';
 import { createWatchReport } from '@/queries/reports';
+import { revalidatePath } from 'next/cache';
 
 const STARTED = 'watching';
 const COMPLETED = 'completed';
@@ -61,6 +62,9 @@ export const watchUpdate = async (data) => {
         if (lastTime && found) {
             await WatchHistories.findByIdAndUpdate(found._id, { last_time: lastTime });
         }
+
+        // Revalidate Paths
+        revalidatePath(`/courses/${courseId}/access?lesson=${lessonId}`);
 
         return {
             success: true,

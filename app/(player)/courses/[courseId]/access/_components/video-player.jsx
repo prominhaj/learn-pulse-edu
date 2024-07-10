@@ -1,13 +1,10 @@
 "use client";
 import { watchUpdate } from '@/app/actions/watch-histories';
-import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import Player from "next-video/player";
 import ReactPlayer from 'react-player/youtube';
 
 export const VideoPlayer = ({ video, courseId, lessonId, moduleId }) => {
-  const router = useRouter();
-
   const handleOnStart = useCallback(async () => {
     const data = {
       courseId,
@@ -33,11 +30,10 @@ export const VideoPlayer = ({ video, courseId, lessonId, moduleId }) => {
     };
     try {
       await watchUpdate(data);
-      router.refresh();
     } catch (error) {
       throw new Error(error);
     }
-  }, [courseId, lessonId, moduleId, router]);
+  }, [courseId, lessonId, moduleId]);
 
   return (
     <div className="relative w-full aspect-video">
