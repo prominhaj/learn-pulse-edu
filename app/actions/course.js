@@ -1,10 +1,10 @@
 'use server';
 
+import { fileDelete } from '@/lib/file-upload';
 import Course from '@/modals/courses-modal';
 import Lesson from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import { createCourse } from '@/queries/courses';
-import { deleteFile } from './fileUploader';
 import { revalidatePath } from 'next/cache';
 
 export const addNewCourse = async (data) => {
@@ -19,6 +19,10 @@ export const addNewCourse = async (data) => {
 export const updateCourse = async (courseId, updatedData) => {
     try {
         await Course.findByIdAndUpdate(courseId, updatedData);
+
+        return {
+            success: true
+        };
     } catch (error) {
         throw new Error(error);
     }
@@ -134,9 +138,10 @@ export const deleteLearning = async (deleteItem, courseId) => {
     }
 };
 
-export const deleteIntroductionVideo = async (courseId, public_id) => {
+export const deleteIntroductionVideo = async (courseId, folderName, fileName) => {
+    console.log(courseId, folderName, fileName);
     try {
-        const file = await deleteFile(public_id);
+        const file = await fileDelete(folderName, fileName);
         if (file) {
             await Course.findByIdAndUpdate(courseId, { introductionVideo: null });
         }

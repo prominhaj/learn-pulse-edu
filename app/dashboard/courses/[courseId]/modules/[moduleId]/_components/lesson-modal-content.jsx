@@ -7,7 +7,7 @@ import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 import { LessonActions } from "./lesson-actions";
 
-const LessonModalContent = ({ courseId, lesson, moduleId, modalClose }) => {
+const LessonModalContent = ({ courseId, lesson, moduleId, modalClose, slug }) => {
 
     return (
         <div>
@@ -66,6 +66,7 @@ const LessonModalContent = ({ courseId, lesson, moduleId, modalClose }) => {
                     <VideoUrlForm
                         initialData={lesson || ""}
                         lessonId={lesson?.id}
+                        slug={slug}
                     />
                 </div>
             </div>

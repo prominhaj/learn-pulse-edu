@@ -1,12 +1,9 @@
 import CourseAccessLink from "@/components/globals/CourseAccessLink/CourseAccessLink";
 import EnrollButton from "@/components/globals/EnrollButton/EnrollButton";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { getImage } from "@/lib/getImage";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
-import Link from "next/link";
-import Player from "next-video/player";
 import { formatPrice } from "@/lib/formatPrice";
+import { VideoPlayer } from "@/components/globals/VideoPlayer/VideoPlayer";
 
 const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
     const {
@@ -61,9 +58,9 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
                                         course?.introductionVideo ?
                                             (
                                                 <div className="w-full">
-                                                    <Player
+                                                    <VideoPlayer
                                                         className="object-cover w-full h-full overflow-hidden rounded-lg"
-                                                        src={course?.introductionVideo?.url}
+                                                        url={course?.introductionVideo?.url}
                                                     />
                                                 </div>
                                             )

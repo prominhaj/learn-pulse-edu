@@ -7,10 +7,11 @@ import { fetchDashboardData } from '@/lib/dashboard-helper';
 import NoAccess from '@/components/globals/NoAccess/NoAccess';
 import { Activity, DollarSign, Users } from 'lucide-react';
 import DashboardBarChart from '../_components/BarChart/BarChart';
-
-export const dynamic = 'force-dynamic';
+import { cookies } from 'next/headers';
 
 const DashboardPage = async () => {
+    cookies();
+
     const user = await getUserData();
 
     if (!user || user?.role !== 'Teacher') {

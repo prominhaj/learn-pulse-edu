@@ -1,16 +1,16 @@
 "use client";
-import VideoUploader from "@/components/globals/VidoeUploder/VideoUploader";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { Pencil, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import Player from "next-video/player";
 import { toast } from "sonner";
-import { deleteIntroductionVideo } from "@/app/actions/course";
+import { deleteIntroductionVideo, updateCourse } from "@/app/actions/course";
 import Spinner from "@/components/globals/Spinner/Spinner";
+import { VideoPlayer } from "@/components/globals/VideoPlayer/VideoPlayer";
+import VideoUpload from "@/components/globals/FileUpload/VideoUpload";
+import { fileUpload } from "@/lib/file-upload";
 
-const IntroductionVideoForm = ({ courseId, initialData }) => {
+const IntroductionVideoForm = ({ courseId, initialData, slug }) => {
     const { refresh } = useRouter()
     const [isEditing, setIsEditing] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -28,45 +28,40 @@ const IntroductionVideoForm = ({ courseId, initialData }) => {
 
         setIsUploading(true);
 
-        const formData = new FormData();
-        formData.append("video_file", file);
-        formData.append("updateDatabaseName", "course");
-        formData.append("courseId", courseId);
-        formData.append("public_id", initialData?.public_id);
-
         try {
-            const response = await axios.post("/api/upload-video", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-                onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    setUploadProgress(percentCompleted);
-                },
-            });
+            const fileName = initialData?.fileName || null;
 
-            if (response.data.success) {
-                setVideoUrl(response.data.video.url);
-                toast.success(response.data.message);
+            const uploadFile = await fileUpload(file, `courses/${slug}`, setUploadProgress, null, fileName);
+            const data = {
+                introductionVideo: {
+                    url: uploadFile,
+                    fileName: file?.name
+                }
+            };
+
+            const updatedCourse = await updateCourse(courseId, data)
+
+            if (updatedCourse.success) {
+                setVideoUrl(uploadFile);
+                toast.success("Video updated successfully");
                 setFile(null);
+                toggleEdit();
                 setUploadProgress(0);
                 refresh();
-                if (initialData?.public_id) {
-                    toggleEdit();
-                }
             }
         } catch (error) {
             toast.error(error.message);
         } finally {
             setIsUploading(false);
         }
-    }, [file, initialData, refresh, toggleEdit, setIsUploading, courseId]);
+    }, [file, initialData, refresh, toggleEdit, setIsUploading, courseId, slug]);
+
 
     // Upload Video Delete
     const handleVideoDelete = async () => {
         setDeleteLoading(true);
         try {
-            await deleteIntroductionVideo(courseId, initialData?.public_id);
+            await deleteIntroductionVideo(courseId, `courses/${slug}`, initialData?.fileName || null);
             setVideoUrl(null)
             toast.success("Introduction Video Deleted Successfully!");
         } catch (error) {
@@ -102,15 +97,15 @@ const IntroductionVideoForm = ({ courseId, initialData }) => {
             {
                 videoUrl && !isEditing ? (
                     <div className="w-full h-60">
-                        <Player className="object-cover w-full h-full overflow-hidden" src={videoUrl} />
+                        <VideoPlayer url={videoUrl} />
                     </div>
                 ) : (
-                    <VideoUploader
-                        handleSubmit={handleSubmit}
-                        isUploading={isUploading}
-                        setFile={setFile}
+                    <VideoUpload
+                        pending={isUploading}
+                        progressValue={uploadProgress}
                         file={file}
-                        uploadProgress={uploadProgress}
+                        setFile={setFile}
+                        uploadAction={handleSubmit}
                     />
                 )
             }

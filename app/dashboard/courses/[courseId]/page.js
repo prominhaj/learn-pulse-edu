@@ -11,7 +11,7 @@ import { IconBadge } from '@/components/globals/IconBadge/IconBadge';
 import { ImageForm } from './_components/image-form';
 import { getCourseDetails } from '@/queries/courses';
 import { getCategories } from '@/queries/categories';
-import { replaceMongoIdInArray } from '@/lib/convertData';
+import { getSlug, replaceMongoIdInArray } from '@/lib/convertData';
 import { getImage } from '@/lib/getImage';
 import { SubTitleForm } from './_components/sub-title-form';
 import { LearningForm } from './_components/learning-form';
@@ -20,6 +20,7 @@ import IntroductionVideoForm from './_components/introduction-video-form';
 
 const EditCoursePage = async ({ params: { courseId } }) => {
     const course = await getCourseDetails(courseId, true);
+    const slug = getSlug(course?.title);
     const categories = await getCategories();
     const getQuizSets = await getAllQuizSet();
     const quizSet = await getQuizSetById(course?.quizSet);
@@ -112,6 +113,7 @@ const EditCoursePage = async ({ params: { courseId } }) => {
                                 <h2 className='text-xl'>Introduction Video</h2>
                             </div>
                             <IntroductionVideoForm
+                                slug={slug}
                                 courseId={courseId}
                                 initialData={course?.introductionVideo}
                             />

@@ -3,8 +3,11 @@ import CategoryCard from '../CategoryCard/CategoryCard';
 import Link from 'next/link';
 import { ArrowRightIcon } from 'lucide-react';
 import { getCategories } from '@/queries/categories';
+import { cookies } from 'next/headers';
 
 const CategorySection = async () => {
+    cookies();
+
     const categories = await getCategories();
 
     return (

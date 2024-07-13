@@ -18,12 +18,8 @@ const lessonSchema = new Schema(
             url: {
                 type: String
             },
-            public_id: {
+            fileName: {
                 type: String
-            },
-            youtube: {
-                type: Boolean,
-                default: false
             }
         },
         active: {

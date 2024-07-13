@@ -41,6 +41,10 @@ export const updateLesson = async (lessonId, updateLesson) => {
     try {
         await Lesson.findByIdAndUpdate(lessonId, updateLesson);
         revalidatePath(`/dashboard/courses`);
+
+        return {
+            success: true
+        };
     } catch (error) {
         throw new Error(error);
     }

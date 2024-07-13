@@ -2,9 +2,12 @@ import CourseCard from '@/components/globals/CourseCard/CourseCard';
 import { SectionTitle } from '@/components/globals/SectionTitle/SectionTitle';
 import { getCourses } from '@/queries/courses';
 import { ArrowRightIcon } from 'lucide-react';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 
 const CoursesSection = async () => {
+    cookies();
+
     const courses = await getCourses();
 
     return (

@@ -4,7 +4,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { usePathname, useRouter } from 'next/navigation';
 import LessonModalContent from '../../../../_components/lesson-modal-content';
 
-const LessonModal = ({ courseId, moduleId, lesson }) => {
+const LessonModal = ({ courseId, moduleId, lesson, slug }) => {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -21,6 +21,7 @@ const LessonModal = ({ courseId, moduleId, lesson }) => {
                 onInteractOutside={(e) => e.preventDefault()}
             >
                 <LessonModalContent
+                    slug={slug}
                     lesson={lesson}
                     courseId={courseId}
                     moduleId={moduleId}

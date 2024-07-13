@@ -2,10 +2,11 @@ import { getCoursesByInstructorId } from '@/queries/courses';
 import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 import { getUserData } from '@/lib/getUserData';
-
-export const dynamic = 'force-dynamic';
+import { cookies } from 'next/headers';
 
 const CoursesPage = async () => {
+    cookies();
+
     const user = await getUserData();
     const courses = await getCoursesByInstructorId(user?.id);
 
