@@ -28,7 +28,7 @@ const Curriculum = ({ modules }) => {
                 className='w-full'
             >
                 {
-                    modules?.map(module => <CourseModuleList key={module.id} module={module} />)
+                    modules?.map((module, index) => <CourseModuleList key={module.id} module={module} index={index} />)
                 }
             </Accordion>
             {/* contents end */}

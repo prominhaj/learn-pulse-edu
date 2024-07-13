@@ -1,8 +1,8 @@
 'use server';
 import Lesson from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
-import { deleteFile } from './fileUploader';
 import { revalidatePath } from 'next/cache';
+import { fileDelete } from '@/lib/file-upload';
 
 export const createLesson = async (data) => {
     try {
@@ -59,12 +59,12 @@ export const lessonPublished = async (lessonId) => {
     }
 };
 
-export const deleteLesson = async (lessonId, moduleId) => {
+export const deleteLesson = async (lessonId, moduleId, courseId) => {
     try {
         const lesson = await Lesson.findById(lessonId);
         // Delete Lesson Video
-        if (lesson?.video?.public_id) {
-            await deleteFile(lesson?.video?.public_id);
+        if (lesson?.video?.fileName) {
+            await fileDelete(`courses`, lesson?.video?.fileName);
         }
         // Remove Lesson from Module
         await Lesson.findByIdAndDelete(lessonId);

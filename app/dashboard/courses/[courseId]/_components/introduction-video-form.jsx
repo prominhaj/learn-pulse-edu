@@ -10,7 +10,7 @@ import { VideoPlayer } from "@/components/globals/VideoPlayer/VideoPlayer";
 import VideoUpload from "@/components/globals/FileUpload/VideoUpload";
 import { fileUpload } from "@/lib/file-upload";
 
-const IntroductionVideoForm = ({ courseId, initialData, slug }) => {
+const IntroductionVideoForm = ({ courseId, initialData }) => {
     const { refresh } = useRouter()
     const [isEditing, setIsEditing] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -31,10 +31,10 @@ const IntroductionVideoForm = ({ courseId, initialData, slug }) => {
         try {
             const fileName = initialData?.fileName || null;
 
-            const uploadFile = await fileUpload(file, `courses/${slug}`, setUploadProgress, null, fileName);
+            const { downloadURL } = await fileUpload(file, `courses`, setUploadProgress, null, fileName);
             const data = {
                 introductionVideo: {
-                    url: uploadFile,
+                    url: downloadURL,
                     fileName: file?.name
                 }
             };
@@ -42,7 +42,7 @@ const IntroductionVideoForm = ({ courseId, initialData, slug }) => {
             const updatedCourse = await updateCourse(courseId, data)
 
             if (updatedCourse.success) {
-                setVideoUrl(uploadFile);
+                setVideoUrl(downloadURL);
                 toast.success("Video updated successfully");
                 setFile(null);
                 toggleEdit();
@@ -54,14 +54,14 @@ const IntroductionVideoForm = ({ courseId, initialData, slug }) => {
         } finally {
             setIsUploading(false);
         }
-    }, [file, initialData, refresh, toggleEdit, setIsUploading, courseId, slug]);
+    }, [file, initialData, refresh, toggleEdit, setIsUploading, courseId]);
 
 
     // Upload Video Delete
     const handleVideoDelete = async () => {
         setDeleteLoading(true);
         try {
-            await deleteIntroductionVideo(courseId, `courses/${slug}`, initialData?.fileName || null);
+            await deleteIntroductionVideo(courseId, `courses`, initialData?.fileName || null);
             setVideoUrl(null)
             toast.success("Introduction Video Deleted Successfully!");
         } catch (error) {
@@ -77,7 +77,7 @@ const IntroductionVideoForm = ({ courseId, initialData, slug }) => {
             <div className="flex items-center justify-between mb-4 font-medium">
                 Introduction Video
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" onClick={toggleEdit}>
+                    <Button disabled={isUploading} variant="outline" onClick={toggleEdit}>
                         {isEditing ? (
                             <>Cancel</>
                         ) : (

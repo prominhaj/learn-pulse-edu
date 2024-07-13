@@ -1,7 +1,7 @@
 import { Tv } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const CourseLessonList = async ({ lesson }) => {
+const CourseLessonList = async ({ lesson, index }) => {
     return (
         <button
             type="button"
@@ -11,7 +11,7 @@ const CourseLessonList = async ({ lesson }) => {
         >
             <div className="flex items-center gap-x-2">
                 <Tv size={16} className={cn("text-slate-500 dark:text-slate-400")} />
-                {lesson?.title}
+                {index}. {lesson?.title}
             </div>
         </button>
     );

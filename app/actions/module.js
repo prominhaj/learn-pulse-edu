@@ -3,8 +3,8 @@ import Course from '@/modals/courses-modal';
 import Lesson from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import { revalidatePath } from 'next/cache';
-import { deleteFile } from './fileUploader';
 import mongoose from 'mongoose';
+import { fileDelete } from '@/lib/file-upload';
 
 export const createModule = async (data) => {
     try {
@@ -72,8 +72,8 @@ export const moduleDelete = async (moduleId, courseId) => {
                 const lessons = await Lesson.find({ _id: { $in: lessonIds } }).session(session);
 
                 const deleteFilesPromises = lessons
-                    .filter((lesson) => lesson.video?.public_id)
-                    .map((lesson) => deleteFile(lesson.video.public_id));
+                    .filter((lesson) => lesson?.video?.fileName)
+                    .map((lesson) => fileDelete(`courses`, lesson?.video?.fileName));
                 await Promise.all(deleteFilesPromises);
 
                 await Lesson.deleteMany({ _id: { $in: lessonIds } }).session(session);

@@ -22,7 +22,7 @@ export const LessonActions = ({ active, courseId, moduleId, lessonId, modalClose
     // Handle Lesson Delete
     const handleDelete = async () => {
         try {
-            await deleteLesson(lessonId, moduleId)
+            await deleteLesson(lessonId, moduleId, courseId)
             toast.success("Lesson Deleted Successfully!");
             if (modalClose) {
                 modalClose()

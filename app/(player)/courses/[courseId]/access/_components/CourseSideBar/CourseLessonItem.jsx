@@ -36,7 +36,7 @@ const CourseLessonItem = async ({ lesson, courseId, lessonId }) => {
             <div className="flex flex-col items-start w-full gap-y-0.5">
                 <div className="flex items-center w-full gap-x-2">
                     <div className="flex items-center justify-between w-full">
-                        {lesson?.title}
+                        {lesson?.order}. {lesson?.title}
                         {
                             isCompleted && <CircleCheck
                                 size={16}

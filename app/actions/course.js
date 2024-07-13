@@ -1,11 +1,14 @@
 'use server';
 
+import { getSlug } from '@/lib/convertData';
 import { fileDelete } from '@/lib/file-upload';
 import Course from '@/modals/courses-modal';
+import Enrollment from '@/modals/enrollment-model';
 import Lesson from '@/modals/lessons-modal';
 import Module from '@/modals/modules-modal';
 import { createCourse } from '@/queries/courses';
 import { revalidatePath } from 'next/cache';
+import { deleteFile } from './fileUploader';
 
 export const addNewCourse = async (data) => {
     try {
@@ -19,6 +22,9 @@ export const addNewCourse = async (data) => {
 export const updateCourse = async (courseId, updatedData) => {
     try {
         await Course.findByIdAndUpdate(courseId, updatedData);
+
+        // revalidate path
+        revalidatePath(`/dashboard/courses/${courseId}`);
 
         return {
             success: true
@@ -54,6 +60,7 @@ export const deleteCourse = async (courseId) => {
         }
 
         const modules = course.modules;
+        const courseSlug = getSlug(course?.title);
 
         // Delete the course thumbnail if it exists
         if (course.thumbnail?.public_id) {
@@ -68,8 +75,8 @@ export const deleteCourse = async (courseId) => {
                 // Delete lesson videos if they exist
                 await Promise.all(
                     lessons.map(async (lesson) => {
-                        if (lesson.video?.public_id) {
-                            await deleteFile(lesson.video.public_id);
+                        if (lesson?.video?.fileName) {
+                            await fileDelete(`courses/${courseSlug}`, lesson.video?.fileName);
                         }
                     })
                 );
@@ -82,7 +89,8 @@ export const deleteCourse = async (courseId) => {
             })
         );
 
-        // Delete the course itself
+        // delete all enrollments in the course
+        await Enrollment.deleteMany({ course_id: courseId });
         await Course.findByIdAndDelete(courseId);
     } catch (error) {
         throw new Error(error.message);
@@ -139,7 +147,6 @@ export const deleteLearning = async (deleteItem, courseId) => {
 };
 
 export const deleteIntroductionVideo = async (courseId, folderName, fileName) => {
-    console.log(courseId, folderName, fileName);
     try {
         const file = await fileDelete(folderName, fileName);
         if (file) {

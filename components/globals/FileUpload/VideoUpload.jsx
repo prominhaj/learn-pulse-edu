@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { CloudUploadIcon, File } from "lucide-react";
 import Spinner from "../Spinner/Spinner";
 
-const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending }) => {
+const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending, isImage }) => {
     const fileSize = parseFloat(file?.size / (1024 * 1024)).toFixed(2);
 
     return (
@@ -35,7 +35,7 @@ const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending }) =>
                                 id="video-file"
                                 name="file"
                                 type="file"
-                                accept="video/*"
+                                accept={isImage ? "image/*" : "video/*"}
                                 multiple={false}
                                 className="hidden"
                             />
@@ -43,7 +43,7 @@ const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending }) =>
                                 <div className="flex flex-col items-center justify-center gap-2 p-8 transition-colors border rounded-md hover:bg-muted bg-muted/50 border-background">
                                     <CloudUploadIcon className="w-8 h-8 text-muted-foreground" />
                                     <p className="text-sm text-muted-foreground">
-                                        Drag and drop a video file or click to select one
+                                        Drag and drop a {isImage ? "image" : "video"} file or click to select one
                                     </p>
                                     <label
                                         htmlFor="video-file"
@@ -73,7 +73,7 @@ const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending }) =>
                         variant="primary"
                         className="w-full"
                     >
-                        {pending && <Spinner className="!text-white !dark:text-white !fill-red-500 dark:!fill-red-500" />} Upload Video
+                        {pending && <Spinner className="!text-white !dark:text-white !fill-red-500 dark:!fill-red-500" />} Upload {isImage ? "Image" : "Video"}
                     </Button>
                 </form>
             </div>

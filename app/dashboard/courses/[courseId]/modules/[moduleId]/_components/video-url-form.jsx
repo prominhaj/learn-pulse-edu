@@ -9,7 +9,7 @@ import { fileUpload } from "@/lib/file-upload";
 import { VideoPlayer } from "@/components/globals/VideoPlayer/VideoPlayer";
 import { updateLesson } from "@/app/actions/lesson";
 
-export const VideoUrlForm = ({ initialData, lessonId, slug }) => {
+export const VideoUrlForm = ({ initialData, lessonId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [videoUrl, setVideoUrl] = useState(initialData?.video?.url);
@@ -29,22 +29,24 @@ export const VideoUrlForm = ({ initialData, lessonId, slug }) => {
     try {
       const fileName = initialData?.video?.fileName || null;
 
-      const uploadFile = await fileUpload(file, `courses/${slug}`, setUploadProgress, setDuration, fileName);
+      const { downloadURL, duration } = await fileUpload(file, `courses`, setUploadProgress, setDuration, fileName, true);
       const data = {
         duration: parseInt(duration),
         video: {
-          url: uploadFile,
+          url: downloadURL,
           fileName: file?.name
         }
       };
 
       // Update database name if provided
       const updatedLesson = await updateLesson(lessonId, data);
+
       if (updatedLesson?.success) {
         toast.success("Video uploaded successfully");
-        setVideoUrl(uploadFile)
+        setVideoUrl(downloadURL);
         setFile(null);
-        toggleEdit()
+        setIsEditing(false);
+        setDuration(0);
         setUploadProgress(0);
         router.refresh();
       }
