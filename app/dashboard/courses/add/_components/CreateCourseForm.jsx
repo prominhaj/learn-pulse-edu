@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { createCourseSchema } from '@/lib/FormValidation/course/courseSchema';
 import { addNewCourse } from '@/app/actions/course';
+import SubmitButton from '@/components/globals/SubmitButton/SubmitButton';
 
 const CreateCourseForm = () => {
     const router = useRouter();
@@ -91,9 +92,9 @@ const CreateCourseForm = () => {
                             Cancel
                         </Button>
                     </Link>
-                    <Button type='submit' disabled={!isValid || isSubmitting}>
+                    <SubmitButton loading={isSubmitting} disabled={!isValid}>
                         Continue
-                    </Button>
+                    </SubmitButton>
                 </div>
             </form>
         </Form>

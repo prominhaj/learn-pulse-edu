@@ -8,24 +8,19 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { UploadDropzone } from "@/components/globals/FileUpload/FileUpload";
 import { cn } from "@/lib/utils";
-import { fileUpload } from "@/lib/file-upload";
-import { updateCourse } from "@/app/actions/course";
-import VideoUpload from "@/components/globals/FileUpload/VideoUpload";
 
 
-export const ImageForm = ({ initialData, courseId, imageName }) => {
+export const ImageForm = ({ initialData, courseId, public_id }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null)
 
   const toggleEdit = useCallback(() => {
     setIsEditing((current) => !current);
   }, []);
 
-  const handleUpload = useCallback(async (e) => {
-    e.preventDefault();
+  const handleUpload = useCallback(async () => {
     if (!image) {
       toast.error("Please select an image");
       return;
@@ -34,24 +29,24 @@ export const ImageForm = ({ initialData, courseId, imageName }) => {
     setIsUploading(true);
 
     try {
-      const { downloadURL } = await fileUpload(image, `images/courses`, setProgress, null, imageName ? imageName : null);
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("courseId", courseId);
+      formData.append("public_id", public_id);
 
-      const data = {
-        thumbnail: {
-          url: downloadURL,
-          fileName: image?.name
-        }
-      };
-      const result = await updateCourse(courseId, data);
+      const response = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
 
       if (result?.success) {
         router.refresh();
-        toast.success("Image Upload SuccessFully");
-        setImage(null)
-        setProgress(0);
+        toast.success(result?.message);
         toggleEdit();
       } else {
-        toast.error("Failed to upload image");
+        toast.error(result?.message || "Failed to upload image");
       }
 
     } catch (error) {
@@ -60,7 +55,7 @@ export const ImageForm = ({ initialData, courseId, imageName }) => {
     finally {
       setIsUploading(false);
     }
-  }, [image, courseId, router, toggleEdit, imageName]);
+  }, [image, courseId, public_id, router, toggleEdit]);
 
   return (
     <div className="p-4 mt-6 border rounded-md bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
@@ -102,14 +97,19 @@ export const ImageForm = ({ initialData, courseId, imageName }) => {
         ))}
       {isEditing && (
         <div>
-          <VideoUpload
-            isImage={true}
-            progressValue={progress}
-            setFile={setImage}
-            file={image}
-            uploadAction={handleUpload}
-            pending={isUploading}
-          />
+          <UploadDropzone isUploading={isUploading} onUpload={setImage} image={image} />
+          <Button disabled={isUploading || !image} onClick={handleUpload} className={cn('w-full mt-3')}>
+            {
+              isUploading && (
+                <div className="flex items-center justify-center me-2">
+                  <div className="h-5 w-5 animate-[spin_0.3s_linear_infinite] rounded-full border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent" />
+                </div>
+              )
+            } Upload Image
+          </Button>
+          <div className="mt-4 text-xs text-muted-foreground">
+            16:9 aspect ratio recommended
+          </div>
         </div>
       )}
     </div>

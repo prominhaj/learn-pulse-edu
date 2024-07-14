@@ -17,6 +17,22 @@ import { SubTitleForm } from './_components/sub-title-form';
 import { LearningForm } from './_components/learning-form';
 import { getAllQuizSet, getQuizSetById } from '@/queries/quiz-set';
 import IntroductionVideoForm from './_components/introduction-video-form';
+import BreadcrumbSection from '@/components/globals/Breadcrumb/BreadcrumbSection';
+
+const items = [
+    {
+        label: 'Dashboard',
+        href: '/dashboard'
+    },
+    {
+        label: 'Courses',
+        href: '/dashboard/courses'
+    },
+    {
+        label: 'Edit',
+        current: true
+    }
+];
 
 const EditCoursePage = async ({ params: { courseId } }) => {
     const course = await getCourseDetails(courseId, true);
@@ -40,17 +56,20 @@ const EditCoursePage = async ({ params: { courseId } }) => {
 
     return (
         <>
+            <BreadcrumbSection items={items} />
             {!course?.active && (
-                <AlertBanner
-                    label='This course is unpublished. It will not be visible in the course.'
-                    variant='warning'
-                />
+                <div className='mt-3'>
+                    <AlertBanner
+                        label='This course is unpublished. It will not be visible in the course.'
+                        variant='warning'
+                    />
+                </div>
             )}
             <div className='p-6'>
                 <div className='flex items-center justify-end'>
                     <CourseActions active={course?.active} courseId={courseId} />
                 </div>
-                <div className='grid grid-cols-1 gap-6 mt-5 md:mt-16 md:grid-cols-2'>
+                <div className='grid grid-cols-1 gap-6 mt-5 md:mt-10 md:grid-cols-2'>
                     <div>
                         <div className='flex items-center gap-x-2'>
                             <IconBadge icon={LayoutDashboard} />

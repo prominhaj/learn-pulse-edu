@@ -3,6 +3,19 @@ import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 import { getUserData } from '@/lib/getUserData';
 import { cookies } from 'next/headers';
+import BreadcrumbSection from '@/components/globals/Breadcrumb/BreadcrumbSection';
+
+// items
+const items = [
+    {
+        label: 'Dashboard',
+        href: '/dashboard'
+    },
+    {
+        label: 'Courses',
+        current: true
+    }
+];
 
 const CoursesPage = async () => {
     cookies();
@@ -11,9 +24,12 @@ const CoursesPage = async () => {
     const courses = await getCoursesByInstructorId(user?.id);
 
     return (
-        <div className='p-6'>
-            <DataTable columns={columns} data={courses} />
-        </div>
+        <>
+            <BreadcrumbSection items={items} />
+            <div className='px-6 py-3'>
+                <DataTable columns={columns} data={courses} />
+            </div>
+        </>
     );
 };
 

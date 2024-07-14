@@ -1,18 +1,8 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { GraduationCap } from "lucide-react";
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import moment from "moment";
-import Link from "next/link";
 
 export const columns = [
   {
@@ -66,7 +56,7 @@ export const columns = [
       const quizMark = row.original.quizMark;
       return (
         <div className="ml-5">
-          {quizMark}
+          {quizMark || 0}
         </div>
       );
     }

@@ -17,7 +17,7 @@ const courseSchema = new Schema(
             url: {
                 type: String
             },
-            fileName: {
+            public_id: {
                 type: String
             }
         },

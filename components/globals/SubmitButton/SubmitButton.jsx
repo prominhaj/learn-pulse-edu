@@ -5,13 +5,13 @@ import { useFormStatus } from 'react-dom'
 import Spinner from "../Spinner/Spinner";
 
 
-const SubmitButton = ({ className, children }) => {
+const SubmitButton = ({ className, children, loading, disabled }) => {
     const { pending } = useFormStatus();
 
     return (
         <>
-            <Button disabled={pending} type="submit" className={cn(`${className} disabled:opacity-50 disabled:cursor-not-allowed`)}>
-                {pending ? (
+            <Button disabled={pending || loading || disabled} type="submit" className={cn(`${className} disabled:opacity-50 disabled:cursor-not-allowed`)}>
+                {pending || loading ? (
                     <>
                         <Spinner /> Loading...
                     </>

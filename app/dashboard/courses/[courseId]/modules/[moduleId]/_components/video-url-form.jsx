@@ -16,7 +16,6 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
 
   const toggleEdit = useCallback(() => setIsEditing((current) => !current), []);
 
@@ -29,7 +28,7 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
     try {
       const fileName = initialData?.video?.fileName || null;
 
-      const { downloadURL, duration } = await fileUpload(file, `courses`, setUploadProgress, setDuration, fileName, true);
+      const { downloadURL, duration } = await fileUpload(file, `courses`, setUploadProgress, null, fileName, true);
       const data = {
         duration: parseInt(duration),
         video: {
@@ -46,7 +45,6 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
         setVideoUrl(downloadURL);
         setFile(null);
         setIsEditing(false);
-        setDuration(0);
         setUploadProgress(0);
         router.refresh();
       }

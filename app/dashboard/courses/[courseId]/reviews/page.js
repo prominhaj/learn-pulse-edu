@@ -2,6 +2,22 @@ import { getTestimonialsForCourse } from '@/queries/testimonials';
 import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 import { getCourseByCourseId } from '@/queries/courses';
+import BreadcrumbSection from '@/components/globals/Breadcrumb/BreadcrumbSection';
+
+const items = [
+    {
+        label: 'Dashboard',
+        href: '/dashboard'
+    },
+    {
+        label: 'Courses',
+        href: '/dashboard/courses'
+    },
+    {
+        label: 'Reviews',
+        current: true
+    }
+];
 
 const ReviewsPage = async ({ params: { courseId } }) => {
     const reviews = await getTestimonialsForCourse(courseId);
@@ -19,10 +35,13 @@ const ReviewsPage = async ({ params: { courseId } }) => {
     });
 
     return (
-        <div className='p-6'>
-            <h2>{course?.title}</h2>
-            <DataTable columns={columns} data={filterReviews} />
-        </div>
+        <>
+            <BreadcrumbSection items={items} />
+            <div className='p-6'>
+                <h2>{course?.title}</h2>
+                <DataTable columns={columns} data={filterReviews} />
+            </div>
+        </>
     );
 };
 

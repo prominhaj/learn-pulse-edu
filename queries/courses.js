@@ -70,12 +70,10 @@ export const getCourseDetails = async (id, isCourseEditPage) => {
             .populate({
                 path: 'modules',
                 model: Module,
-                match: { active: true },
                 options: { sort: { order: 1 } },
                 populate: {
                     path: 'lessonIds',
                     model: Lesson,
-                    match: { active: true },
                     options: { sort: { order: 1 } }
                 }
             })
