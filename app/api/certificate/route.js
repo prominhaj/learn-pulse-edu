@@ -17,6 +17,8 @@ const fetchFont = async (url) => {
     return response.arrayBuffer();
 };
 
+export const dynamic = 'force-dynamic'
+
 export const GET = async (request) => {
     try {
         const searchParams = request.nextUrl.searchParams;
