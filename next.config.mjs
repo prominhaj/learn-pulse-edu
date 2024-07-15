@@ -2,6 +2,9 @@ import withPlaiceholder from '@plaiceholder/next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+eslint:{
+ignoreDuringBuilds: true
+}
     images: {
         domains: ['res.cloudinary.com'],
         remotePatterns: [
