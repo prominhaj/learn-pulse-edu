@@ -5,7 +5,6 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  DropResult,
 } from "@hello-pangea/dnd";
 import { Grip, Pencil } from "lucide-react";
 
@@ -54,7 +53,7 @@ export const ModuleList = ({ items, onReorder, onEdit }) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="modules">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div className="!mt-2" {...provided.droppableProps} ref={provided.innerRef}>
             {modules.map((module, index) => (
               <Draggable key={module.id} draggableId={module.id} index={index}>
                 {(provided) => (

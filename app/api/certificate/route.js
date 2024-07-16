@@ -1,6 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
-
 import { getUserData } from '@/lib/getUserData';
 import { getCourseDetails } from '@/queries/courses';
 import { getAReport } from '@/queries/reports';
@@ -17,8 +16,11 @@ const fetchFont = async (url) => {
     return response.arrayBuffer();
 };
 
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request) => {
     try {
+        const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
         const searchParams = request.nextUrl.searchParams;
         const courseId = searchParams.get('courseId');
         const { course } = await getCourseDetails(courseId);
@@ -47,17 +49,15 @@ export const GET = async (request) => {
             courseName: course.title,
             instructor: `${course?.instructor?.firstName} ${course?.instructor?.lastName}`,
             instructorDesignation: `${course?.instructor?.designation}`,
-            sign: '/sign.png'
+            sign: `${baseUrl}/sign.png`
         };
 
-        const kalamFontBytes = await fetchFont(
-            `${process.env.BASE_URL}/fonts/kalam/Kalam-Regular.ttf`
-        );
+        const kalamFontBytes = await fetchFont(`${baseUrl}/fonts/kalam/Kalam-Regular.ttf`);
         const montserratItalicFontBytes = await fetchFont(
-            `${process.env.BASE_URL}/fonts/montserrat/Montserrat-Italic.ttf`
+            `${baseUrl}/fonts/montserrat/Montserrat-Italic.ttf`
         );
         const montserratFontBytes = await fetchFont(
-            `${process.env.BASE_URL}/fonts/montserrat/Montserrat-Medium.ttf`
+            `${baseUrl}/fonts/montserrat/Montserrat-Medium.ttf`
         );
 
         const pdfDoc = await PDFDocument.create();
@@ -82,7 +82,7 @@ export const GET = async (request) => {
             });
         };
 
-        const logoBytes = await fetchFont(`${process.env.BASE_URL}/logo.png`);
+        const logoBytes = await fetchFont(`${baseUrl}/logo.png`);
         const logo = await pdfDoc.embedPng(logoBytes);
         const logoDimns = logo.scale(0.5);
         page.drawImage(logo, {
@@ -148,7 +148,7 @@ export const GET = async (request) => {
             color: rgb(0, 0, 0)
         });
 
-        const signBytes = await fetchFont(`${process.env.BASE_URL}${completionInfo.sign}`);
+        const signBytes = await fetchFont(completionInfo.sign);
         const sign = await pdfDoc.embedPng(signBytes);
         page.drawImage(sign, {
             x: width - signatureBoxWidth,
@@ -157,7 +157,7 @@ export const GET = async (request) => {
             height: 54
         });
 
-        const patternBytes = await fetchFont(`${process.env.BASE_URL}/pattern.jpg`);
+        const patternBytes = await fetchFont(`${baseUrl}/pattern.jpg`);
         const pattern = await pdfDoc.embedJpg(patternBytes);
         page.drawImage(pattern, {
             x: 0,
@@ -172,6 +172,7 @@ export const GET = async (request) => {
             headers: { 'Content-Type': 'application/pdf' }
         });
     } catch (error) {
+        console.error(`Error generating PDF: ${error.message}`);
         return NextResponse.json({ status: 500, success: false, message: error.message });
     }
 };
