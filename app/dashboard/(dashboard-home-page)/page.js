@@ -4,7 +4,6 @@ import RecentEnrollCard from '../_components/RecentEnrollCard/RecentEnrollCard';
 import TotalCard from '../_components/TotalCard/TotalCard';
 import { getUserData } from '@/lib/getUserData';
 import { fetchDashboardData } from '@/lib/dashboard-helper';
-import NoAccess from '@/components/globals/NoAccess/NoAccess';
 import { Activity, DollarSign, Users } from 'lucide-react';
 import DashboardBarChart from '../_components/BarChart/BarChart';
 import { cookies } from 'next/headers';
@@ -13,10 +12,6 @@ const DashboardPage = async () => {
     cookies();
 
     const user = await getUserData();
-
-    if (!user || user?.role !== 'Teacher') {
-        return <NoAccess />;
-    }
 
     const { courses, totalEnroll, totalSalePrice, enrollByInstructorReports, recentEnrollments } =
         (await fetchDashboardData(user?.id)) ?? {};

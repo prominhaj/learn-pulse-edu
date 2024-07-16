@@ -1,7 +1,15 @@
+import NoAccess from '@/components/globals/NoAccess/NoAccess';
 import { Navbar } from './_components/navbar';
 import Sidebar from './_components/sidebar';
+import { getUserData } from '@/lib/getUserData';
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = async ({ children }) => {
+    const user = await getUserData();
+
+    if (!user || user?.role !== 'Teacher') {
+        return <NoAccess />;
+    }
+
     return (
         <div className='relative h-full'>
             <div className='h-[80px] lg:pl-56 fixed inset-y-0 w-full z-50'>
