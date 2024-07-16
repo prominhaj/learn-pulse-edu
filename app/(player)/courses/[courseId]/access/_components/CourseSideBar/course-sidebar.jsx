@@ -2,10 +2,12 @@ import { CourseProgress } from "@/components/globals/CourseProgress/CourseProgre
 import CourseModules from "./CourseModules";
 import CourseActions from "./course-actions";
 import { getCourseProgress } from "@/lib/course";
+import { getUserData } from "@/lib/getUserData";
 
 export const CourseSidebar = async ({ course, lessonId, courseId }) => {
   const courseProgress = await getCourseProgress(course?.id);
   const modules = course?.modules?.sort((a, b) => a.order - b.order);
+  const user = await getUserData();
 
   return (
     <>
@@ -23,7 +25,7 @@ export const CourseSidebar = async ({ course, lessonId, courseId }) => {
         <CourseModules modules={modules} courseId={course?.id} lessonId={lessonId} />
 
         <div className="px-3 py-3 space-y-3 sm:px-6">
-          <CourseActions courseId={courseId} courseProgress={courseProgress} />
+          <CourseActions courseId={courseId} courseProgress={courseProgress} userId={user?.id} />
         </div>
       </div>
 
