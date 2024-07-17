@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -16,11 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Spinner from "@/components/globals/Spinner/Spinner";
 import { cn } from "@/lib/utils";
+import { redirectPage } from "@/app/actions";
 
 const LoginForm = ({ redirectUrl }) => {
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleUserLogin = async (e) => {
     e.preventDefault();
@@ -51,8 +50,8 @@ const LoginForm = ({ redirectUrl }) => {
       }
 
       if (result.ok) {
+        await redirectPage(redirectUrl ? redirectUrl : "/")
         toast.success("Your account has been Login successful");
-        router.push(redirectUrl ? redirectUrl : "/");
       }
     } catch (error) {
       toast.error(error.message);

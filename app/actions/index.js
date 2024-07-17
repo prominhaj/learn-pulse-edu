@@ -16,3 +16,7 @@ export const lessonPrevAccess = async (courseId, lesson) => {
     const { prevLessonId } = await nextAndPrevLesson(courseId, lesson);
     redirect(prevLessonId ? `/courses/${courseId}/access?lesson=${prevLessonId}` : '#');
 };
+
+export const redirectPage = async (path) => {
+    redirect(path);
+};
