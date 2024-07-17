@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const CoursesSection = async () => {
     cookies();
-    const courses = await getCourses();
+    const courses = await getCourses(true);
 
     return (
         <section id='courses' className='container pb-8 space-y-6 md:pb-12 lg:pb-16'>

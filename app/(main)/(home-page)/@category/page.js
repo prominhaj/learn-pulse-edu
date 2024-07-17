@@ -8,7 +8,7 @@ import { cookies } from 'next/headers';
 const CategorySectionPage = async () => {
     cookies();
 
-    const categories = await getCategories();
+    const categories = await getCategories(true);
 
     return (
         <section id='categories' className='container py-8 space-y-6 md:py-12 lg:py-24'>

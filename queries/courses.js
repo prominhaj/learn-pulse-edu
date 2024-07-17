@@ -9,7 +9,7 @@ import { getEnrollmentsForCourse } from './enrollments';
 import { getUserData } from '@/lib/getUserData';
 import Lesson from '@/modals/lessons-modal';
 
-export const getCourses = async () => {
+export const getCourses = async (isHome) => {
     try {
         const courses = await Course.find({
             active: true
@@ -25,6 +25,8 @@ export const getCourses = async () => {
                 match: { active: true },
                 options: { sort: { order: 1 } }
             })
+            .limit(isHome && 8)
+            .sort(isHome && { _id: -1 })
             .lean();
 
         return replaceMongoIdInArray(courses);
