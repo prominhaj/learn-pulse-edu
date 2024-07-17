@@ -22,6 +22,8 @@ const items = [
     }
 ];
 
+export const dynamic = 'force-dynamic';
+
 const AddCourse = () => {
     return (
         <>

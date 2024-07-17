@@ -2,6 +2,8 @@ import { getAllQuizSet } from '@/queries/quiz-set';
 import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 
+export const dynamic = 'force-dynamic';
+
 const QuizSets = async () => {
     const quizzes = await getAllQuizSet();
 
