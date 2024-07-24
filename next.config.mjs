@@ -2,11 +2,6 @@ import withPlaiceholder from '@plaiceholder/next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'standalone',
-  experimental: {
-    appDir: true,
-    serverActions: true,
-  },
     images: {
         domains: ['res.cloudinary.com'],
         remotePatterns: [
