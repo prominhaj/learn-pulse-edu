@@ -66,4 +66,4 @@ jobs:
                   fi
 
             - name: Run Docker container
-              run: docker run -d -p 3000:3000 --env-file .env --name learn-pulse-edu-container prominhaj/learn-pulse-edu
+              run: docker run -d -p 3000:3000 --env-file .env --name learn-pulse-edu-container prominhaj/learn-pulse-edu:latest
