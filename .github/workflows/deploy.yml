@@ -47,6 +47,17 @@ jobs:
             - name: Check Disk Space
               run: df -h
 
+            - name: Stop and remove old container if exists
+              run: |
+                  if [ $(docker ps -q -f name=learn-pulse-edu-container) ]; then
+                    docker stop learn-pulse-edu-container
+                    docker rm learn-pulse-edu-container
+                  fi
+
+            - name: Remove old Docker images
+              run: |
+                  docker rmi -f $(docker images -q)
+
             - name: Free up Docker space
               run: |
                   docker system prune -af
@@ -54,16 +65,6 @@ jobs:
 
             - name: Pull image from Docker Hub
               run: docker pull prominhaj/learn-pulse-edu:latest
-
-            - name: Prune unused Docker data
-              run: docker system prune -f
-
-            - name: Stop and remove old container if exists
-              run: |
-                  if [ $(docker ps -q -f name=learn-pulse-edu-container) ]; then
-                    docker stop learn-pulse-edu-container
-                    docker rm learn-pulse-edu-container
-                  fi
 
             - name: Run Docker container
               run: docker run -d -p 3000:3000 --env-file .env --name learn-pulse-edu-container prominhaj/learn-pulse-edu:latest
