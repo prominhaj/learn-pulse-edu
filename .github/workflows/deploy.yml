@@ -31,6 +31,9 @@ jobs:
                   echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .env
                   echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
 
+            - name: Archive .env file
+              run: tar -czf env.tar.gz .env
+
             - name: Build Docker image
               run: docker build -t prominhaj/learn-pulse-edu .
 
@@ -40,10 +43,25 @@ jobs:
             - name: Publish image to Docker Hub
               run: docker push prominhaj/learn-pulse-edu:latest
 
+            - name: Upload environment file
+              uses: actions/upload-artifact@v3
+              with:
+                  name: env-file
+                  path: env.tar.gz
+
     deploy:
         needs: build
         runs-on: self-hosted
         steps:
+            - name: Download environment file
+              uses: actions/download-artifact@v3
+              with:
+                  name: env-file
+                  path: .
+
+            - name: Extract environment file
+              run: tar -xzf env.tar.gz
+
             - name: Check Disk Space
               run: df -h
 
