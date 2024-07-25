@@ -14,12 +14,12 @@ const navItems = [
         path: "/"
     },
     {
-        name: "Courses",
-        path: "/courses"
+        name: "Blog",
+        path: "/blog"
     },
     {
-        name: "Dashboard",
-        path: "/dashboard"
+        name: "Contact",
+        path: "/contact"
     },
     {
         name: 'About',
