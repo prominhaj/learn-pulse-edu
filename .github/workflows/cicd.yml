@@ -44,19 +44,26 @@ jobs:
         needs: build
         runs-on: self-hosted
         steps:
+            - name: Check Disk Space
+              run: df -h
+
             - name: Free up Docker space
               run: |
                   docker system prune -af
                   docker volume prune -f
 
             - name: Pull image from Docker Hub
-              run: docker pull prominhaj/learn-pulse-edu
+              run: docker pull prominhaj/learn-pulse-edu:latest
 
             - name: Prune unused Docker data
               run: docker system prune -f
 
-            - name: Delete old container if exists
-              run: docker rm -f learn-pulse-edu-container || true
+            - name: Stop and remove old container if exists
+              run: |
+                  if [ $(docker ps -q -f name=learn-pulse-edu-container) ]; then
+                    docker stop learn-pulse-edu-container
+                    docker rm learn-pulse-edu-container
+                  fi
 
             - name: Run Docker container
               run: docker run -d -p 3000:3000 --env-file .env --name learn-pulse-edu-container prominhaj/learn-pulse-edu
