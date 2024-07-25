@@ -12,6 +12,7 @@ const CategoryCard = ({ category }) => {
             >
                 <div className='flex flex-col items-center justify-between gap-4 p-6 rounded-md'>
                     <Image
+                        className="filter dark:invert dark:brightness-0"
                         src={url}
                         alt={title}
                         width={100}

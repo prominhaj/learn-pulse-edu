@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import CategoryCardLoading from "../CategoryCardLoading/CategoryCardLoading";
+import CategoryCardLoading from "../CategoryCard/CategoryCardLoading";
 
 
 const CategorySectionLoading = () => {

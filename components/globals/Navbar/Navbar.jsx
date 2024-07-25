@@ -17,20 +17,20 @@ import { signOut } from "next-auth/react";
 // Nav Items
 const navLinks = [
     {
-        title: 'Features',
-        href: '/#features'
+        title: 'Home',
+        href: '/'
     },
     {
         title: 'Pricing',
         href: '/pricing'
     },
     {
-        title: 'Blog',
-        href: '/blog'
+        title: 'Contact',
+        href: '/contact'
     },
     {
-        title: 'Documentation',
-        href: '/docs'
+        title: 'About',
+        href: '/about'
     }
 ];
 
