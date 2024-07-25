@@ -23,7 +23,7 @@ const CourseCard = async ({ course }) => {
 
     return (
         <>
-            <Card className='flex flex-col justify-between h-full p-3 overflow-hidden transition border rounded-lg bg-background group hover:shadow-sm'>
+            <Card className='flex flex-col justify-between h-full p-3 overflow-hidden transition border rounded-lg shadow-sm bg-background group'>
                 <Link className="block" href={`/courses/${id}`}>
                     <div>
                         <div className='relative w-full overflow-hidden rounded-md aspect-video'>

@@ -26,8 +26,22 @@ const CoursesLayout = async ({ courses }) => {
     return (
         <>
             <FilterProvider>
-                <section id='courses' className='container py-6 space-y-6 dark:bg-transparent'>
-                    <h2 className='text-xl font-medium md:text-2xl'>All Courses</h2>
+                <section className='container py-6 space-y-6 dark:bg-transparent'>
+                    {/* gradient color */}
+                    <div
+                        aria-hidden='true'
+                        className='absolute inset-x-0 overflow-hidden pointer-events-none -top-40 -z-10 transform-gpu blur-3xl sm:-top-80'
+                    >
+                        <div
+                            style={{
+                                clipPath:
+                                    'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)'
+                            }}
+                            className='relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] dark:bg-gray-800'
+                        />
+                    </div>
+
+                    <h2 className='!m-0 text-xl font-medium md:text-2xl'>All Courses</h2>
 
                     <div className='grid items-center justify-between grid-cols-1 gap-3 lg:grid-cols-3'>
                         <Suspense fallback={<>loading...</>}>
@@ -61,7 +75,7 @@ const CoursesLayout = async ({ courses }) => {
                     {/* Filter Action Show */}
                     <ShowFilterAction />
 
-                    <section className='pt-2 pb-16 md:pb-24'>
+                    <section className='pb-16 md:pt-2 md:pb-24'>
                         <div className='flex items-start gap-8'>
                             {/* Filters */}
                             <div className='hidden w-60 lg:block'>

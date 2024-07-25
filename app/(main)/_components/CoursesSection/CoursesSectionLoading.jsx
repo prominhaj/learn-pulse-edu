@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const CoursesSectionLoading = () => {
     return (
-        <section id='courses' className='container pb-8 space-y-6 md:pb-12 lg:pb-16'>
+        <section className='container py-8 space-y-6 md:pt-8 md:pb-12 lg:pb-16 lg:pt-12'>
             <div className='flex items-center justify-between'>
                 <Skeleton className='w-1/4 h-6 rounded' />
                 <Skeleton className='w-1/6 h-4 rounded' />

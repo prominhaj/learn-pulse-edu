@@ -5,7 +5,9 @@ const HomePageLayout = ({ category, course }) => {
         <>
             <HeroSection />
             {category}
-            {course}
+            <div className='bg-gradient-to-b from-transparent via-[#E3F3FB] to-transparent dark:bg-gradient-to-b dark:from-transparent dark:via-[#19193C] dark:to-transparent'>
+                {course}
+            </div>
         </>
     );
 };

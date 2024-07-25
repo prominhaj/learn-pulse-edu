@@ -10,7 +10,7 @@ const CoursesSection = async () => {
     const courses = await getCourses(true);
 
     return (
-        <section id='courses' className='container pb-8 space-y-6 md:pb-12 lg:pb-16'>
+        <section className='container py-8 space-y-6 md:pt-8 md:pb-12 lg:pb-16 lg:pt-12'>
             <div className='flex items-center justify-between'>
                 <SectionTitle>Courses</SectionTitle>
                 <Link
