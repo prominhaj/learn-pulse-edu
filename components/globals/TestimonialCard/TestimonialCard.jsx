@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Ratings from "../Ratings/Ratings";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const TestimonialCard = ({ testimonial }) => {
 
@@ -7,16 +7,13 @@ const TestimonialCard = ({ testimonial }) => {
         <div className='sm:break-inside-avoid'>
             <blockquote className='p-6 border rounded-lg shadow-sm bg-background dark:shadow-gray-800 sm:p-8'>
                 <div className='flex items-center gap-4'>
-                    <Image
-                        src={testimonial?.userId?.profilePicture?.url}
-                        width={56}
-                        height={56}
-                        className='object-cover rounded-full size-14'
-                        alt="User Profile Photo"
-                    />
+                    <Avatar className="w-12 h-12">
+                        <AvatarImage src={testimonial?.userId?.profilePicture?.url} />
+                        <AvatarFallback>{testimonial?.userId?.firstName}</AvatarFallback>
+                    </Avatar>
                     <div>
                         <p className='mt-0.5 text-lg font-medium text-gray-900 dark:text-gray-100'>
-                            {testimonial?.userId?.first_name} {""} {testimonial?.userId?.last_name}
+                            {testimonial?.userId?.firstName} {""} {testimonial?.userId?.lastName}
                         </p>
                         <Ratings rating={testimonial?.rating} />
                     </div>

@@ -21,8 +21,8 @@ const navLinks = [
         href: '/'
     },
     {
-        title: 'Pricing',
-        href: '/pricing'
+        title: 'Blog',
+        href: '/blog'
     },
     {
         title: 'Contact',
