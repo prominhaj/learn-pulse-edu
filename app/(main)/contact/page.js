@@ -1,7 +1,9 @@
 import { getUserData } from '@/lib/getUserData';
 import ContactForm from './_component/ContactForm';
+import { cookies } from 'next/headers';
 
 const ContactPage = async () => {
+    cookies();
     const user = await getUserData();
 
     return (
