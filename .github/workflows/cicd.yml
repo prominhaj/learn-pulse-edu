@@ -44,6 +44,11 @@ jobs:
         needs: build
         runs-on: self-hosted
         steps:
+            - name: Free up Docker space
+              run: |
+                  docker system prune -af
+                  docker volume prune -f
+
             - name: Pull image from Docker Hub
               run: docker pull prominhaj/learn-pulse-edu:latest
 
