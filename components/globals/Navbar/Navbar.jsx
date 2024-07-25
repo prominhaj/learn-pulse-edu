@@ -21,6 +21,10 @@ const navLinks = [
         href: '/'
     },
     {
+        title: "Courses",
+        href: '/courses'
+    },
+    {
         title: 'Blog',
         href: '/blog'
     },
@@ -47,9 +51,9 @@ const Navbar = ({ children }) => {
                         {navLinks?.map((item, index) => (
                             <Link
                                 key={index}
-                                href={item.disabled ? "#" : item.href}
+                                href={item.href}
                                 className={cn(
-                                    "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm"
+                                    "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-gray-700 dark:text-gray-300"
                                 )}>
                                 {item.title}
                             </Link>

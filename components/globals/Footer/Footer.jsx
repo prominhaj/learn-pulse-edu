@@ -14,6 +14,10 @@ const navItems = [
         path: "/"
     },
     {
+        name: "Courses",
+        path: '/courses'
+    },
+    {
         name: "Blog",
         path: "/blog"
     },
@@ -60,7 +64,7 @@ const Footer = () => {
                     {
                         navItems.map((item, index) => {
                             return (
-                                <Link className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm" href={item.path} key={index}>{item.name}</Link>
+                                <Link className="flex items-center text-lg font-medium text-gray-700 transition-colors hover:text-foreground/80 sm:text-sm dark:text-gray-300" href={item.path} key={index}>{item.name}</Link>
                             )
                         })
                     }
@@ -69,7 +73,7 @@ const Footer = () => {
                     {
                         socialLinks.map((item, index) => {
                             return (
-                                <a target="_blank" className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm0" href={item.path} key={index}>
+                                <a target="_blank" className="flex items-center text-lg font-medium text-gray-700 transition-colors dark:hover:text-white hover:text-black sm:text-sm dark:text-gray-300" href={item.path} key={index}>
                                     {item.icon}
                                 </a>
                             )
