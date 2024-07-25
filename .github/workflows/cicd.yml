@@ -3,7 +3,7 @@ name: Deploy Next.js application
 on:
     push:
         branches:
-            - deploy-with-docker-ec2
+            - main
 
 jobs:
     build:
