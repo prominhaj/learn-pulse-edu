@@ -50,7 +50,7 @@ jobs:
                   docker volume prune -f
 
             - name: Pull image from Docker Hub
-              run: docker pull prominhaj/learn-pulse-edu:latest
+              run: docker pull prominhaj/learn-pulse-edu
 
             - name: Prune unused Docker data
               run: docker system prune -f
