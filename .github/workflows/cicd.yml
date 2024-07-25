@@ -31,38 +31,27 @@ jobs:
                   echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .env
                   echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
 
-            - name: Check Disk Space
-              run: df -h
-
-            - name: Build docker image
+            - name: Build Docker image
               run: docker build -t prominhaj/learn-pulse-edu .
 
-            - name: Login to docker hub
-              run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            - name: Login to Docker Hub
+              run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-            - name: Publish image to docker hub
+            - name: Publish image to Docker Hub
               run: docker push prominhaj/learn-pulse-edu:latest
 
     deploy:
         needs: build
         runs-on: self-hosted
         steps:
-            - name: Check Disk Space
-              run: df -h
-
-            - name: Cleanup Docker System
-              run: |
-                  docker system prune -af
-                  docker volume prune -f
-
-            - name: Pull image from docker hub
+            - name: Pull image from Docker Hub
               run: docker pull prominhaj/learn-pulse-edu:latest
 
-            - name: Delete old container
-              run: |
-                  if [ $(docker ps -aq -f name=nextjs-app-container) ]; then
-                    docker rm -f nextjs-app-container
-                  fi
+            - name: Prune unused Docker data
+              run: docker system prune -f
 
-            - name: Run docker container
-              run: docker run -d -p 3000:3000 --name nextjs-app-container prominhaj/learn-pulse-edu:latest
+            - name: Delete old container if exists
+              run: docker rm -f learn-pulse-edu-container || true
+
+            - name: Run Docker container
+              run: docker run -d -p 3000:3000 --env-file .env --name learn-pulse-edu-container prominhaj/learn-pulse-edu
