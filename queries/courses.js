@@ -146,13 +146,9 @@ export const getCourseDetailsByInstructor = async (instructorId) => {
 
 export const getCoursesByInstructorId = async (instructorId) => {
     try {
-        const courses = await Course.find({ instructor: instructorId });
+        const courses = await Course.find({ instructor: instructorId }).lean();
 
-        const plainCourses = courses.map((course) => {
-            return course.toObject();
-        });
-
-        return replaceMongoIdInArray(plainCourses);
+        return replaceMongoIdInArray(courses);
     } catch (error) {
         throw new Error(error);
     }

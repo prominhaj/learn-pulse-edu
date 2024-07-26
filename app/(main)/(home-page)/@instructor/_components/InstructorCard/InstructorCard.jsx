@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
+import { CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button";
@@ -9,7 +9,7 @@ const InstructorCard = async ({ instructor }) => {
 
     return (
         <>
-            <Card className="flex flex-col justify-between w-full">
+            <div className="flex flex-col justify-between w-full transition-all duration-500 ease-in-out border rounded-md bg-background">
                 <CardHeader className="bg-[#F8FAFC] dark:bg-[#0F172A] p-6 flex flex-col items-center">
                     <Avatar className="w-20 h-20">
                         <AvatarImage className="object-cover" src={url} />
@@ -31,10 +31,10 @@ const InstructorCard = async ({ instructor }) => {
                 </CardContent>
                 <CardFooter>
                     <Link
-                        href={`/instructor/${id}`}
+                        href={`/instructor/${id}/courses`}
                         className={cn(buttonVariants({ variant: "secondary" }), "w-full rounded-3xl")}>Details</Link>
                 </CardFooter>
-            </Card>
+            </div>
         </>
     )
 }

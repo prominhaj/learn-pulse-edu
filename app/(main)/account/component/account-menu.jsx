@@ -13,7 +13,7 @@ function Menu() {
 	const pathname = usePathname();
 
 	return (
-		<ul className="mt-3 mb-0 list-none sidebar-nav" id="navmenu-nav">
+		<ul className="mt-3 mb-0 list-none sidebar-nav">
 			{menu.map((item, i) => (
 				<li className="navbar-item account-menu" key={i}>
 					<Link

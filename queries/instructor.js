@@ -1,4 +1,4 @@
-import { replaceMongoIdInArray } from '@/lib/convertData';
+import { replaceMongoIdInArray, replaceMongoIdInObject } from '@/lib/convertData';
 import Course from '@/modals/courses-modal';
 import Enrollment from '@/modals/enrollment-model';
 import User from '@/modals/users-modal';
@@ -65,6 +65,21 @@ export const getInstructorReports = async (instructorId) => {
             totalCourses: courses.length,
             totalEnrollments: enrollments.reduce((acc, course) => acc + course.enrollments, 0)
         };
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+export const getInstructorDetails = async (instructorId) => {
+    try {
+        const instructor = await User.findOne({
+            _id: instructorId,
+            role: 'Teacher'
+        })
+            .select('-password')
+            .lean();
+
+        return replaceMongoIdInObject(instructor);
     } catch (error) {
         throw new Error(error);
     }
