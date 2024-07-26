@@ -11,7 +11,7 @@ const CategorySectionPage = async () => {
     const categories = await getCategories(true);
 
     return (
-        <section id='categories' className='container py-8 space-y-6 md:py-12 lg:py-24'>
+        <section className='container py-8 space-y-6 md:py-12 lg:py-24'>
             <div className='flex items-center justify-between'>
                 <SectionTitle>Categories</SectionTitle>
 

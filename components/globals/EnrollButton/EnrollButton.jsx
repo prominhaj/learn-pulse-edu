@@ -43,8 +43,8 @@ const EnrollButton = ({ asLink, courseId, price }) => {
                     ) : (
                         <Button
                             type="submit"
-                            variant='ghost'
-                            className='gap-1 text-xs text-sky-700 dark:text-sky-500 h-7'
+                            variant='primary'
+                            className='gap-1 text-xs h-7'
                         >
                             Enroll
                             <ArrowRight className='w-3' />
@@ -58,7 +58,12 @@ const EnrollButton = ({ asLink, courseId, price }) => {
                             Free Enroll
                         </Link>
                     ) : (
-                        <Button type="submit" className={cn(buttonVariants({ size: 'lg', variant: "primary" }, "tracking-wide"))}>
+                        <Button
+                            variant='default'
+                            size="lg"
+                            type="submit"
+                            className={cn("tracking-wide font-semibold rounded-3xl")}
+                        >
                             Enroll Now
                         </Button>
                     )

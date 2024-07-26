@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const CoursesDetailsPageLoading = () => {
     return (
         <div className='overflow-x-hidden'>
-            <section className='py-12 sm:py-16'>
+            <section className='py-8 sm:py-12'>
                 <div className='container'>
                     <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
                         <div className='flex flex-col items-center max-w-2xl mx-auto'>

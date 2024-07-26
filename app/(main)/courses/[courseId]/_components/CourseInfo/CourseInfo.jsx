@@ -18,18 +18,18 @@ const CourseInfo = async ({ course, alreadyEnrolledCourse }) => {
 
     return (
         <div className='overflow-x-hidden'>
-            <section className='py-12 sm:py-16'>
+            <section className='py-8 sm:py-12'>
                 <div className='container'>
                     <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
                         <div className='max-w-2xl mx-auto text-center'>
-                            <h1 className='px-6 text-lg text-gray-600 dark:text-gray-400 font-inter'>
+                            <h2 className='px-6 text-lg text-gray-600 dark:text-gray-400 font-inter'>
                                 {sub_title}
-                            </h1>
-                            <p className='mt-5 text-4xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:leading-tight sm:text-5xl lg:text-6xl lg:leading-tight font-poppins'>
+                            </h2>
+                            <h1 className='mt-5 text-4xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:leading-tight sm:text-5xl lg:text-6xl lg:leading-tight font-poppins'>
                                 <span className='relative inline-flex sm:inline'>
                                     <span className='relative'>{title}</span>
                                 </span>
-                            </p>
+                            </h1>
                         </div>
                     </div>
 
