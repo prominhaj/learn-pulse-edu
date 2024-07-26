@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 
 const menu = [
 	{ label: "Profile", href: "/account" },
-	{ label: "Enrolled Courses", href: "/account/enrolled-courses" },
+	{ label: "Enrolled-Courses", href: "/account/enrolled-courses" },
+	{ label: "Apply-Instructor", href: "/account/apply-instructor" },
 ];
 
 function Menu() {

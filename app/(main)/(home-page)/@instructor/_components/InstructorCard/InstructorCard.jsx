@@ -9,7 +9,9 @@ const InstructorCard = async ({ instructor }) => {
 
     return (
         <>
-            <div className="flex flex-col justify-between w-full transition-all duration-500 ease-in-out border rounded-md bg-background">
+            <div className="relative flex flex-col justify-between w-full transition-all duration-500 ease-in-out border rounded-md bg-background">
+                <div className="absolute h-[150px] w-40 -rotate-45 rounded-3xl bg-gradient-to-r from-violet-600 to-indigo-800 opacity-30 blur-3xl filter lg:h-28 lg:w-[250px] lg:opacity-20 xl:h-40" />
+
                 <CardHeader className="bg-[#F8FAFC] dark:bg-[#0F172A] p-6 flex flex-col items-center">
                     <Avatar className="w-20 h-20">
                         <AvatarImage className="object-cover" src={url} />
@@ -32,7 +34,7 @@ const InstructorCard = async ({ instructor }) => {
                 <CardFooter>
                     <Link
                         href={`/instructor/${id}/courses`}
-                        className={cn(buttonVariants({ variant: "secondary" }), "w-full rounded-3xl")}>Details</Link>
+                        className={cn(buttonVariants({ variant: "outline" }), "w-full rounded-3xl")}>Details</Link>
                 </CardFooter>
             </div>
         </>

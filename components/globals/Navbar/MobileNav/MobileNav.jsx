@@ -2,8 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useLockBody } from "@/hooks/use-lock-body";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 
 export function MobileNav({ items, children }) {
@@ -39,21 +38,12 @@ export function MobileNav({ items, children }) {
                         >
                             Login
                         </Link>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">
-                                    Register
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="center" className="w-56 mt-4">
-                                <DropdownMenuItem className="cursor-pointer">
-                                    <Link className="block w-full" href="/register/student">Student</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">
-                                    <Link className="block w-full" href="/register/instructor">Instructor</Link>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Link
+                            href="/register"
+                            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                        >
+                            Register
+                        </Link>
                     </div>
                 }
                 {children}

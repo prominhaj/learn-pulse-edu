@@ -1,11 +1,10 @@
 'use server';
 import User from '@/modals/users-modal';
 import bcrypt from 'bcryptjs';
-import { fileUploader } from './fileUploader';
 import { revalidatePath } from 'next/cache';
 import { passwordValidations } from '@/lib/FormValidation/users/userSchema';
 
-export const createAccount = async (userData, formData) => {
+export const createAccount = async (userData) => {
     try {
         const userExists = await User.exists({ email: userData.email });
         if (userExists) {
@@ -19,16 +18,6 @@ export const createAccount = async (userData, formData) => {
             role: 'Student',
             profilePicture: {}
         };
-
-        if (formData) {
-            const file = await fileUploader(formData, 'profilePicture', 'Images/users');
-            if (file.url) {
-                userParams.role = 'Teacher';
-                userParams.profilePicture = { url: file.url, public_id: file.public_id };
-            } else {
-                throw new Error('Failed to upload profile picture');
-            }
-        }
 
         await User.create(userParams);
         return { success: true, message: 'Account created successfully' };

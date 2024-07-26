@@ -36,7 +36,7 @@ const HeroSection = () => {
                             Explore Now
                         </Link>
                         <Link
-                            href="/register/instructor"
+                            href="/account/apply-instructor"
                             className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
                         >
                             Become An Instructor

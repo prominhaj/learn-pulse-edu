@@ -1,7 +1,7 @@
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import FormControl from "../FormControl";
 
-const Step1 = ({ formAction, state, role }) => {
+const RegisterFrom = ({ formAction, state, role }) => {
     return (
         <>
             <form action={formAction} className="grid gap-4">
@@ -18,4 +18,4 @@ const Step1 = ({ formAction, state, role }) => {
     );
 };
 
-export default Step1;
+export default RegisterFrom;

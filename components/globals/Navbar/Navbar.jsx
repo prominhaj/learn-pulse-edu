@@ -3,7 +3,7 @@ import Link from "next/link";
 import Logo from "../Logo/Logo";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -116,21 +116,12 @@ const Navbar = ({ children }) => {
                                 className={cn(buttonVariants({ size: "sm" }), "px-4")}>
                                 Login
                             </Link>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="outline" size="sm">
-                                        Register
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-56 mt-4">
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <Link className="block w-full" href="/register/student">Student</Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <Link className="block w-full" href="/register/instructor">Instructor</Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <Link
+                                href="/register"
+                                className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                            >
+                                Register
+                            </Link>
                         </div>
                     )
                 }
