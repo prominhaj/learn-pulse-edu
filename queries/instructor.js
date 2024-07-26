@@ -84,3 +84,36 @@ export const getInstructorDetails = async (instructorId) => {
         throw new Error(error);
     }
 };
+
+export const getInstructorEnrollCourses = async (instructorId) => {
+    try {
+        const courses = await Course.find({
+            instructor: instructorId
+        }).lean();
+
+        const enrollments = await Promise.all(
+            courses.map(async (course) => {
+                const enrollments = await Enrollment.find({
+                    course_id: course._id
+                }).lean();
+
+                const student = await Promise.all(
+                    enrollments?.map(async (enrollment) => {
+                        const user = await User.findById(enrollment.user_id)
+                            .select('-password')
+                            .lean();
+                        return {
+                            ...user,
+                            enrollment_date: enrollment?.enrollment_date
+                        };
+                    })
+                );
+                return student;
+            })
+        );
+
+        return replaceMongoIdInArray(enrollments.flat());
+    } catch (error) {
+        throw new Error(error);
+    }
+};

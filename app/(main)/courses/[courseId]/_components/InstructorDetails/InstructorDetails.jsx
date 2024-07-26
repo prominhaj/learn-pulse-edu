@@ -1,6 +1,9 @@
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { getCourseDetailsByInstructor } from "@/queries/courses";
 import { MessageSquare, Presentation, Star, UsersRound } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const InstructorDetails = async ({ instructor }) => {
 
@@ -43,6 +46,11 @@ const InstructorDetails = async ({ instructor }) => {
                             <li className='flex space-x-3'>
                                 <Star className='text-gray-600 dark:text-gray-400' />
                                 <div>{ratings} Average Rating</div>
+                            </li>
+                            <li>
+                                <Link className={cn(buttonVariants({ variant: "default" }), "rounded-2xl")} href={`/instructor/${instructor?._id.toString()}/courses`}>
+                                    Details
+                                </Link>
                             </li>
                         </ul>
                     </div>
