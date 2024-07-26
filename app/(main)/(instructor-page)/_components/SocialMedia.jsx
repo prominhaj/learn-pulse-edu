@@ -3,9 +3,9 @@ import {
     Twitter,
     Instagram,
     Linkedin,
-    Tiktok,
     Youtube,
     Snail,
+    SquarePlay,
 } from 'lucide-react';
 
 const socialMediaIcons = {
@@ -13,7 +13,7 @@ const socialMediaIcons = {
     twitter: Twitter,
     instagram: Instagram,
     linkedin: Linkedin,
-    tiktok: Tiktok,
+    tiktok: SquarePlay,
     youtube: Youtube,
     snapchat: Snail,
 };
