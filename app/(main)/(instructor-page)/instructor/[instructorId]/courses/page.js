@@ -6,7 +6,7 @@ const InstructorCourses = async ({ params: { instructorId } }) => {
 
     return (
         <>
-            <div className='p-3 transition-all duration-500 ease-in-out border rounded-md md:p-5 bg-background'>
+            <div className='transition-all duration-500 ease-in-out bg-background'>
                 <h5 className='mb-5 text-lg font-semibold text-gray-800 dark:text-gray-200'>
                     Instructor Courses
                 </h5>
