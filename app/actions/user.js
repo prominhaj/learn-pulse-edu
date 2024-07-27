@@ -32,6 +32,7 @@ export const updateUserPersonalDetails = async (userInfo, userId) => {
         if (!user) {
             throw new Error('User not found');
         }
+        
         await User.findByIdAndUpdate(userId, userInfo);
 
         revalidatePath('/account');

@@ -1,6 +1,7 @@
 "use client";
 import Bio from "@/app/(auth)/register/_components/Bio";
 import FormControl from "@/app/(auth)/register/_components/FormControl";
+import { updateUserPersonalDetails } from "@/app/actions/user";
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import { userInfoValidation } from "@/lib/FormValidation/users/userValidation";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
@@ -10,7 +11,6 @@ import { toast } from "sonner";
 const ApplyInstructorForm = ({ user }) => {
     const [state, setState] = useState({});
 
-    // Social Media Items
     const socialMediaItems = [
         {
             name: "twitter",
@@ -47,15 +47,24 @@ const ApplyInstructorForm = ({ user }) => {
     ]
 
     const applyInstructorAction = async (formData) => {
+        setState({});
         try {
             const userInfo = await userInfoValidation(formData);
-            console.log(userInfo);
             if (userInfo.errors) {
                 setState(userInfo.errors);
                 return;
             }
             else if (userInfo.success) {
-                console.log(userInfo);
+                const newData = {
+                    ...userInfo?.data,
+                    role: "Pending"
+                }
+
+                const applyInstructor = await updateUserPersonalDetails(newData, user?.id);
+                if (applyInstructor?.success) {
+                    toast.success("Application submitted successfully")
+                    return true
+                }
             }
         } catch (error) {
             toast.error(error.message)
@@ -103,6 +112,15 @@ const ApplyInstructorForm = ({ user }) => {
                             defaultValue={item?.defaultValue}
                         />
                     ))
+                }
+                {
+                    state?.socialMedia && (
+                        <p className="flex flex-col text-red-500">
+                            {state?.socialMedia?.map((error, index) => (
+                                <small key={index}>{error}</small>
+                            ))}
+                        </p>
+                    )
                 }
             </div>
             <SubmitButton variant="primary" className="w-full md:col-span-2">Apply Instructor</SubmitButton>
