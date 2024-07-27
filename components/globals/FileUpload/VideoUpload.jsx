@@ -3,16 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { CloudUploadIcon, File } from "lucide-react";
 import Spinner from "../Spinner/Spinner";
+import { useDropzone } from "react-dropzone";
+import { useCallback } from "react";
 
 const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending, isImage }) => {
     const fileSize = parseFloat(file?.size / (1024 * 1024)).toFixed(2);
+
+    const onDrop = useCallback((acceptedFiles) => {
+        setFile(acceptedFiles[0]);
+    }, [setFile]);
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: 'video/*',
+    });
 
     return (
         <div className="w-full">
             <div className="mb-3">
                 {
                     file ? (
-                        <div className="flex flex-col items-center justify-center gap-2 p-8 transition-colors border rounded-md hover:bg-muted bg-muted/50 border-background">
+                        <div
+                            className="flex flex-col items-center justify-center gap-2 p-8 transition-colors border rounded-md hover:bg-muted bg-muted/50 border-background">
                             <File className="w-8 h-8 text-muted-foreground" />
                             <div className="flex flex-col items-center gap-1">
                                 <p className="text-sm">{file.name}</p>
@@ -31,22 +43,23 @@ const VideoUpload = ({ progressValue, setFile, file, uploadAction, pending, isIm
                     ) : (
                         <>
                             <input
-                                onChange={e => setFile(e.target.files[0])}
+                                {...getInputProps()}
                                 id={isImage ? "image-file" : "video-file"}
                                 name="file"
                                 type="file"
-                                accept={isImage ? "image/*" : "video/*"}
+                                accept="video/*"
                                 multiple={false}
                                 className="hidden"
                             />
                             <div className="grid gap-4">
-                                <div className="flex flex-col items-center justify-center gap-2 p-8 transition-colors border rounded-md hover:bg-muted bg-muted/50 border-background">
+                                <div
+                                    {...getRootProps()}
+                                    className="flex flex-col items-center justify-center gap-2 p-8 transition-colors border rounded-md hover:bg-muted bg-muted/50 border-background">
                                     <CloudUploadIcon className="w-8 h-8 text-muted-foreground" />
                                     <p className="text-sm text-muted-foreground">
                                         Drag and drop a {isImage ? "image" : "video"} file or click to select one
                                     </p>
                                     <label
-                                        htmlFor={isImage ? "image-file" : "video-file"}
                                         className="inline-flex items-center justify-center text-sm font-medium transition-colors border rounded-md shadow-sm whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 border-input bg-background hover:bg-accent hover:text-accent-foreground px-3 py-1.5 cursor-pointer"
                                     >
                                         Select File
