@@ -5,7 +5,7 @@ const TotalCard = ({ title, count, icon }) => {
         <>
             <Card x-chunk="dashboard-01-chunk-0">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                    <CardTitle className="text-sm font-medium">
+                    <CardTitle className="text-base font-semibold">
                         {title}
                     </CardTitle>
                     {icon}

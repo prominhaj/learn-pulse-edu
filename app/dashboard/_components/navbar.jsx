@@ -15,6 +15,7 @@ import ThemeSwitch from "@/components/globals/ThemeSwitch/ThemeSwitch";
 
 export const Navbar = () => {
   const { user, status } = useAuth();
+  const userName = user?.firstName + " " + user?.lastName;
 
   return (
     <div className="flex items-center h-full p-4 border-b shadow-sm bg-background">
@@ -39,10 +40,17 @@ export const Navbar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 mt-4">
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="">Item One</Link>
+              <button className="flex items-center gap-1.5 flex-wrap">
+                <span>
+                  {userName}
+                </span>
+                <span>
+                  ({user?.role})
+                </span>
+              </button>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="">Item Two</Link>
+              <Link href="/account">Account</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
               <button onClick={() => signOut()} className="flex items-start justify-start w-full">Logout</button>

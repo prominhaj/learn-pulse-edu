@@ -101,6 +101,16 @@ const Navbar = ({ children }) => {
                                         </DropdownMenuItem>
                                     )
                                 }
+                                {
+                                    user?.role === "Admin" && (
+                                        <DropdownMenuItem
+                                            className="cursor-pointer"
+                                            asChild
+                                        >
+                                            <Link href="/admin/dashboard">Dashboard</Link>
+                                        </DropdownMenuItem>
+                                    )
+                                }
                                 <DropdownMenuItem className="cursor-pointer" asChild>
                                     <Link href="/account/enrolled-courses">Testimonials & Certificates</Link>
                                 </DropdownMenuItem>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 const protectedRoutes = ['/account', '/dashboard'];
-const publicRoutes = ['/login', '/register/student', '/register/instructor'];
+const publicRoutes = ['/login', '/register'];
 
 export default async function middleware(req) {
     const token = await getToken({ req });

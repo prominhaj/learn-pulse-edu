@@ -1,3 +1,5 @@
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const NoAccess = () => {
@@ -13,7 +15,7 @@ const NoAccess = () => {
                 <div className="mt-6">
                     <Link
                         href="/"
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                        className={cn(buttonVariants({ variant: "default", size: "lg" }), "text-base rounded-3xl")}
                         prefetch={false}
                     >
                         Go to Homepage
