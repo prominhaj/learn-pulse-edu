@@ -47,7 +47,7 @@ const socialLinks = [
     },
     {
         icon: <Github />,
-        path: "https://github.com/pro-minhaj"
+        path: "https://github.com/prominhaj"
     },
 ]
 
