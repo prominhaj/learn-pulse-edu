@@ -1,6 +1,7 @@
 'use server';
 
 import { nextAndPrevLesson } from '@/lib/lesson';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export const formAccessCourse = async (courseId, formatLessonId) => {
@@ -19,4 +20,8 @@ export const lessonPrevAccess = async (courseId, lesson) => {
 
 export const redirectPage = async (path) => {
     redirect(path);
+};
+
+export const revalidatePathAction = async () => {
+    revalidatePath('/');
 };

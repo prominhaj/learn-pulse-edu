@@ -1,7 +1,9 @@
 import { getUserData } from '@/lib/getUserData';
 import ApplyInstructorForm from '../_components/Form/ApplyInstructorForm';
+import { cookies } from 'next/headers';
 
 const ApplyInstructor = async () => {
+    cookies();
     const user = await getUserData();
 
     return (

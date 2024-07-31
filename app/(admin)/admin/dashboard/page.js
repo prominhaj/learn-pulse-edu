@@ -2,33 +2,29 @@ import DashboardBarChart from '@/app/dashboard/_components/BarChart/BarChart';
 import RecentEnrollCard from '@/app/dashboard/_components/RecentEnrollCard/RecentEnrollCard';
 import TotalCard from '@/app/dashboard/_components/TotalCard/TotalCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { fetchDashboardData } from '@/lib/dashboard-helper';
 import { formatPrice } from '@/lib/formatPrice';
-import { getUserData } from '@/lib/getUserData';
 import { cn } from '@/lib/utils';
 import { calculateSales } from '@/queries/admin';
 import { getTotalCourse } from '@/queries/courses';
-import { getMonthEnrollmentsSell } from '@/queries/enrollments';
+import { getMonthEnrollmentsSell, getRecentEnrollments } from '@/queries/enrollments';
 import { getTotalInstructor } from '@/queries/instructor';
 import { getTotalUsers } from '@/queries/users';
 import { BookOpen, DollarSign, TrendingDown, TrendingUp, Users } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 const AdminDashboard = async () => {
-    const user = await getUserData();
     const totalInstructor = await getTotalInstructor();
     const totalCourses = await getTotalCourse();
     const { totalSales, thisMonthSales, lastMonthSales, percentChange } = await calculateSales();
     const totalUser = await getTotalUsers();
     const reportData = await getMonthEnrollmentsSell();
-    console.log(reportData);
-
-    const { courses, totalEnroll, totalSalePrice, enrollByInstructorReports, recentEnrollments } =
-        (await fetchDashboardData(user?.id)) ?? {};
+    const recentEnrollments = await getRecentEnrollments();
 
     return (
         <div className='flex flex-col w-full'>
             <main className='flex flex-col flex-1 gap-4 p-4 md:gap-8 md:p-8'>
-                <div className='grid grid-cols-1 gap-5 lg:grid-cols-3'>
+                <div className='grid grid-cols-1 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-3'>
                     <TotalCard
                         title={
                             <p className='flex items-center gap-3'>
@@ -79,7 +75,7 @@ const AdminDashboard = async () => {
                             <CardTitle>Transactions Charts</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <DashboardBarChart chartData={enrollByInstructorReports} />
+                            <DashboardBarChart chartData={reportData} />
                         </CardContent>
                     </Card>
                     <Card>

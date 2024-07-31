@@ -12,6 +12,7 @@ import useAuth from "@/hooks/useAuth";
 import Spinner from "@/components/globals/Spinner/Spinner";
 import { signOut } from "next-auth/react";
 import ThemeSwitch from "@/components/globals/ThemeSwitch/ThemeSwitch";
+import Refresh from "@/components/globals/Refresh/Refresh";
 
 export const Navbar = () => {
   const { user, status } = useAuth();
@@ -21,12 +22,13 @@ export const Navbar = () => {
     <div className="flex items-center h-full p-4 border-b shadow-sm bg-background">
       <MobileSidebar />
       <div className="flex items-center justify-end w-full gap-5">
+        <Refresh />
         <ThemeSwitch />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="cursor-pointer">
               {
-                status === "loading" ? <Spinner className="!w-6 !h-6" /> : (
+                status === "loading" ? <Spinner size={true} /> : (
                   <Avatar>
                     <AvatarImage
                       src={user?.profilePicture?.url}

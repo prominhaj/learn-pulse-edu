@@ -45,12 +45,12 @@ const adminRoutes = [
   {
     icon: BookOpen,
     label: 'Courses',
-    href: '/admin/dashboard/courses'
+    href: '/admin/courses'
   },
   {
     icon: Users,
     label: 'Instructors',
-    href: '/admin/dashboard/instructors'
+    href: '/admin/instructors'
   },
 ]
 

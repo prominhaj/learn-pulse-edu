@@ -190,7 +190,7 @@ export const getRecentEnrollments = async (instructorId) => {
             (enrollment) => enrollment?.course_id?.instructor?._id.toString() === instructorId
         );
 
-        return replaceMongoIdInArray(filterInstructorEnrollCourses);
+        return replaceMongoIdInArray(instructorId ? filterInstructorEnrollCourses : enrollments);
     } catch (error) {
         throw new Error(error);
     }
