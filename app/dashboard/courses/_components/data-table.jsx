@@ -22,7 +22,7 @@ import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, isAdmin }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
 
@@ -52,12 +52,16 @@ export function DataTable({ columns, data }) {
           }
           className="max-w-sm"
         />
-        <Link href="/dashboard/courses/add">
-          <Button>
-            <PlusCircle className="w-4 h-4 mr-2" />
-            New Course
-          </Button>
-        </Link>
+        {
+          !isAdmin && (
+            <Link href="/dashboard/courses/add">
+              <Button>
+                <PlusCircle className="w-4 h-4 mr-2" />
+                New Course
+              </Button>
+            </Link>
+          )
+        }
       </div>
       <div className="border rounded-md">
         <Table>

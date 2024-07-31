@@ -14,7 +14,16 @@ export const getCourses = async (isHome) => {
         const courses = await Course.find({
             active: true
         })
-            .select(['title', 'subtitle', 'thumbnail', 'modules', 'price', 'category'])
+            .select([
+                'title',
+                'subtitle',
+                'thumbnail',
+                'modules',
+                'price',
+                'category',
+                'updatedAt',
+                'active'
+            ])
             .populate({
                 path: 'category',
                 model: Category

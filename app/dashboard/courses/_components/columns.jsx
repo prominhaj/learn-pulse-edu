@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Trash } from "lucide-react";
 import { Star } from "lucide-react";
 import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
 import moment from "moment";
@@ -102,8 +102,7 @@ export const columns = [
       );
     },
     cell: ({ row }) => {
-      const lastUpdate = row.getValue("updatedAt") || false;
-
+      const lastUpdate = row.getValue("updatedAt");
       return (
         <>
           <div className="ml-3">{moment(lastUpdate).calendar()}</div>
@@ -115,6 +114,8 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const { id } = row.original;
+      const admin = row?.original?.admin;
+      console.log(admin);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -124,24 +125,37 @@ export const columns = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/dashboard/courses/${id}`}>
-              <DropdownMenuItem className="cursor-pointer">
-                <Pencil className="w-4 h-4 mr-2" />
-                Edit
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`/dashboard/courses/${id}/enrollments`}>
-              <DropdownMenuItem className="cursor-pointer">
-                <GraduationCap className="w-4 h-4 mr-2" />
-                View Enrollments
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`/dashboard/courses/${id}/reviews`}>
-              <DropdownMenuItem className="cursor-pointer">
-                <Star className="w-4 h-4 mr-2 fill-primary" />
-                View Reviews
-              </DropdownMenuItem>
-            </Link>
+            {
+              admin ? (
+                <DropdownMenuItem className="cursor-pointer">
+                  <button className="flex items-center gap-1.5 text-red-500">
+                    <Trash className="w-4 h-4" /> Delete
+                  </button>
+                </DropdownMenuItem>
+              ) : (
+                <>
+                  <Link href={`/dashboard/courses/${id}`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Pencil className="w-4 h-4 mr-2" />
+                      Edit
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href={`/dashboard/courses/${id}/enrollments`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <GraduationCap className="w-4 h-4 mr-2" />
+                      View Enrollments
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href={`/dashboard/courses/${id}/reviews`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Star className="w-4 h-4 mr-2 fill-primary" />
+                      View Reviews
+                    </DropdownMenuItem>
+                  </Link>
+                </>
+              )
+            }
+
           </DropdownMenuContent>
         </DropdownMenu>
       );
