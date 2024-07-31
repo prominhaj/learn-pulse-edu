@@ -67,7 +67,7 @@ const Navbar = ({ children }) => {
             <nav className="flex items-center gap-3 md:gap-5">
                 <ThemeSwitch />
                 {
-                    status === "loading" ? <Spinner className="!w-6 !h-6" /> : user ? (
+                    status === "loading" ? <Spinner size={true} /> : user ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <div className="cursor-pointer">

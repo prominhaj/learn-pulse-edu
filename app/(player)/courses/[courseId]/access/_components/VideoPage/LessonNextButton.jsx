@@ -14,7 +14,7 @@ const LessonNextButton = ({ nextLessonId }) => {
             variant="primary"
             className={cn(
                 !nextLessonId && 'bg-opacity-50 opacity-50 cursor-not-allowed',
-                'h-7 md:h-auto rounded-3xl disabled:opacity-70 disabled:bg-opacity-70 disabled:cursor-not-allowed'
+                'h-7 md:h-auto rounded-3xl disabled:opacity-70 disabled:bg-opacity-70 disabled:cursor-not-allowed flex items-center gap-1.5'
             )}
         >
             {pending && <Spinner className="dark:!text-white" />} Next

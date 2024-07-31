@@ -102,7 +102,7 @@ const LoginForm = ({ redirectUrl }) => {
               {error.password && <p className="text-red-500"><small>{error.password}</small></p>}
             </div>
           </div>
-          <Button disabled={loading} type="submit" className="w-full disabled:opacity-50 disabled:cursor-not-allowed">
+          <Button disabled={loading} type="submit" className="w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5">
             {loading && <Spinner />} Login
           </Button>
         </form>

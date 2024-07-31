@@ -56,8 +56,8 @@ export const enrollForCourse = async (enrollData) => {
 
 export const getMonthEnrollmentsSell = async (instructorId) => {
     try {
-        // Convert instructorId to ObjectId
-        const instructorObjectId = new mongoose.Types.ObjectId(instructorId);
+        // Convert instructorId to ObjectId if it's provided
+        const instructorObjectId = instructorId ? new mongoose.Types.ObjectId(instructorId) : null;
 
         // Get the current date
         const currentDate = new Date();
@@ -68,7 +68,8 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
         const startDate = new Date(currentYear, currentMonth - 11, 1);
         const endDate = new Date(currentYear, currentMonth + 1, 0, 23, 59, 59, 999);
 
-        const aggregationResult = await Enrollment.aggregate([
+        // Create the base aggregation pipeline
+        const aggregationPipeline = [
             {
                 $match: {
                     status: 'complete',
@@ -88,12 +89,20 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
             },
             {
                 $unwind: '$course'
-            },
-            {
+            }
+        ];
+
+        // Conditionally add the instructor filter if an instructor ID is provided
+        if (instructorObjectId) {
+            aggregationPipeline.push({
                 $match: {
                     'course.instructor': instructorObjectId
                 }
-            },
+            });
+        }
+
+        // Add the grouping and sorting stages
+        aggregationPipeline.push(
             {
                 $group: {
                     _id: {
@@ -107,7 +116,9 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
             {
                 $sort: { '_id.year': 1, '_id.month': 1 }
             }
-        ]);
+        );
+
+        const aggregationResult = await Enrollment.aggregate(aggregationPipeline);
 
         // Define month names
         const monthNames = [
@@ -136,7 +147,15 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
 
         // Map aggregation results to report format
         aggregationResult.forEach((item) => {
-            const reportItem = reportData.find((rd) => rd.name === monthNames[item._id.month - 1]);
+            const reportItem = reportData.find((rd) => {
+                return (
+                    rd.name === monthNames[item._id.month - 1] &&
+                    new Date(
+                        currentYear,
+                        currentMonth - 11 + monthNames.indexOf(rd.name)
+                    ).getFullYear() === item._id.year
+                );
+            });
             if (reportItem) {
                 reportItem.total = item.totalSales;
             }
@@ -144,7 +163,7 @@ export const getMonthEnrollmentsSell = async (instructorId) => {
 
         return reportData;
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 };
 

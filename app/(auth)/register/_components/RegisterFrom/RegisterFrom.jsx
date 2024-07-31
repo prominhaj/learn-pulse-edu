@@ -1,7 +1,7 @@
 import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import FormControl from "../FormControl";
 
-const RegisterFrom = ({ formAction, state, role }) => {
+const RegisterFrom = ({ formAction, state }) => {
     return (
         <>
             <form action={formAction} className="grid gap-4">
@@ -12,7 +12,7 @@ const RegisterFrom = ({ formAction, state, role }) => {
                 <FormControl id="email" name="email" label="Email" type="email" placeholder="m@example.com" errors={state?.email} />
                 <FormControl id="password" name="password" label="Password" type="password" placeholder="••••••••" errors={state?.password} />
                 <FormControl id="confirmPassword" name="confirmPassword" label="Confirm Password" type="password" placeholder="••••••••" errors={state?.confirmPassword} />
-                <SubmitButton className="w-full">{role === "student" ? "Create New Account" : "Next"}</SubmitButton>
+                <SubmitButton className="w-full">Create New Account</SubmitButton>
             </form>
         </>
     );

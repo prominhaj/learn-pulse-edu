@@ -18,3 +18,12 @@ export const getUserByUserId = async (userId) => {
         throw new Error(error);
     }
 };
+
+export const getTotalUsers = async () => {
+    try {
+        const users = await User.estimatedDocumentCount();
+        return users;
+    } catch (error) {
+        throw new Error(error);
+    }
+};

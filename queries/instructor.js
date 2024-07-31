@@ -117,3 +117,12 @@ export const getInstructorEnrollCourses = async (instructorId) => {
         throw new Error(error);
     }
 };
+
+export const getTotalInstructor = async () => {
+    try {
+        const instructors = await User.countDocuments({ role: 'Teacher' });
+        return instructors;
+    } catch (error) {
+        throw new Error(error);
+    }
+};

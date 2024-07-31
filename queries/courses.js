@@ -240,3 +240,12 @@ export const coursesByFilter = async ({ search, categories, price, sort }) => {
         throw new Error(error);
     }
 };
+
+export const getTotalCourse = async () => {
+    try {
+        const totalCourse = await Course.estimatedDocumentCount();
+        return totalCourse;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
