@@ -8,7 +8,7 @@ export const getCategories = async (isHome) => {
             .lean();
         return replaceMongoIdInArray(categories);
     } catch (error) {
-        throw new Error(error);
+        throw new Error("Couldn't find categories");
     }
 };
 

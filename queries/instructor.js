@@ -38,7 +38,7 @@ export const getTopsInstructors = async () => {
 
         return topInstructors;
     } catch (error) {
-        throw new Error(error);
+        throw new Error("Couldn't find instructors");
     }
 };
 

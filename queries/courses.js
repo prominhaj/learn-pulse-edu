@@ -40,7 +40,7 @@ export const getCourses = async (isHome) => {
 
         return replaceMongoIdInArray(courses);
     } catch (error) {
-        throw new Error(error);
+        throw new Error("Couldn't find courses in the database");
     }
 };
 
