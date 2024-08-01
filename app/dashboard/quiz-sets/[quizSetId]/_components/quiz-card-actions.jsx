@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteQuiz } from "@/app/actions/quiz";
-import { SubmitActionBtn } from "@/app/dashboard/_components/submit-action-btn";
+import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -37,9 +37,9 @@ const QuizCardActions = ({ quizId }) => {
                 <Pencil className='w-3 mr-1' /> Edit
             </Button>
             <form action={handleDelete}>
-                <SubmitActionBtn className="text-destructive" variant="ghost">
+                <SubmitButton className="text-destructive" variant="ghost">
                     <Trash className='w-3 mr-1' /> Delete
-                </SubmitActionBtn>
+                </SubmitButton>
             </form>
         </>
     );

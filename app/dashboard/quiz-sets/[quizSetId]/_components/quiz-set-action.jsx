@@ -1,12 +1,12 @@
 "use client";
 import { Trash } from "lucide-react";
-import { SubmitActionBtn } from "@/app/dashboard/_components/submit-action-btn";
 import { useCallback } from "react";
 import { deleteQuizSet, quizSetPublished } from "@/app/actions/quizSet";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 
 export const QuizSetAction = ({ active = false, quizSetId }) => {
   const router = useRouter();
@@ -35,9 +35,9 @@ export const QuizSetAction = ({ active = false, quizSetId }) => {
   return (
     <div className="flex items-center gap-x-2">
       <form action={handlePublished}>
-        <SubmitActionBtn variant="outline">
-          {active ? "Unpublish" : "Publish"}
-        </SubmitActionBtn>
+        <SubmitButton variant="outline">
+          {active ? "UnPublish" : "Publish"}
+        </SubmitButton>
       </form>
 
       <AlertDialog>
@@ -57,10 +57,10 @@ export const QuizSetAction = ({ active = false, quizSetId }) => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <form action={handleDelete}>
-              <SubmitActionBtn className="flex items-center gap-2" variant="destructive">
+              <SubmitButton className="flex items-center gap-2" variant="destructive">
                 <Trash className="w-4 h-4" />
                 Delete
-              </SubmitActionBtn>
+              </SubmitButton>
             </form>
           </AlertDialogFooter>
         </AlertDialogContent>

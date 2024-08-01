@@ -1,12 +1,13 @@
 "use client";
 import { Trash } from "lucide-react";
-import { SubmitActionBtn } from "../../../_components/submit-action-btn";
 import { toast } from "sonner";
 import { coursePublished, deleteCourse } from "@/app/actions/course";
 import { useRouter } from "next/navigation";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
+import Spinner from "@/components/globals/Spinner/Spinner";
 
 export const CourseActions = ({ active, courseId }) => {
   const router = useRouter();
@@ -51,12 +52,12 @@ export const CourseActions = ({ active, courseId }) => {
   return (
     <div className="flex items-center gap-x-2">
       <form action={handlePublishCourse}>
-        <SubmitActionBtn variant="outline">
+        <SubmitButton variant="outline">
           {active ? "UnPublish" : "Publish"}
-        </SubmitActionBtn>
+        </SubmitButton>
       </form>
 
-      <AlertDialog >
+      <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button size="sm" variant="default">
             <Trash className="w-4 h-4" />
@@ -74,9 +75,7 @@ export const CourseActions = ({ active, courseId }) => {
             <Button disabled={loading} onClick={handleCourseDelete} type="submit" variant="destructive">
               {
                 loading && (
-                  <div className="flex items-center justify-center me-2">
-                    <div className="h-5 w-5 animate-[spin_0.3s_linear_infinite] rounded-full border-2 border-primary border-t-transparent" />
-                  </div>
+                  <Spinner />
                 )
               } Delete
             </Button>

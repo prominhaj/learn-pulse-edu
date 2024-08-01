@@ -1,9 +1,9 @@
 "use client";
 import { Trash } from "lucide-react";
-import { SubmitActionBtn } from "../../../../../_components/submit-action-btn";
 import { deleteLesson, lessonPublished } from "@/app/actions/lesson";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import SubmitButton from "@/components/globals/SubmitButton/SubmitButton";
 
 export const LessonActions = ({ active, courseId, moduleId, lessonId, modalClose }) => {
     const router = useRouter();
@@ -36,15 +36,15 @@ export const LessonActions = ({ active, courseId, moduleId, lessonId, modalClose
     return (
         <div className="flex items-center gap-x-2">
             <form action={handlePublish}>
-                <SubmitActionBtn variant="outline">
-                    {active ? "Unpublish" : "Publish"}
-                </SubmitActionBtn>
+                <SubmitButton variant="outline">
+                    {active ? "UnPublish" : "Publish"}
+                </SubmitButton>
             </form>
 
             <form action={handleDelete}>
-                <SubmitActionBtn>
+                <SubmitButton>
                     <Trash className="w-4 h-4" />
-                </SubmitActionBtn>
+                </SubmitButton>
             </form>
         </div >
     );

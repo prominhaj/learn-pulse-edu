@@ -25,20 +25,20 @@ function QuizModal({ quizes }) {
 
   return (
     <>
-      <div class="max-w-[270px] bg-white border border-border rounded-md dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
+      <div className="max-w-[270px] bg-white border border-border rounded-md dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
         <div className="flex items-center justify-center h-32 px-6 text-center bg-gradient-to-r from-sky-500 to-indigo-500">
           <span className="text-lg font-semibold text-white">
             Reactive Accelerator: Quiz Set 4.16 : Module 4 Lesson 16 Quiz Set
           </span>
         </div>
-        <div class="p-4">
+        <div className="p-4">
           <div className="flex items-center justify-between gap-6 mb-2 text-sm font-medium text-gray-700">
             <span>Total Mark</span>
             <Badge className="bg-success/20 text-primary hover:bg-success/20">
               10
             </Badge>
           </div>
-          <p class="mb-4 font-normal text-gray-500 dark:text-gray-400 text-sm">
+          <p className="mb-4 font-normal text-gray-500 dark:text-gray-400 text-sm">
             Reactive Accelerator: Quiz Set of Module 4 Lesson 16: Lesson 16
           </p>
           <Button
@@ -51,7 +51,7 @@ function QuizModal({ quizes }) {
               fill="currentColor"
               stroke-width="0"
               viewBox="0 0 24 24"
-              class="h-4 w-4"
+              className="h-4 w-4"
               height="1em"
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ function QuizModal({ quizes }) {
                 stroke-width="0"
                 version="1.1"
                 viewBox="0 0 16 16"
-                class="text-success inline"
+                className="text-success inline"
                 height="12"
                 width="12"
                 xmlns="http://www.w3.org/2000/svg"

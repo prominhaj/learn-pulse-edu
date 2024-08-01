@@ -1,7 +1,7 @@
 import "./Spinner.css";
 import { cn } from "@/lib/utils";
 
-const Spinner = ({ className, size }) => {
+const Spinner = ({ size }) => {
     return (
         <>
             <span className={cn(size ? "rt-r-size-3" : "rt-r-size-2", "rt-Spinner")}>

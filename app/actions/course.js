@@ -1,6 +1,4 @@
 'use server';
-
-import { getSlug } from '@/lib/convertData';
 import { fileDelete } from '@/lib/file-upload';
 import Course from '@/modals/courses-modal';
 import Enrollment from '@/modals/enrollment-model';
@@ -60,7 +58,6 @@ export const deleteCourse = async (courseId) => {
         }
 
         const modules = course.modules;
-        const courseSlug = getSlug(course?.title);
 
         // Delete the course thumbnail if it exists
         if (course.thumbnail?.public_id) {
@@ -76,7 +73,7 @@ export const deleteCourse = async (courseId) => {
                 await Promise.all(
                     lessons.map(async (lesson) => {
                         if (lesson?.video?.fileName) {
-                            await fileDelete(`courses/${courseSlug}`, lesson.video?.fileName);
+                            await fileDelete(`courses/`, lesson.video?.fileName);
                         }
                     })
                 );
@@ -92,8 +89,14 @@ export const deleteCourse = async (courseId) => {
         // delete all enrollments in the course
         await Enrollment.deleteMany({ course_id: courseId });
         await Course.findByIdAndDelete(courseId);
+
+        revalidatePath('/');
+
+        return {
+            success: true
+        };
     } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error);
     }
 };
 

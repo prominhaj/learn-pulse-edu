@@ -9,11 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { GraduationCap, Trash } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { Star } from "lucide-react";
 import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
+import AdminCourseDelete from "./admin-course-delete";
 
 export const columns = [
   {
@@ -115,7 +116,7 @@ export const columns = [
     cell: ({ row }) => {
       const { id } = row.original;
       const admin = row?.original?.admin;
-      console.log(admin);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -127,11 +128,11 @@ export const columns = [
           <DropdownMenuContent align="end">
             {
               admin ? (
-                <DropdownMenuItem className="cursor-pointer">
-                  <button className="flex items-center gap-1.5 text-red-500">
-                    <Trash className="w-4 h-4" /> Delete
-                  </button>
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <AdminCourseDelete id={id} />
+                  </DropdownMenuItem>
+                </>
               ) : (
                 <>
                   <Link href={`/dashboard/courses/${id}`}>
