@@ -67,22 +67,22 @@ jobs:
 
             - name: Stop and remove old container if exists
               run: |
-                  if [ $(docker ps -q -f name=nextjs-app-container) ]; then
-                    docker stop nextjs-app-container
-                    docker rm nextjs-app-container
+                  if [ $(docker ps -q -f name=learn-pulse-edu-container) ]; then
+                    docker stop learn-pulse-edu-container
+                    docker rm learn-pulse-edu-container
                   fi
 
             # - name: Remove old Docker images
             #   run: |
             #       docker rmi -f $(docker images -q)
 
-            # - name: Free up Docker space
-            #   run: |
-            #       docker system prune -af
-            #       docker volume prune -f
+            - name: Free up Docker space
+              run: |
+                  docker system prune -af
+                  docker volume prune -f
 
             - name: Pull image from Docker Hub
               run: docker pull prominhaj/learn-pulse-edu:latest
 
             - name: Run Docker container
-              run: docker run -d -p 3000:3000 --env-file .env --name nextjs-app-container prominhaj/learn-pulse-edu:latest
+              run: docker run -d -p 3000:3000 --env-file .env --name learn-pulse-edu-container prominhaj/learn-pulse-edu:latest
