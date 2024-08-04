@@ -1,6 +1,8 @@
 import BreadcrumbSection from '@/components/globals/Breadcrumb/BreadcrumbSection';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cookies } from 'next/headers';
+import ActiveInstructor from './_components/ActiveInstructor';
+import PendingInstructor from './_components/PendingInstructor';
 
 // items
 const items = [
@@ -20,13 +22,17 @@ const AdminDashboardInstructorPage = () => {
         <>
             <BreadcrumbSection items={items} />
             <div className='px-6 py-3'>
-                <Tabs defaultValue='active' className='max-w-sm mx-auto'>
-                    <TabsList className='grid w-full grid-cols-2'>
+                <Tabs defaultValue='active' className='w-full'>
+                    <TabsList className='grid max-w-sm grid-cols-2 mx-auto'>
                         <TabsTrigger value='active'>Active</TabsTrigger>
                         <TabsTrigger value='pending'>Pending</TabsTrigger>
                     </TabsList>
-                    <TabsContent value='active'></TabsContent>
-                    <TabsContent value='pending'></TabsContent>
+                    <TabsContent value='active'>
+                        <ActiveInstructor />
+                    </TabsContent>
+                    <TabsContent value='pending'>
+                        <PendingInstructor />
+                    </TabsContent>
                 </Tabs>
             </div>
         </>

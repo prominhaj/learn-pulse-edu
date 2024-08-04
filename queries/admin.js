@@ -1,4 +1,6 @@
+import { replaceMongoIdInArray } from '@/lib/convertData';
 import Enrollment from '@/modals/enrollment-model';
+import User from '@/modals/users-modal';
 
 export const calculateSales = async () => {
     const now = new Date();
@@ -94,4 +96,18 @@ export const calculateSales = async () => {
         thisMonthSales,
         percentChange: parseFloat(percentChange.toFixed(2))
     };
+};
+
+export const getAdminInstructors = async (type) => {
+    try {
+        const adminInstructors = await User.find({
+            role: type
+        })
+            .select('-password')
+            .lean();
+
+        return replaceMongoIdInArray(adminInstructors);
+    } catch (error) {
+        throw new Error(error);
+    }
 };

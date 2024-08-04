@@ -18,11 +18,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 
-export function DataTable({ columns, data, isAdmin }) {
+export function DataTable({ columns, data }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
 
@@ -45,23 +43,13 @@ export function DataTable({ columns, data, isAdmin }) {
     <div>
       <div className="flex items-center justify-between py-4">
         <Input
-          placeholder="Filter courses..."
-          value={table.getColumn("title")?.getFilterValue() ?? ""}
+          placeholder="Filter names..."
+          value={table.getColumn("name")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        {
-          !isAdmin && (
-            <Link href="/dashboard/courses/add">
-              <Button>
-                <PlusCircle className="w-4 h-4 mr-2" />
-                New Course
-              </Button>
-            </Link>
-          )
-        }
       </div>
       <div className="border rounded-md">
         <Table>
