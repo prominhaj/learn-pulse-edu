@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check, Trash } from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
+import AcceptAction from "./AcceptAction";
+import DeleteInstructorAction from "./DeleteInstructorAction";
 
 export const columns = [
     {
@@ -92,18 +94,12 @@ export const columns = [
             );
         },
         cell: ({ row }) => {
-            const status = row.original.status;
+            const id = row.original.id;
 
             return (
                 <div className="flex items-center gap-1.5">
-                    <Button variant="destructive" size="sm" className="flex items-center gap-1 bg-green-500 cursor-pointer hover:bg-green-400">
-                        <Check className="w-4 h-4" />
-                        Accept
-                    </Button>
-                    <Button variant="destructive" size="sm" className="flex items-center gap-1 cursor-pointer">
-                        <Trash className="w-4 h-4" />
-                        Delete
-                    </Button>
+                    <AcceptAction id={id} />
+                    <DeleteInstructorAction id={id} />
                 </div>
             );
         },

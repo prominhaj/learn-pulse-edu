@@ -22,8 +22,6 @@ const ActiveInstructor = async () => {
         }
     }))
 
-    console.log(modifiedInstructors);
-
     return (
         <div>
             <DataTable columns={columns} data={modifiedInstructors} />

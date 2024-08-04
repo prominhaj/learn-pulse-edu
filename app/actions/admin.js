@@ -3,15 +3,15 @@
 import User from '@/modals/users-modal';
 import { revalidatePath } from 'next/cache';
 
-export const removeInstructorToStudentRole = async (id) => {
+export const changeRoleByInstructor = async (id, type) => {
     try {
-        await User.findByIdAndUpdate(id, { role: 'Student' });
+        await User.findByIdAndUpdate(id, { role: type });
 
         revalidatePath('/');
 
         return {
             success: true,
-            message: 'Instructor removed to student role successfully'
+            message: 'Instructor role change successfully'
         };
     } catch (error) {
         throw new Error(error);
