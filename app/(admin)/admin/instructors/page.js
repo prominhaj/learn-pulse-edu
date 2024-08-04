@@ -1,8 +1,7 @@
 import BreadcrumbSection from '@/components/globals/Breadcrumb/BreadcrumbSection';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cookies } from 'next/headers';
-import ActiveInstructor from './_components/ActiveInstructor';
-import PendingInstructor from './_components/PendingInstructor';
+import ActiveInstructor from './_components/ActiveInstructor/ActiveInstructor';
+import PendingInstructor from './_components/PendingInstructor/PendingInstructor';
 
 // items
 const items = [
@@ -16,8 +15,9 @@ const items = [
     }
 ];
 
+export const dynamic = 'force-dynamic';
+
 const AdminDashboardInstructorPage = () => {
-    cookies();
     return (
         <>
             <BreadcrumbSection items={items} />

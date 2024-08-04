@@ -3,17 +3,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { GraduationCap, Trash } from "lucide-react";
-import { Star } from "lucide-react";
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
-import Link from "next/link";
+import { Trash } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 export const columns = [
     {
@@ -154,27 +146,15 @@ export const columns = [
         },
     },
     {
-        id: "actions",
+        id: "action",
         cell: ({ row }) => {
             const { id } = row.original;
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="w-8 h-4 p-0">
-                            <span className="sr-only">Open Menu</span>
-                            <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <button className="w-full">
-                            <DropdownMenuItem className="flex items-center w-full gap-2 cursor-pointer">
-                                <Trash className="w-4 h-4" />
-                                Delete
-                            </DropdownMenuItem>
-                        </button>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <Button variant="destructive" size="sm" className="flex items-center gap-1.5 cursor-pointer">
+                    <Trash className="w-4 h-4" />
+                    Delete
+                </Button>
             );
         },
     },

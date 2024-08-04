@@ -108,7 +108,7 @@ const ApplyInstructorForm = ({ user }) => {
                             placeholder={item.placeholder}
                             errors={item.errors}
                             social={item.icon}
-                            socialclassName="flex items-center gap-2"
+                            socialClass="flex items-center gap-2"
                             defaultValue={item?.defaultValue}
                         />
                     ))
