@@ -27,14 +27,18 @@ const CourseCard = async ({ course }) => {
                 <Link className="block" href={`/courses/${id}`}>
                     <div>
                         <div className='relative w-full overflow-hidden rounded-md aspect-video'>
-                            <Image
-                                {...img}
-                                alt={title}
-                                className="object-cover"
-                                placeholder='blur'
-                                blurDataURL={base64}
-                                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                            />
+                            {
+                                base64 && img && (
+                                    <Image
+                                        {...img}
+                                        alt={title}
+                                        className="object-cover"
+                                        placeholder='blur'
+                                        blurDataURL={base64}
+                                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                                    />
+                                )
+                            }
                         </div>
                         <div className='flex flex-col pt-2'>
                             <div className='text-lg font-medium md:text-base group-hover:text-sky-700 dark:group-hover:text-sky-500 line-clamp-2'>

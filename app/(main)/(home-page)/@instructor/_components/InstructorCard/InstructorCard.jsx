@@ -3,9 +3,14 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getCourseDetailsByInstructor } from "@/queries/courses";
 
 const InstructorCard = async ({ instructor }) => {
+
     const { id, firstName, lastName, role, designation, profilePicture: { url }, bio } = instructor;
+    const { courses, enrollments, reviews, ratings } = await getCourseDetailsByInstructor(id);
+    console.log({ courses, enrollments, reviews, ratings });
+
 
     return (
         <>
