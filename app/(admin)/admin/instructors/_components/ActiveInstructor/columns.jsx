@@ -4,8 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Trash } from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
+import DeleteInstructor from "./DeleteInstructor";
 
 export const columns = [
     {
@@ -151,10 +151,7 @@ export const columns = [
             const { id } = row.original;
 
             return (
-                <Button variant="destructive" size="sm" className="flex items-center gap-1 cursor-pointer">
-                    <Trash className="w-4 h-4" />
-                    Remove
-                </Button>
+                <DeleteInstructor id={id} />
             );
         },
     },
