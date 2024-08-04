@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Trash } from "lucide-react";
+import { Check, Trash } from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
 
 export const columns = [
@@ -58,72 +58,6 @@ export const columns = [
         }
     },
     {
-        accessorKey: "courses",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Course <ArrowUpDown className="w-4 h-4 ml-2" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const courses = row.original.courses;
-
-            return (
-                <div className="ml-4">
-                    {courses}
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "enrollments",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Enrollment <ArrowUpDown className="w-4 h-4 ml-2" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const enrollments = row.original.enrollments;
-
-            return (
-                <div className="ml-4">
-                    {enrollments}
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "ratings",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Rating <ArrowUpDown className="w-4 h-4 ml-2" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const ratings = row.original.ratings;
-
-            return (
-                <div className="ml-4">
-                    {ratings}
-                </div>
-            );
-        },
-    },
-    {
         accessorKey: "status",
         header: ({ column }) => {
             return (
@@ -139,23 +73,38 @@ export const columns = [
             const status = row.original.status;
 
             return (
-                <Badge className={cn("bg-gray-500 ml-4", status === "Active" && "bg-success")}>
-                    {status === "Active" && "Active"}
+                <Badge className={cn("bg-gray-500 ml-4", status === "Active" ? "bg-success" : "bg-red-500 text-white")}>
+                    {status}
                 </Badge>
             );
         },
     },
     {
-        id: "action",
-        cell: ({ row }) => {
-            const { id } = row.original;
-
+        accessorKey: "actions",
+        header: ({ column }) => {
             return (
-                <Button variant="destructive" size="sm" className="flex items-center gap-1 cursor-pointer">
-                    <Trash className="w-4 h-4" />
-                    Remove
+                <Button
+                    variant="ghost"
+                >
+                    Actions
                 </Button>
             );
         },
-    },
+        cell: ({ row }) => {
+            const status = row.original.status;
+
+            return (
+                <div className="flex items-center gap-1.5">
+                    <Button variant="destructive" size="sm" className="flex items-center gap-1 bg-green-500 cursor-pointer hover:bg-green-400">
+                        <Check className="w-4 h-4" />
+                        Accept
+                    </Button>
+                    <Button variant="destructive" size="sm" className="flex items-center gap-1 cursor-pointer">
+                        <Trash className="w-4 h-4" />
+                        Delete
+                    </Button>
+                </div>
+            );
+        },
+    }
 ];
