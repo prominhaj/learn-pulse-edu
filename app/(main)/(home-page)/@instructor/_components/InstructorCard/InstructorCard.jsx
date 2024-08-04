@@ -7,10 +7,8 @@ import { getCourseDetailsByInstructor } from "@/queries/courses";
 
 const InstructorCard = async ({ instructor }) => {
 
-    const { id, firstName, lastName, role, designation, profilePicture: { url }, bio } = instructor;
+    const { id, firstName, lastName, role, designation, profilePicture: { url } } = instructor;
     const { courses, enrollments, reviews, ratings } = await getCourseDetailsByInstructor(id);
-    console.log({ courses, enrollments, reviews, ratings });
-
 
     return (
         <>
@@ -28,13 +26,11 @@ const InstructorCard = async ({ instructor }) => {
                         <p className="text-sm text-muted-foreground">{role}</p>
                     </div>
                 </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                    <div>
-                        <h4 className="text-sm font-medium">About</h4>
-                        <p className="text-muted-foreground">
-                            {bio}
-                        </p>
-                    </div>
+                <CardContent className="grid items-center justify-between gap-2 p-6 sm:grid-cols-2 text-muted-foreground">
+                    <h4 className="text-sm font-medium">Courses: {courses}</h4>
+                    <h4 className="text-sm font-medium">Enrollments: {enrollments}</h4>
+                    <h4 className="text-sm font-medium">Reviews: {reviews}</h4>
+                    <h4 className="text-sm font-medium">Ratings: {ratings}</h4>
                 </CardContent>
                 <CardFooter>
                     <Link
