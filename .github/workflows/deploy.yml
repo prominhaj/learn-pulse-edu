@@ -30,6 +30,7 @@ jobs:
                   echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> .env
                   echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .env
                   echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
+                  echo "GoogleAnalytics_KEY=${{ secrets.GoogleAnalytics_KEY }}" >> .env
 
             - name: Archive .env file
               run: tar -czf env.tar.gz .env

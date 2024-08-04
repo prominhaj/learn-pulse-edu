@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner';
 import ThemeProvider from '@/Providers/ThemeProvider';
 import { dbConnect } from '@/service/mongo';
 import SessionProvider from '@/Providers/SessionProvider';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 // Font Family
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -22,7 +23,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
     // Connect to MongoDB
-    const conn = await dbConnect();
+    const conc = await dbConnect();
 
     return (
         <html lang='en'>
@@ -39,6 +40,7 @@ export default async function RootLayout({ children }) {
                 </>
                 <Toaster richColors position='top-center' />
             </body>
+            <GoogleAnalytics gaId={process.env.GoogleAnalytics_KEY} />
         </html>
     );
 }
