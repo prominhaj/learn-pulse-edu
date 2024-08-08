@@ -25,7 +25,7 @@ const HeroSection = () => {
                         Hey, Welcome
                     </span>
                     <h1 className="text-3xl font-bold font-heading sm:text-5xl md:text-6xl lg:text-7xl">
-                        Learn Today, Lead Tomorrow.
+                        Learn Today, Lead Tomorrow
                     </h1>
                     <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
                         “You don’t understand anything until you learn it more than one
