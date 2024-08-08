@@ -6,9 +6,7 @@ import { cn } from "@/lib/utils";
 import { getCourseDetailsByInstructor } from "@/queries/courses";
 
 const InstructorCard = async ({ instructor }) => {
-
-    const { id, firstName, lastName, role, designation, profilePicture: { url } } = instructor;
-    const { courses, enrollments, reviews, ratings } = await getCourseDetailsByInstructor(id);
+    const { courses, enrollments, reviews, ratings } = await getCourseDetailsByInstructor(instructor?.id);
 
     return (
         <>
@@ -17,13 +15,13 @@ const InstructorCard = async ({ instructor }) => {
 
                 <CardHeader className="bg-[#F8FAFC] dark:bg-[#0F172A] p-6 flex flex-col items-center">
                     <Avatar className="w-20 h-20">
-                        <AvatarImage className="object-cover" src={url} />
-                        <AvatarFallback>{firstName}</AvatarFallback>
+                        <AvatarImage className="object-cover" src={instructor?.profilePicture?.url} />
+                        <AvatarFallback>{instructor?.firstName}</AvatarFallback>
                     </Avatar>
                     <div className="mt-4 text-center">
-                        <h3 className="text-xl font-semibold">{firstName + " " + lastName}</h3>
-                        <p className="text-muted-foreground">{designation}</p>
-                        <p className="text-sm text-muted-foreground">{role}</p>
+                        <h3 className="text-xl font-semibold">{instructor?.firstName + " " + instructor?.lastName}</h3>
+                        <p className="text-muted-foreground">{instructor?.designation}</p>
+                        <p className="text-sm text-muted-foreground">{instructor?.role}</p>
                     </div>
                 </CardHeader>
                 <CardContent className="grid items-center justify-between gap-2 p-6 sm:grid-cols-2 text-muted-foreground">
@@ -34,7 +32,7 @@ const InstructorCard = async ({ instructor }) => {
                 </CardContent>
                 <CardFooter>
                     <Link
-                        href={`/instructor/${id}/courses`}
+                        href={`/instructor/${instructor?.id}/courses`}
                         className={cn(buttonVariants({ variant: "outline" }), "w-full rounded-3xl")}>Details</Link>
                 </CardFooter>
             </div>
