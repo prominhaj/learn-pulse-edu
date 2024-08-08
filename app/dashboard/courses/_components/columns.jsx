@@ -129,6 +129,12 @@ export const columns = [
             {
               admin ? (
                 <>
+
+                  <Link href={`/admin/courses/${id}/enrollments`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      Enrollments
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="cursor-pointer">
                     <AdminCourseDelete id={id} />
                   </DropdownMenuItem>
@@ -158,7 +164,7 @@ export const columns = [
             }
 
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu >
       );
     },
   },

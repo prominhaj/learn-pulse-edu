@@ -1,14 +1,14 @@
+import EnrollmentPageContent from '@/app/dashboard/courses/[courseId]/enrollments/_components/EnrollmentPageContent';
 import BreadcrumbSection from '@/components/globals/Breadcrumb/BreadcrumbSection';
-import EnrollmentPageContent from './_components/EnrollmentPageContent';
 
 const items = [
     {
         label: 'Dashboard',
-        href: '/dashboard'
+        href: '/admin/dashboard'
     },
     {
         label: 'Courses',
-        href: '/dashboard/courses'
+        href: '/admin/courses'
     },
     {
         label: 'Enrollments',
@@ -16,7 +16,7 @@ const items = [
     }
 ];
 
-const EnrollmentsPage = async ({ params: { courseId } }) => {
+const AdminCourseEnrollments = ({ params: { courseId } }) => {
     return (
         <>
             <BreadcrumbSection items={items} />
@@ -25,4 +25,4 @@ const EnrollmentsPage = async ({ params: { courseId } }) => {
     );
 };
 
-export default EnrollmentsPage;
+export default AdminCourseEnrollments;
