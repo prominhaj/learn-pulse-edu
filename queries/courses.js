@@ -192,7 +192,14 @@ export const getCourseByCourseId = async (courseId) => {
     }
 };
 
-export const coursesByFilter = async ({ search, categories, price, sort }) => {
+export const coursesByFilter = async ({
+    search,
+    categories,
+    price,
+    sort,
+    page = 1,
+    perPage = 6
+}) => {
     try {
         let filter = { active: true };
 
@@ -228,7 +235,10 @@ export const coursesByFilter = async ({ search, categories, price, sort }) => {
             sortCriteria = { price: -1 };
         }
 
-        // Query courses based on filter and sort criteria
+        // Calculate skip based on pagination
+        const skip = (page - 1) * perPage;
+
+        // Query courses based on filter, sort criteria, and pagination
         const courses = await Course.find(filter)
             .select(['title', 'sub_title', 'thumbnail', 'modules', 'price', 'category'])
             .populate({
@@ -242,6 +252,8 @@ export const coursesByFilter = async ({ search, categories, price, sort }) => {
                 select: 'title'
             })
             .sort(sortCriteria)
+            .skip(skip)
+            .limit(perPage)
             .lean();
 
         return replaceMongoIdInArray(courses);
