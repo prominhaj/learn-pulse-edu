@@ -6,6 +6,7 @@ import ThemeProvider from '@/Providers/ThemeProvider';
 import { dbConnect } from '@/service/mongo';
 import SessionProvider from '@/Providers/SessionProvider';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { NextSeo } from 'next-seo';
 
 // Font Family
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -18,7 +19,21 @@ const poppins = Poppins({
 // Metadata
 export const metadata = {
     title: 'Learn Pulse Edu',
-    description: 'Explore || Learn || Build || Share'
+    description: 'Explore || Learn || Build || Share',
+    openGraph: {
+        title: 'Learn Pulse Edu',
+        description: 'Explore || Learn || Build || Share',
+        url: process.env.BASE_URL,
+        type: 'website',
+        images: [
+            {
+                url: `${process.env.BASE_URL}/open-grash-image.png`,
+                width: 800,
+                height: 600,
+                alt: 'Learn Pulse Edu Image'
+            }
+        ]
+    }
 };
 
 export default async function RootLayout({ children }) {
@@ -28,16 +43,14 @@ export default async function RootLayout({ children }) {
     return (
         <html lang='en'>
             <body className={cn(inter.variable, poppins.variable)}>
-                <>
-                    <ThemeProvider
-                        attribute='class'
-                        defaultTheme='system'
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        <SessionProvider>{children}</SessionProvider>
-                    </ThemeProvider>
-                </>
+                <ThemeProvider
+                    attribute='class'
+                    defaultTheme='system'
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <SessionProvider>{children}</SessionProvider>
+                </ThemeProvider>
                 <Toaster richColors position='top-center' />
             </body>
             <GoogleAnalytics gaId={process.env.GoogleAnalytics_KEY} />
