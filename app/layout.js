@@ -6,7 +6,6 @@ import ThemeProvider from '@/Providers/ThemeProvider';
 import { dbConnect } from '@/service/mongo';
 import SessionProvider from '@/Providers/SessionProvider';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { NextSeo } from 'next-seo';
 
 // Font Family
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -20,6 +19,20 @@ const poppins = Poppins({
 export const metadata = {
     title: 'Learn Pulse Edu',
     description: 'Explore || Learn || Build || Share',
+    generator: 'Next.js',
+    applicationName: 'Learn Pulse Edu',
+    keywords: [
+        'Next.js',
+        'React',
+        'JavaScript',
+        'Learn Pulse Edu',
+        'Pulse',
+        'Edu',
+        'Course',
+        'Learn'
+    ],
+    authors: [{ name: 'Pro Minhaj', url: process.env.BASE_URL }],
+    creator: 'Pro Minhaj',
     openGraph: {
         title: 'Learn Pulse Edu',
         description: 'Explore || Learn || Build || Share',
