@@ -73,9 +73,9 @@ jobs:
                     docker rm learn-pulse-edu-container
                   fi
 
-            - name: Remove old Docker images
-              run: |
-                  docker rmi -f $(docker images -q)
+            # - name: Remove old Docker images
+            #   run: |
+            #       docker rmi -f $(docker images -q)
 
             - name: Free up Docker space
               run: |
