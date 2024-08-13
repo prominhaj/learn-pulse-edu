@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 import { AlertTriangle, CheckCircleIcon } from "lucide-react";
 
 const bannerVariants = cva(
-    "border text-center p-4 text-sm flex m-0 items-center w-full",
+    "border text-center p-4 text-sm flex items-center w-full",
     {
         variants: {
             variant: {
