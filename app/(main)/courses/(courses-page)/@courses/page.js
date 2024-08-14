@@ -14,7 +14,7 @@ const CoursesSectionPage = async ({ searchParams: { s, categories, price, sort, 
         page: parseInt(page) || 1,
         perPage: 6
     });
-    const totalPage = Math.round(totalCourse / 6);
+    const totalPage = Math.ceil(totalCourse / 6);
 
     return (
         <>
