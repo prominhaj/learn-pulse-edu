@@ -1,6 +1,6 @@
 import withPlaiceholder from '@plaiceholder/next';
+import withPWA from '@ducanh2912/next-pwa';
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
         domains: ['res.cloudinary.com'],
@@ -17,4 +17,14 @@ const nextConfig = {
     }
 };
 
-export default withPlaiceholder(nextConfig);
+export default withPWA({
+    dest: 'public',
+    cacheOnFrontEndNav: true,
+    aggressiveFrontEndNavCaching: true,
+    reloadOnOnline: true,
+    swcMinify: true,
+    disable: false,
+    workboxOptions: {
+        disableDevLogs: true
+    }
+})(withPlaiceholder(nextConfig));

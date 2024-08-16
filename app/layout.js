@@ -17,6 +17,7 @@ const poppins = Poppins({
 
 // Metadata
 export const metadata = {
+    manifest: '/manifest.json',
     title: 'Learn Pulse Edu',
     description: 'Explore || Learn || Build || Share',
     generator: 'Next.js',
@@ -47,6 +48,10 @@ export const metadata = {
             }
         ]
     }
+};
+
+export const viewport = {
+    themeColor: '#FFFFFF'
 };
 
 export default async function RootLayout({ children }) {
